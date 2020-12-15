@@ -11,6 +11,8 @@ files {
 	'nui/default.png',
 	'nui/background.png',
 	'nui/invbg.png',
+	'nui/success.wav',
+	'nui/fail.wav',
 	'nui/styles.css',
 	'nui/scripts.js',
 	'nui/debounce.min.js',

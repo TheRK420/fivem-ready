@@ -1320,7 +1320,11 @@ function HardwareStore() {
         { item_id: "Box", id: 0, name: "Shop", information: "{}", slot: 7, amount: 5 },
         { item_id: "DuffelBag", id: 0, name: "Shop", information: "{}", slot: 8, amount: 5 },
         { item_id: "MedicalBag", id: 0, name: "Shop", information: "{}", slot: 9, amount: 5 },
-        { item_id: "fishingrod", id: 0, name: "Shop", information: "{}", slot: 10, amount: 1},   
+        { item_id: "fishingrod", id: 0, name: "Shop", information: "{}", slot: 10, amount: 1}, 
+        { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 11, amount: 1},  
+        { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 12, amount: 1},
+        { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 13, amount: 1},
+     
     ];
     return JSON.stringify(shopItems);
 }
