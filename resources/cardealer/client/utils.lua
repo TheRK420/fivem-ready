@@ -186,18 +186,18 @@ function DrawTextOptions(carPos,currentName,currentDownpayment,currentCommission
 		-- info
 		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.6, ""..currentName.." | $"..comma_value(math.floor(currentPrice + (currentPrice * (currentCommission / 100)))).." | "..currentCommission.."% Commission | "..currentStock.." PCS")
 		-- buttons:
-		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.54, "[E] Buy | [H] Test-Drive | "..swapCar)
+		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.54, "~g~[E] ~w~ Buy | [H] Test-Drive | "..swapCar)
 		-- finance:
-		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.48, "[U] Finance | "..currentDownpayment.."% Downpayment | $"..comma_value(math.floor((currentPrice + (currentPrice * (currentCommission / 100))) * (currentDownpayment/100))).."")
+		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.48, "~g~[U] ~w~ Finance | "..currentDownpayment.."% Downpayment | $"..comma_value(math.floor((currentPrice + (currentPrice * (currentCommission / 100))) * (currentDownpayment/100))).."")
 		-- cost display:
 		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.42, ""..Config.InterestRate.."% Interest Rate | $"..comma_value(math.floor((currentPrice + (currentPrice * (currentCommission / 100))) * ((Config.InterestRate/100)+1))).." Total Cost ")
 	else
 		-- info
 		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.6, ""..currentName.." | $"..comma_value(math.floor(currentPrice + (currentPrice * (currentCommission / 100)))).." | "..currentStock.." PCS")
 		-- buttons:
-		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.54, " [E] Buy | "..currentCommission.."% Commission")
+		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.54, " ~g~[E] ~w~ Buy | "..currentCommission.."% Commission")
 		-- finance:
-		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.48, "[U] Finance | "..currentDownpayment.."% Downpayment | $"..comma_value(math.floor((currentPrice + (currentPrice * (currentCommission / 100))) * (currentDownpayment/100))).."")
+		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.48, "~g~[U] ~w~ Finance | "..currentDownpayment.."% Downpayment | $"..comma_value(math.floor((currentPrice + (currentPrice * (currentCommission / 100))) * (currentDownpayment/100))).."")
 		-- cost display:
 		DrawText3Ds(carPos[1],carPos[2],carPos[3] + 0.42, ""..Config.InterestRate.."% Interest Rate | $"..comma_value(math.floor((currentPrice + (currentPrice * (currentCommission / 100))) * ((Config.InterestRate/100)+1))).." Total Cost ")
 	end
@@ -214,8 +214,8 @@ function DrawText3Ds(x,y,z, text)
     local scale = scale*fov
 	
 	if onScreen then
-		SetTextScale(0.0*scale, 0.35*scale)
-		SetTextFont(1)
+		SetTextScale(0.0*scale, 0.20*scale)
+		SetTextFont(6)
 		SetTextProportional(1)
 		SetTextColour(255, 255, 255, 255)
         SetTextDropshadow(0, 0, 0, 0, 255)
