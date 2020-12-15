@@ -1441,6 +1441,14 @@ AddEventHandler('veh:repairing', function(inventoryName,slot,itemid)
                 local fuelDamage = 48000 - (math.ceil(fueltankhealth)*12)
                 repairlength = ((3500 - (GetVehicleEngineHealth(targetVehicle) * 3) - (GetVehicleBodyHealth(targetVehicle)) / 2) * 5) + 2000
                 repairlength = repairlength + timeAdded + fuelDamage
+                -- SetVehicleFixed(targetVehicle)
+                -- SetVehicleEngineHealth(targetVehicle, 1000.0)
+                -- SetVehicleBodyHealth(targetVehicle, 1000.0)
+                -- SetVehiclePetrolTankHealth(targetVehicle, 4000.0)
+
+                -- if math.random(100) > 95 then
+                --     TriggerEvent("inventory:removeItem","repairtoolkit",1)
+                -- end
             else
                 local timeAdded = 0
                 for i=0,5 do
@@ -1458,8 +1466,10 @@ AddEventHandler('veh:repairing', function(inventoryName,slot,itemid)
             end
 
 
-
+           -- print(targetVehicle)
             local finished = exports["hhrp-taskbarskill"]:taskBar(15000,math.random(10,20))
+            SetVehicleFixed(targetVehicle)
+
             if finished ~= 100 then
                 fixingvehicle = false
                 reapiring = false
@@ -1467,77 +1477,79 @@ AddEventHandler('veh:repairing', function(inventoryName,slot,itemid)
                 return
             end
 
-            if finished == 100 then
+            -- if finished == 100 then
                 
-                local myJob = exports["isPed"]:isPed("myJob")
-                if myJob == "towtruck" then
+            --     local myJob = exports["isPed"]:isPed("myJob")
+            --     if myJob == "towtruck" then
 
-                    SetVehicleEngineHealth(targetVehicle, 1000.0)
-                    SetVehicleBodyHealth(targetVehicle, 1000.0)
-                    SetVehiclePetrolTankHealth(targetVehicle, 4000.0)
+            --         SetVehicleEngineHealth(targetVehicle, 1000.0)
+            --         SetVehicleBodyHealth(targetVehicle, 1000.0)
+            --         SetVehiclePetrolTankHealth(targetVehicle, 4000.0)
 
-                    if math.random(100) > 95 then
-                        TriggerEvent("inventory:removeItem","repairtoolkit",1)
-                    end
+            --         if math.random(100) > 95 then
+            --             TriggerEvent("inventory:removeItem","repairtoolkit",1)
+            --         end
 
-                else
+            --     else
 
-                    TriggerEvent('veh.randomDegredation',30,targetVehicle,3)
+            --         TriggerEvent('veh.randomDegredation',30,targetVehicle,3)
 
-                    if advanced then
-                        TriggerEvent("inventory:removeItem","advrepairkit", 1)
-                        TriggerEvent('veh.randomDegredation',30,targetVehicle,3)
-                        if GetVehicleEngineHealth(targetVehicle) < 900.0 then
-                            SetVehicleEngineHealth(targetVehicle, 900.0)
-                        end
-                        if GetVehicleBodyHealth(targetVehicle) < 945.0 then
-                            SetVehicleBodyHealth(targetVehicle, 945.0)
-                        end
+            --         if advanced then
+            --             TriggerEvent("inventory:removeItem","advrepairkit", 1)
+            --             TriggerEvent('veh.randomDegredation',30,targetVehicle,3)
 
-                        if fueltankhealth < 3800.0 then
-                            SetVehiclePetrolTankHealth(targetVehicle, 3800.0)
-                        end
+            --             SetVehicleFixed(targetVehicle)
+            --             if GetVehicleEngineHealth(targetVehicle) < 900.0 then
+            --                 SetVehicleEngineHealth(targetVehicle, 900.0)
+            --             end
+            --             if GetVehicleBodyHealth(targetVehicle) < 945.0 then
+            --                 SetVehicleBodyHealth(targetVehicle, 945.0)
+            --             end
 
-                    else
+            --             if fueltankhealth < 3800.0 then
+            --                 SetVehiclePetrolTankHealth(targetVehicle, 3800.0)
+            --             end
 
-                        local timer = math.ceil(GetVehicleEngineHealth(targetVehicle) * 5)
-                        if timer < 2000 then
-                            timer = 2000
-                        end
-                        local finished = exports["hhrp-taskbarskill"]:taskBar(timer,math.random(5,15))
-                        if finished ~= 100 then
-                            fixingvehicle = false
-                            reapiring = false
-                            ClearPedTasks(playerped)
-                            return
-                        end
+            --         else
 
-                        if math.random(100) > 95 then
-                            TriggerEvent("inventory:removeItem","repairtoolkit",1)
-                        end
+            --             local timer = math.ceil(GetVehicleEngineHealth(targetVehicle) * 5)
+            --             if timer < 2000 then
+            --                 timer = 2000
+            --             end
+            --             local finished = exports["hhrp-taskbarskill"]:taskBar(timer,math.random(5,15))
+            --             if finished ~= 100 then
+            --                 fixingvehicle = false
+            --                 reapiring = false
+            --                 ClearPedTasks(playerped)
+            --                 return
+            --             end
 
-                        if GetVehicleEngineHealth(targetVehicle) < 200.0 then
-                            SetVehicleEngineHealth(targetVehicle, 200.0)
-                        end
-                        if GetVehicleBodyHealth(targetVehicle) < 945.0 then
-                            SetVehicleBodyHealth(targetVehicle, 945.0)
-                        end
+            --             if math.random(100) > 95 then
+            --                 TriggerEvent("inventory:removeItem","repairtoolkit",1)
+            --             end
 
-                        if fueltankhealth < 2900.0 then
-                            SetVehiclePetrolTankHealth(targetVehicle, 2900.0)
-                        end                        
+            --             if GetVehicleEngineHealth(targetVehicle) < 200.0 then
+            --                 SetVehicleEngineHealth(targetVehicle, 200.0)
+            --             end
+            --             if GetVehicleBodyHealth(targetVehicle) < 945.0 then
+            --                 SetVehicleBodyHealth(targetVehicle, 945.0)
+            --             end
 
-                        if GetEntityModel(targetVehicle) == `BLAZER` then
-                            SetVehicleEngineHealth(targetVehicle, 600.0)
-                            SetVehicleBodyHealth(targetVehicle, 800.0)
-                        end
-                    end                    
-                end
+            --             if fueltankhealth < 2900.0 then
+            --                 SetVehiclePetrolTankHealth(targetVehicle, 2900.0)
+            --             end                        
 
-                for i = 0, 5 do
-                    SetVehicleTyreFixed(targetVehicle, i) 
-                end
-            end
+            --             if GetEntityModel(targetVehicle) == `BLAZER` then
+            --                 SetVehicleEngineHealth(targetVehicle, 600.0)
+            --                 SetVehicleBodyHealth(targetVehicle, 800.0)
+            --             end
+            --         end                    
+            --     end
+
+            --     for i = 0, 5 do
+            --         SetVehicleTyreFixed(targetVehicle, i) 
+            --     end
+            -- end
             ClearPedTasks(playerped)
         end
         fixingvehicle = false

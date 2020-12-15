@@ -463,8 +463,8 @@ function DisplayInventoryMultiple(playerinventory, itemCount, invName, targetinv
     secondaryMaxWeight = 1000.0
     slotLimitTarget = 40;
   } else if (targetinvName.indexOf("house") > -1) {
-    secondaryMaxWeight = 700.0
-    slotLimitTarget = 70;
+    secondaryMaxWeight = 4000.0
+    slotLimitTarget = 400;
   } else if (targetinvName.indexOf("motel1") > -1) {
     secondaryMaxWeight = 300.0
     slotLimitTarget = 30;
@@ -504,8 +504,8 @@ function DisplayInventoryMultiple(playerinventory, itemCount, invName, targetinv
     secondaryMaxWeight = 250.0
     slotLimitTarget = 5;
   } else {
-    secondaryMaxWeight = 250.0
-    slotLimitTarget = 40;
+    secondaryMaxWeight = 2500.0
+    slotLimitTarget = 200;
   }
 
   InventoryLog(targetinvName + " | " + invName)
