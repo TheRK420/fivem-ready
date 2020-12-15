@@ -27,12 +27,6 @@ $(document).ready(function(){
   var documentWidth = document.documentElement.clientWidth;
   var documentHeight = document.documentElement.clientHeight;
 
-  function triggerClick(x, y) {
-      var element = $(document.elementFromPoint(x, y));
-      element.focus().click();
-      return true;
-  }
-
   // Partial Functions
   function closeMain() {
     $(".home").css("display", "none");
@@ -75,7 +69,7 @@ $(document).ready(function(){
       }
       $('.balance').html('<p id="balance"><img id="icon" src="bank-icon.png" alt=""/>' +addGaps(event.data.balance)+'</p>');
       $('.currentBalance').html('$'+addCommas(event.data.balance));
-      $('.username').html(event.data.player);
+      $('.username').html(event.data.name);
       if(item.show != false){
         setTimeout(function(){
           $('.balance').fadeOut(600)

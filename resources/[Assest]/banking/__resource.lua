@@ -1,6 +1,5 @@
 resource_manifest_version '77731fab-63ca-442c-a67b-abc70f28dfa5'
 
-server_script "@mysql-async/lib/MySQL.lua"
 
 ui_page 'html/ui.html'
 files {
@@ -14,5 +13,10 @@ files {
 	'html/debounce.min.js'
 }
 
+server_scripts  {
+    "@mysql-async/lib/MySQL.lua",
+    'server.lua'
+}
+
 client_script "client.lua"
-server_script "server.lua"
+

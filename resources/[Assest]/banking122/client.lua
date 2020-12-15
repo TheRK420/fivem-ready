@@ -1,6 +1,5 @@
 -- Settings
-HHCore	= nil
-local depositAtATM = false -- Allows the player to deposit at an ATM rather than only in banks (Default: false)
+local depositAtATM = true -- Allows the player to deposit at an ATM rather than only in banks (Default: false)
 local giveCashAnywhere = false -- Allows the player to give CASH to another player, no matter how far away they are. (Default: false)
 local withdrawAnywhere = false -- Allows the player to withdraw cash from bank account anywhere (Default: false)
 local depositAnywhere = false -- Allows the player to deposit cash into bank account anywhere (Default: false)
@@ -32,16 +31,16 @@ AddEventHandler('bank:checkATM', function()
     openGui()
     bankOpen = true
   else
-    TriggerEvent("DoLongHudText","No ATM", 2)
+    exports['myhtic_notify']:DoHudText('error', 'No ATM Nearby')
   end
 end)
 
 function IsNearATM()
   for i = 1, #atms do
-    local objFound = GetClosestObjectOfType( GetEntityCoords(PlayerPedId()), 0.75, atms[i], 0, 0, 0)
+    local objFound = GetClosestObjectOfType( GetEntityCoords(GetPlayerPed(-1)), 0.75, atms[i], 0, 0, 0)
 
     if DoesEntityExist(objFound) then
-      TaskTurnPedToFaceEntity(PlayerPedId(), objFound, 3.0)
+      TaskTurnPedToFaceEntity(GetPlayerPed(-1), objFound, 3.0)
       return true
     end
   end
@@ -53,60 +52,26 @@ local banks = {
   {name="Bank", id=108, x=150.266, y=-1040.203, z=29.374},
   {name="Bank", id=108, x=-1212.980, y=-330.841, z=37.787},
   {name="Bank", id=108, x=-2962.582, y=482.627, z=15.703},
-
+  {name="Bank", id=108, x=-112.202, y=6469.295, z=31.626},
   {name="Bank", id=108, x=314.187, y=-278.621, z=54.170},
   {name="Bank", id=108, x=-351.534, y=-49.529, z=49.042},
   {name="Bank", id=108, x=241.727, y=220.706, z=106.286},
   {name="Bank", id=108, x=1176.0833740234, y=2706.3386230469, z=37.157722473145},
-  {name="Bank", id=108, x=-113.50, y=6469.70, z=31.62},
+
 }
 
-
-local ClosedBanks = {}
-
-
+-- Display Map Blips
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
-		Citizen.Wait(0)
-	end
-end)
-
-RegisterNetEvent('robbery:shutdownBank')
-AddEventHandler('robbery:shutdownBank', function(bankid,status)
-  if status then
-    ClosedBanks[bankid] = true
-  else
-    ClosedBanks[bankid] = nil
-  end
-end)
-
-Citizen.CreateThread(function()
-
-  TriggerEvent('chat:addSuggestion', '/givecash', "/givecash [id] [amount]")
-
   if (displayBankBlips == true) then
-
     for _, item in pairs(banks) do
-
       item.blip = AddBlipForCoord(item.x, item.y, item.z)
-
       SetBlipSprite(item.blip, item.id)
-
-      SetBlipScale  (item.blip, 0.65)
-
       SetBlipAsShortRange(item.blip, true)
-
       BeginTextCommandSetBlipName("STRING")
-
       AddTextComponentString(item.name)
-
       EndTextCommandSetBlipName(item.blip)
-
     end
-
   end
-
 end)
 
 -- NUI Variables
@@ -117,15 +82,14 @@ local atmOpen = false
 
 -- Open Gui and Focus NUI
 function openGui()
-  TriggerServerEvent("bank:getDetails")
   bankanimation()
   Citizen.Wait(1400)
   SetNuiFocus(true, true)
-
   SendNUIMessage({openBank = true})
-  TriggerServerEvent("bank:active")
+  TriggerServerEvent('bank:balance')
   TriggerEvent("banking:viewCash")
-  TriggerServerEvent("bank:cashbal")
+
+  
 end
 
 -- Close Gui and disable NUI
@@ -137,6 +101,10 @@ function closeGui()
   bankanimation()
 end
 
+RegisterCommand('atm', function()
+
+  TriggerEvent("bank:checkATM")
+end)
 
 atmuse = false
 function loadAnimDict( dict )
@@ -155,11 +123,12 @@ function bankanimation()
             loadAnimDict( "amb@prop_human_atm@male@idle_a" )
 
           if ( atmuse ) then 
-              ClearPedTasks(PlayerPedId())
+              ClearPedTasks(GetPlayerPed(-1))
               TaskPlayAnim( player, "amb@prop_human_atm@male@exit", "exit", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
               atmuse = false
               local finished = exports["hhrp-taskbar"]:taskBar(3000,"Retrieving Card")
-              ClearPedTasks(PlayerPedId())
+				Wait(3000)
+              ClearPedTasksImmediately(GetPlayerPed(-1))
           else
               atmuse = true
               TaskPlayAnim( player, "amb@prop_human_atm@male@idle_a", "idle_b", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
@@ -171,16 +140,17 @@ function bankanimation()
             loadAnimDict( "mp_common" )
 
             if ( atmuse ) then 
-                ClearPedTasks(PlayerPedId())
+                ClearPedTasks(GetPlayerPed(-1))
                 TaskPlayAnim( player, "mp_common", "givetake1_a", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
                 atmuse = false
-                local finished = exports["hhrp-taskbar"]:taskBar(1000,"Retrieving Card")
-                ClearPedTasks(PlayerPedId())
+                local finished = exports["hhrp-taskbar"]:taskBar(3000,"Retrieving Card")
+				Wait(1000)
+                ClearPedTasksImmediately(GetPlayerPed(-1))
             else
                 atmuse = true
                 TaskPlayAnim( player, "mp_common", "givetake1_a", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
                 Citizen.Wait(1000)
-                ClearPedTasks(PlayerPedId())
+                ClearPedTasks(GetPlayerPed(-1))
             end
         end
     end
@@ -203,27 +173,20 @@ function DrawText3D(x,y,z, text)
     DrawRect(_x,_y+0.0125, 0.015+ factor, 0.03, 41, 11, 41, 68)
 end
 
-Controlkey = {["generalUse"] = {38,"E"}} 
-RegisterNetEvent('event:control:update')
-AddEventHandler('event:control:update', function(table)
-  Controlkey["generalUse"] = table["generalUse"]
-end)
-
-
-local lastTrigger = 0
+-- If GUI setting turned on, listen for INPUT_PICKUP keypress
 if enableBankingGui then
   Citizen.CreateThread(function()
     while true do
       Citizen.Wait(1)
 
-      local ply = PlayerPedId()
+      local ply = GetPlayerPed(-1)
       local plyCoords = GetEntityCoords(ply, 0)
       local closestbank = 1000.0
       local scanid = 0
 
       if not (IsInVehicle()) and not bankOpen then
         for i = 1, #banks do
-          local distance = #(vector3(banks[i].x, banks[i].y, banks[i].z) - vector3(plyCoords["x"], plyCoords["y"], plyCoords["z"]))
+          local distance = GetDistanceBetweenCoords(banks[i].x, banks[i].y, banks[i].z,  plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
           if(distance < closestbank) then
             scanid = i
             closestbank = distance
@@ -231,38 +194,25 @@ if enableBankingGui then
         end
       end
 
-
-
-      if(closestbank < 5.5 and scanid ~= 0) then
-
-          if lastTrigger == 0 then
-            lastTrigger = scanid
-            TriggerEvent("robbery:scanbank",scanid)
-          end
-
+      if(closestbank < 1.5 and scanid ~= 0) then
           local cdst = closestbank
           while cdst < 1.5 do
             Citizen.Wait(1)
 
             local plyCoords = GetEntityCoords(ply, 0)
-            cdst = #(vector3(banks[scanid].x, banks[scanid].y, banks[scanid].z) -  vector3(plyCoords["x"], plyCoords["y"], plyCoords["z"]))
+            cdst = GetDistanceBetweenCoords(banks[scanid].x, banks[scanid].y, banks[scanid].z,  plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
             
             
-              if ClosedBanks[scanid] then
-                DrawText3D(banks[scanid].x, banks[scanid].y, banks[scanid].z,"This bank is closed.")
-              else
-                 DrawText3D(banks[scanid].x, banks[scanid].y, banks[scanid].z,"["..Controlkey["generalUse"][2].."] to use Bank.")
-                atBank = true
-                if IsControlJustPressed(1, Controlkey["generalUse"][1])  then -- IF INPUT_PICKUP Is pressed
-
-                    openGui()
-                    bankOpen = true
-                end
-                if bankOpen then
-                  Citizen.Wait(1000)
-                end
+               DrawText3D(banks[scanid].x, banks[scanid].y, banks[scanid].z,"[E] to use Bank.")
+             -- if not IsInVehicle() then exports["np-base"]:getModule("Util"):MissionText("Press '~b~Context Action Key~w~' (Default: ~b~E~w~) to view your account", 500) else exports["np-base"]:getModule("Util"):MissionText("You ~r~cannot~w~~w~ use the bank in a vehicle", 500) end
+              atBank = true
+              if IsControlJustPressed(1, 38)  then -- IF INPUT_PICKUP Is pressed
+                  openGui()
+                  bankOpen = true
               end
-
+              if bankOpen then
+                Citizen.Wait(1000)
+              end
           end
       else
 
@@ -274,16 +224,32 @@ if enableBankingGui then
         if atBank then
           atBank = false
         end
-        if lastTrigger ~= 0 and closestbank > 25.0 then
-          TriggerEvent("robbery:disablescans")
-          lastTrigger = 0
-        end
-        Citizen.Wait(math.ceil(closestbank*5))
+
+        Citizen.Wait(math.ceil(closestbank*20))
       end
     end
   end)
 end
 
+-- Disable controls while GUI open
+Citizen.CreateThread(function()
+  while true do
+    if bankOpen or atmOpen then
+      local ply = GetPlayerPed(-1)
+      local active = true
+      DisableControlAction(0, 1, active) -- LookLeftRight
+      DisableControlAction(0, 2, active) -- LookUpDown
+      DisableControlAction(0, 24, active) -- Attack
+      DisablePlayerFiring(ply, true) -- Disable weapon firing
+      DisableControlAction(0, 142, active) -- MeleeAttackAlternate
+      DisableControlAction(0, 106, active) -- VehicleMouseControlOverride
+      if IsDisabledControlJustReleased(0, 24) or IsDisabledControlJustReleased(0, 142) then -- MeleeAttackAlternate
+        SendNUIMessage({type = "click"})
+      end
+    end
+    Citizen.Wait(0)
+  end
+end)
 
 -- NUI Callback Methods
 RegisterNUICallback('close', function(data, cb)
@@ -292,6 +258,7 @@ RegisterNUICallback('close', function(data, cb)
 end)
 
 RegisterNUICallback('balance', function(data, cb)
+TriggerServerEvent('bank:balance')
   SendNUIMessage({openSection = "balance"})
   cb('ok')
 end)
@@ -317,12 +284,12 @@ RegisterNUICallback('quickCash', function(data, cb)
 end)
 
 RegisterNUICallback('withdrawSubmit', function(data, cb)
-  TriggerEvent('bank:withdraw', data.amount)
+  TriggerEvent('bank:withdraw', tonumber(data.amount))
   cb('ok')
 end)
 
 RegisterNUICallback('depositSubmit', function(data, cb)
-  TriggerEvent('bank:deposit', data.amount)
+  TriggerEvent('bank:deposit', tonumber(data.amount))
   cb('ok')
 end)
 
@@ -337,7 +304,7 @@ end)
 
 -- Check if player is in a vehicle
 function IsInVehicle()
-  local ply = PlayerPedId()
+  local ply = GetPlayerPed(-1)
   if IsPedSittingInAnyVehicle(ply) then
     return true
   else
@@ -347,10 +314,10 @@ end
 
 -- Check if player is near a bank
 function IsNearBank()
-  local ply = PlayerPedId()
+  local ply = GetPlayerPed(-1)
   local plyCoords = GetEntityCoords(ply, 0)
   for _, item in pairs(banks) do
-    local distance = #(vector3(item.x, item.y, item.z) - vector3(plyCoords["x"], plyCoords["y"], plyCoords["z"]))
+    local distance = GetDistanceBetweenCoords(item.x, item.y, item.z,  plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
     if(distance <= 2) then
       return true
     end
@@ -359,7 +326,7 @@ end
 
 -- Check if player is near another player
 function IsNearPlayer(player)
-  local ply = PlayerPedId()
+  local ply = GetPlayerPed(-1)
   local plyCoords = GetEntityCoords(ply, 0)
   local ply2 = GetPlayerPed(GetPlayerFromServerId(player))
   local ply2Coords = GetEntityCoords(ply2, 0)
@@ -374,55 +341,62 @@ RegisterNetEvent('bank:deposit')
 AddEventHandler('bank:deposit', function(amount)
   if(IsNearBank() == true ) then
     if (IsInVehicle()) then
-      TriggerEvent("DoLongHudText", "You cannot use the ATM in a vehicle", 2)
+      --print("You ~r~cannot~w~ use the ATM in a vehicle")
+	  exports['mythic_notify']:SendAlert('inform', 'You cannot use the ATM in a vehicle')
+	  --exports["np-base"]:getModule("Util"):MissionText("You ~r~cannot~w~ use the ATM in a vehicle", 500)
     else
       TriggerServerEvent("bank:deposit", tonumber(amount))
+	  TriggerServerEvent('bank:balance')
+	  TriggerEvent('banking:viewBalance')
+	  TriggerEvent('banking:viewCash')
     end
   else
-    TriggerEvent("DoLongHudText", "You cannot deposit at an ATM", 2)
+	if depositAtATM then
+	  TriggerServerEvent("bank:deposit", tonumber(amount))
+	  TriggerServerEvent('bank:balance')
+	  TriggerEvent('banking:viewBalance')
+	  TriggerEvent('banking:viewCash')
+	else
+    --exports["np-base"]:getModule("Util"):MissionText("You ~r~cannot~w~ deposit at an ATM", 2000)
+	--print("You ~r~cannot~w~ deposit at an ATM")
+	exports['mythic_notify']:SendAlert('inform', 'You cannot deposit at an ATM')
+	end
   end
 end)
-
 
 -- Process withdraw if conditions met
 RegisterNetEvent('bank:withdraw')
 AddEventHandler('bank:withdraw', function(amount)
   if(IsNearATM() == true or IsNearBank() == true) then
     if (IsInVehicle()) then
-      TriggerEvent("DoLongHudText", "You cannot use the bank in a vehicle", 2)
+      --print("You ~r~cannot~w~ use the bank in a vehicle")
+	  exports['mythic_notify']:SendAlert('inform', 'You cannot use the bank in a vehicle')
+	  --exports["np-base"]:getModule("Util"):MissionText("You ~r~cannot~w~ use the bank in a vehicle", 500)
     else
       TriggerServerEvent("bank:withdraw", tonumber(amount))
+      TriggerServerEvent('bank:balance')
+	  TriggerEvent('banking:viewBalance')
+	  TriggerEvent('banking:viewCash')
     end
   end
 end)
 
-
 -- Process give dm if conditions met
 RegisterNetEvent('dirtyMoney:givedm')
 AddEventHandler('dirtyMoney:givedm', function(toPlayer, amount)
-  if not IsNearPlayer(toPlayer) then 
-    TriggerEvent("DoLongHudText", "You are not near this player", 2)
-    return 
-  end
+  if not IsNearPlayer(toPlayer) then exports['mythic_notify']:DoHudText('error','You are not near this player!') return end
 
   local target = GetPlayerFromServerId(tonumber(toPlayer))
   local targetPos = GetEntityCoords(GetPlayerPed(target))
 
-  local userCoords = GetEntityCoords(PlayerPedId())
+  local userCoords = GetEntityCoords(GetPlayerPed(-1))
 
   if Vdist2(targetPos, userCoords) > 15.0 then
-    TriggerEvent("DoLongHudText", "You are not near this player", 2)
+      --TriggerEvent('chatMessage', "", {255, 0, 0}, "^1You are not near this player!")
+      exports['mythic_notify']:DoHudText('error','You are not near this player!')
       return
   end
-
-  local player2 = GetPlayerFromServerId(tonumber(toPlayer))
-  local playing = IsPlayerPlaying(player2)
-  
-  if (playing ~= false) then
     TriggerServerEvent("dirtyMoney:givedm", toPlayer, tonumber(amount))
-  else
-    TriggerEvent("DoLongHudText", "You are not near this player", 2)
-  end
 end)
 
 
@@ -430,31 +404,18 @@ end)
 -- Process give cash if conditions met
 RegisterNetEvent('bank:givecash')
 AddEventHandler('bank:givecash', function(toPlayer, amount)
-  if not IsNearPlayer(toPlayer) then 
-    TriggerEvent("DoLongHudText", "You are not near this player", 2)
-    return 
-  end
+  if not IsNearPlayer(toPlayer) then exports['mythic_notify']:DoHudText('error','You are not near this player!' ) return end
 
   local target = GetPlayerFromServerId(tonumber(toPlayer))
   local targetPos = GetEntityCoords(GetPlayerPed(target))
 
-  local userCoords = GetEntityCoords(PlayerPedId())
+  local userCoords = GetEntityCoords(GetPlayerPed(-1))
 
   if Vdist2(targetPos, userCoords) > 15.0 then
-    TriggerEvent("DoLongHudText", "You are not near this player", 2)
+    exports['mythic_notify']:DoHudText('error','You are not near this player!' )
       return
   end
-
-
-  local player2 = GetPlayerFromServerId(tonumber(toPlayer))
-  local playing = IsPlayerPlaying(player2)
-  
-  if (playing ~= false) then
     TriggerServerEvent("bank:givecash", toPlayer, tonumber(amount))
-    TriggerEvent("animation:PlayAnimation","id")
-  else
-    TriggerEvent("DoLongHudText", "This player is not online", 2)
-  end
 end)
 
 -- Process bank transfer if player is online
@@ -465,29 +426,28 @@ AddEventHandler('bank:transfer', function(fromPlayer, toPlayer, amount)
   if (playing ~= false) then
     TriggerServerEvent("bank:transfer", toPlayer, tonumber(amount))
   else
-    TriggerEvent("DoLongHudText", "This player is not online", 2)
+    TriggerEvent('chatMessage', "", {255, 0, 0}, "^1This player is not online!");
   end
+  TriggerServerEvent('bank:balance')
 end)
 
 -- Send NUI message to update bank balance
 RegisterNetEvent('banking:updateBalance')
-AddEventHandler('banking:updateBalance', function(balance, show)
+AddEventHandler('banking:updateBalance', function(balance2, show)
   local id = PlayerId()
-  local name = exports["isPed"]:isPed("fullname");
-  if (name == false) then
-    name = GetPlayerName(id)
-  end
+  local playerName = GetPlayerName(id)
 	SendNUIMessage({
 		updateBalance = true,
-		balance = balance,
-    name = name,
+		balance = tonumber(balance2),
+    player = playerName,
     show = show
-  })
+	})
 end)
 
 RegisterNetEvent('banking:updateCash')
 AddEventHandler('banking:updateCash', function(balance, show)
   local id = PlayerId()
+  local playerName = GetPlayerName(id)
 	SendNUIMessage({
 		updateCash = true,
 		cash = balance,
@@ -513,7 +473,6 @@ end)
 
 RegisterNetEvent("banking:removeBalance")
 AddEventHandler("banking:removeBalance", function(amount)
-  TriggerServerEvent("bank:active")
 	SendNUIMessage({
 		removeBalance = true,
 		amount = amount
@@ -522,22 +481,33 @@ end)
 
 RegisterNetEvent("banking:addCash")
 AddEventHandler("banking:addCash", function(amount)
-  TriggerServerEvent("bank:cashbal")
 	SendNUIMessage({
 		addCash = true,
 		amount = amount
-  })
+	})
 end)
 
 -- Send NUI Message to display remove balance popup
 RegisterNetEvent("banking:removeCash")
 AddEventHandler("banking:removeCash", function(amount)
-  TriggerServerEvent("bank:cashbal")
 	SendNUIMessage({
 		removeCash = true,
 		amount = amount
 	})
 end)
+
+RegisterNetEvent("np-base:addedMoney")
+AddEventHandler("np-base:addedMoney", function(amt, total)
+    TriggerEvent("banking:updateCash", total)
+    TriggerEvent("banking:addCash", amt)
+end)
+
+RegisterNetEvent("np-base:removedMoney")
+AddEventHandler("np-base:removedMoney", function(amt, total)
+    TriggerEvent("banking:updateCash", total)
+    TriggerEvent("banking:removeCash", amt)
+end)
+
 
 RegisterNetEvent("banking:viewCash")
 AddEventHandler("banking:viewCash", function()
@@ -546,25 +516,9 @@ AddEventHandler("banking:viewCash", function()
 	})
 end)
 
-
-RegisterCommand("atm", function(src, args, raw)
-  TriggerEvent('bank:checkATM')
-end)
-
-RegisterCommand("cash", function(src, args, raw)
-  TriggerServerEvent("bank:cashbal")
-end)
-
-RegisterCommand("bank", function(src, args, raw)
-  TriggerServerEvent("bank:bankbal")
-end)
-
-AddEventHandler('bank:givecash', function(sender, target, amount)
-  local closestPlayer, closestDistance = HHCore.Game.GetClosestPlayer()
-  if closestPlayer == -1 or closestDistance > 3.0 then
-     
-    TriggerEvent("DoLongHudText", "You are not near this player", 2)
-  else
-  TriggerServerEvent("bank:givemecash", sender, target, amount)
-  end
-end)
+--[[ RegisterCommand("cash", function(amount)
+  SendNUIMessage({
+    viewCash = true,
+    amount = amount
+	})
+end) ]]
