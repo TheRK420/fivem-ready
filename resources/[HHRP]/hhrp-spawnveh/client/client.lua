@@ -622,7 +622,7 @@ end)
 
 RegisterCommand("svlist", function(source, args, rawCommand)
 	if HHCore.GetPlayerData().job.name == 'police' then
-	TriggerEvent("customNotification", " \n [1] Crown Vic \n [3] Taurus \n [4] Tahoe \n [5] Ranger \n [6] Charger \n [8] Prison Bus \n [9] Transport Van \n [10] Mustang \n [12] Maverick Helicopter")
+	TriggerEvent("customNotification", " \n [1] Police Bike \n [3] Taurus \n [4] Tahoe \n [5] Ranger \n [6] Charger \n [8] Prison Bus \n [9] Transport Van \n [10] Mustang \n [12] Maverick Helicopter")
 	end
 end)
 
