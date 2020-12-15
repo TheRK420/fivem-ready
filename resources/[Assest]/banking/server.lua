@@ -47,7 +47,7 @@ AddEventHandler('playerDropped', function()
   balances[source] = nil
 end)
 
--- HELPER FUNCTIONS
+-- --HELPER FUNCTIONS
 function bankBalance(player)
   return HHCore.GetPlayerFromId(player).getBank()
 end
