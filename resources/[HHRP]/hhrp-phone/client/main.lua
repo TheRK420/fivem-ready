@@ -2007,7 +2007,8 @@ end)
 RegisterNetEvent('phone:addToCall')
 AddEventHandler('phone:addToCall', function(voipchannel)
   local playerName = GetPlayerName(PlayerId())
-  exports.tokovoip_script:addPlayerToRadio(tonumber(voipchannel))
+  --exports.tokovoip_script:addPlayerToRadio(tonumber(voipchannel))
+  exports["mumble-voip"]:SetCallChannel(tonumber(voipchannel) + 1)
 end)
 
 RegisterNetEvent('phone:callFullyInitiated')
@@ -2153,7 +2154,8 @@ end
 
 RegisterNetEvent('phone:removefromToko')
 AddEventHandler('phone:removefromToko', function(playerRadioChannel)
-  exports.tokovoip_script:removePlayerFromRadio(playerRadioChannel)
+  --exports.tokovoip_script:removePlayerFromRadio(playerRadioChannel)
+  exports["mumble-voip"]:SetCallChannel(0)
 end)
 
 function endCall()
