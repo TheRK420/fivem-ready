@@ -193,7 +193,7 @@ Citizen.CreateThread(function()
 		if not PedCar or PedCar == 0 then
 			PedCar = GetVehiclePedIsIn(Ped, true)
 		end
-		carSpeed = math.ceil(GetEntitySpeed(PedCar) * 1.23)
+		carSpeed = math.ceil(GetEntitySpeed(PedCar) * 2.23)
 		
 		if not zone then
             zone = "UNKNOWN"
