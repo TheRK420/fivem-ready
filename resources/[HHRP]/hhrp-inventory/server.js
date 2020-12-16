@@ -1305,6 +1305,9 @@ function ConvenienceStore() {
         { item_id: "bakingsoda", id: 0, name: "Shop", information: "{}", slot: 14, amount: 50 },
         { item_id: "glucose", id: 0, name: "Shop", information: "{}", slot: 15, amount: 50 },
         { item_id: "cigar", id: 0, name: "Shop", information: "{}", slot: 16, amount: 50 },
+        { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 17, amount: 1},  
+        { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 18, amount: 1},
+        { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 19, amount: 1},
     ];
     return JSON.stringify(shopItems);
 }
