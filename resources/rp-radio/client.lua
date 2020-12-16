@@ -476,7 +476,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		-- Init local vars
 		local playerPed = PlayerPedId()
-	--	local isActivatorPressed = IsControlJustPressed(0, radioConfig.Controls.Activator.Key)
+		--local isActivatorPressed = IsControlJustPressed(0, radioConfig.Controls.Activator.Key)
 	--	local isSecondaryPressed = (radioConfig.Controls.Secondary.Enabled == false and true or IsControlPressed(0, radioConfig.Controls.Secondary.Key))
 		local isFalling = IsPedFalling(playerPed)
 		local isDead = IsEntityDead(playerPed)

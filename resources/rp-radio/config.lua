@@ -39,9 +39,9 @@ radioConfig = {
     },
     Frequency = {
         Private = { -- List of private frequencies
-            [1] = true, -- Make 1 a private frequency
-            [2] = true, -- Make 2 a private frequency
-            [3] = true, -- Make 3 a private frequency
+            [1] = false, -- Make 1 a private frequency
+            [2] = false, -- Make 2 a private frequency
+            [3] = false, -- Make 3 a private frequency
         }, -- List of private frequencies
         Current = 1, -- Don't touch
         CurrentIndex = 1, -- Don't touch
