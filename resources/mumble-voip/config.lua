@@ -15,7 +15,7 @@ mumbleConfig = {
 	micClickOn = true, -- Is click sound on active
 	micClickOff = true, -- Is click sound off active
 	micClickVolume = 0.1, -- How loud a mic click is
-	radioClickMaxChannel = 100, -- Set the max amount of radio channels that will have local radio clicks enabled
+	radioClickMaxChannel = 1000, -- Set the max amount of radio channels that will have local radio clicks enabled
 	controls = { -- Change default key binds
 		proximity = {
 			key = 243, -- Z
@@ -44,7 +44,7 @@ mumbleConfig = {
 	useNativeAudio = false, -- Use native audio (audio occlusion in interiors)
 	useExternalServer = false, -- Use an external voice server (bigger servers need this), tutorial: https://forum.cfx.re/t/how-to-host-fivems-voice-chat-mumble-in-another-server/1487449?u=frazzle
 	externalAddress = "127.0.0.1",
-	externalPort = 30120,
+	externalPort = 30169,
 	use2dAudioInVehicles = true, -- Workaround for hearing vehicle passengers at high speeds
 	showRadioList = false, -- Optional feature to show a list of players in a radio channel, to be used with server export `SetPlayerRadioName`
 }
