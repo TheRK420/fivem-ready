@@ -13,23 +13,23 @@ AddEventHandler('pw-motels:rentRoom', function(room, motel)
     if motelowner[1] == nil and spamCheck[1] == nil then
      xPlayer.removeMoney(Config.Complexs[motel].price)
      MySQL.Sync.execute('INSERT INTO pw_motels (ident, motelid, room, days_left) VALUES (@ident, @motel, @room, @days_left)', { ["@ident"] = ident, ["@motel"] = motel, ["@room"] = room, ['@days_left'] = 7})
-     TriggerClientEvent('notification', src, 'You have rented room '..room..' at '..Config.Complexs[motel].name)
+     TriggerClientEvent('DoLongHudText', src, 'You have rented room '..room..' at '..Config.Complexs[motel].name)
      TriggerEvent('pw-motels:updateRooms')
     elseif motelowner[1] ~= nil then
      if motelowner[1].days_left <= 3 then
       if Config.Complexs[motel].name == Config.Complexs[tonumber(motelowner[1].motelid)].name then
        xPlayer.removeMoney(Config.Complexs[motel].price)
-       TriggerClientEvent('notification', src, 'Motel room '..room..' at '..Config.Complexs[motel].name..' has been renewed for $'..Config.Complexs[motel].price)
+       TriggerClientEvent('DoLongHudText', src, 'Motel room '..room..' at '..Config.Complexs[motel].name..' has been renewed for $'..Config.Complexs[motel].price)
        MySQL.Sync.execute("UPDATE `pw_motels` SET `days_left` = 7 WHERE ident = @ident", {['@ident'] = ident})
       else
-       TriggerClientEvent('notification', src, "You can only renew your motel room at "..Config.Complexs[tonumber(motelowner[1].motelid)].name)
+       TriggerClientEvent('DoLongHudText', src, "You can only renew your motel room at "..Config.Complexs[tonumber(motelowner[1].motelid)].name)
       end
      else
-      TriggerClientEvent('notification', src, 'You can only renew motel rooms 3 days before it runs out.', 2)
+      TriggerClientEvent('DoLongHudText', src, 'You can only renew motel rooms 3 days before it runs out.', 2)
      end
     end
    else
-    TriggerClientEvent('notification', src, 'You do not have enough money.', 2)
+    TriggerClientEvent('DoLongHudText', src, 'You do not have enough money.', 2)
    end
   end)
  end)
@@ -246,9 +246,9 @@ AddEventHandler('hotel:check', function(source)
   if motelowner[1] ~= nil then
    if motelowner[1].days_left <= 3 then
     if motelowner[1].days_left ~= 1 then
-     TriggerClientEvent('notification', src, 'Motel room '..motelowner[1].room..' at '..Config.Complexs[tonumber(motelowner[1].motelid)].name..' runs out in '..motelowner[1].days_left..' days. Renew it at the reception.')
+     TriggerClientEvent('DoLongHudText', src, 'Motel room '..motelowner[1].room..' at '..Config.Complexs[tonumber(motelowner[1].motelid)].name..' runs out in '..motelowner[1].days_left..' days. Renew it at the reception.')
     else
-     TriggerClientEvent('notification', src, 'Motel room '..motelowner[1].room..' at '..Config.Complexs[tonumber(motelowner[1].motelid)].name..' runs out in '..motelowner[1].days_left..' day. Renew it at the reception.')
+     TriggerClientEvent('DoLongHudText', src, 'Motel room '..motelowner[1].room..' at '..Config.Complexs[tonumber(motelowner[1].motelid)].name..' runs out in '..motelowner[1].days_left..' day. Renew it at the reception.')
     end
    end
   end

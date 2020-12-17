@@ -85,6 +85,7 @@ RegisterCommand('enterroom', function(source, args)
       if rid.owner == PlayerId then
        depthZ = math.random(30, 150)
        TriggerServerEvent('hotel:createRoom', {id = rid.roomno, x = rid.entry.x, y = rid.entry.y, z = rid.entry.z-depthZ, outZ = rid.entry.outZ})
+       --exports['hhrp-interior']:CreateApartmentFurnished(coords)
        showmenushit = true
        roomInfo = rid
        showClothing = true
@@ -328,7 +329,7 @@ function buildHotel(generator)
 
 
  TriggerEvent('InteractSound_CL:PlayOnOne', 'doorenter', 0.8)
-
+  ClearArea(generator.x, generator.y, generator.z, 2, true, true, true, true)
   TriggerEvent('dooranim')
   Citizen.Wait(100)
   DoScreenFadeOut(100)

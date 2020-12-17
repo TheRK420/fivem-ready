@@ -37,7 +37,7 @@ Radio.Commands = {
 			local playerPed = PlayerPedId()
 			local isFalling = IsPedFalling(playerPed)
 			local isDead = IsEntityDead(playerPed)
-
+		if exports["hhrp-inventory"]:hasEnoughOfItem("radio", 1) then
 			if not isFalling and Radio.Enabled and Radio.Has and not isDead then
 				Radio:Toggle(not Radio.Open)
 			elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then
@@ -47,11 +47,14 @@ Radio.Commands = {
 				exports["mumble-voip"]:SetMumbleProperty("radioEnabled", false)
 			elseif Radio.Open and isFalling then
 				Radio:Toggle(false)
-			end            
+			end
+		else
+			TriggerEvent("DoLongHudText","You dont have a radio", 2)
+		end
 		end,
 	},
 	{
-		Enabled = true, -- Add a command to choose radio frequency
+		Enabled = false, -- Add a command to choose radio frequency
 		Name = "freq", -- Command name
 		Help = "Change radio frequency", -- Command help shown in chatbox when typing the command
 		Params = {
