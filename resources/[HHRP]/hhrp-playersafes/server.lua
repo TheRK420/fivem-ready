@@ -112,13 +112,19 @@ function MFS:NotifyPolice(pos)
     end
   end)
 end
+RegisterNetEvent("OnSafeUse1")
+AddEventHandler("OnSafeUse1", function(source)
+  local _source = source
+  local xPlayer = HHCore.GetPlayerFromId(_source)
+  MFS:UseSafeItem(_source)
+end)
 
-function MFS:UseSafeItem(source)
-  local xPlayer = HHCore.GetPlayerFromId(source)
-  while not xPlayer do xPlayer = HHCore.GetPlayerFromId(source); Citizen.Wait(0); end
-  if not xPlayer.getInventoryItem('playersafe') then return; end
-  if xPlayer.getInventoryItem('playersafe').count <= 0 then return; end
-  xPlayer.removeInventoryItem('playersafe',1)  
+function MFS:UseSafeItem(player)
+  local xPlayer = HHCore.GetPlayerFromId(player)
+  while not xPlayer do xPlayer = HHCore.GetPlayerFromId(player); Citizen.Wait(0); end
+  --if not xPlayer.getInventoryItem('playersafe') then return; end
+ -- if xPlayer.getInventoryItem('playersafe').count <= 0 then return; end
+  --xPlayer.removeInventoryItem('playersafe',1)  
 
   math.randomseed(GetGameTimer()*math.random(100,99999999))
   local safeid = math.random(9999999,999999999)
@@ -137,25 +143,25 @@ function MFS:UseSafeItem(source)
   end
 
   local invTab = {}
-  for k,v in pairs(xPlayer.inventory) do
-    invTab[k] = v
-    invTab[k].count = 0
-  end
-
+  -- for k,v in pairs(xPlayer.inventory) do
+  --   invTab[k] = v
+  --   invTab[k].count = 0
+  -- end
   local identifier = xPlayer.identifier
-  if self.Characters and self.Characters[source] then identifier = 'Char'..self.Characters[source]..self:GetIdentifierWithoutSteam(identifier); end
+  if self.Characters and self.Characters[player] then identifier = 'Char'..self.Characters[player]..self:GetIdentifierWithoutSteam(identifier); end
 
 
   local newSafe = {
     owner = identifier,
     location = {},
-    instance = 'false',
+    instance = 'true',
     inventory = invTab,
     dirtymoney = 0,
     weapons = {},
     safeid = safeid,
   }
-  TriggerClientEvent('MF_PlayerSafes:SpawnSafe', source, newSafe)
+  TriggerClientEvent('MF_PlayerSafes:SpawnSafe', player, newSafe)
+
 end
 
 function MFS:SafeSpawned(v)
@@ -166,7 +172,7 @@ function MFS:SafeSpawned(v)
   local tooBusy = true
   MySQL.Async.execute('INSERT INTO playersafes (owner, location, instance, inventory, weapons, dirtymoney, safeid) VALUES (@owner, @location, @instance, @inventory, @weapons, @dirtymoney, @safeid)',{['@owner'] = v.owner, ['@location'] = json.encode(v.location),['@instance'] = v.instance,['@inventory'] = json.encode(v.inventory),['@dirtymoney'] = v.dirtymoney,['@weapons'] = json.encode(v.weapons),['@safeid'] = v.safeid},function(...) tooBusy = false; end)
   while tooBusy do Citizen.Wait(0); end
-  TriggerClientEvent('MF_PlayerSafes:SafeAdded',-1,v,safeCount+1)
+  TriggerClientEvent('MF_PlayerSafes:SafeAdded',-1 ,v,safeCount+1)
 end
 
 function MFS:StopUsing(safeId)
@@ -207,7 +213,7 @@ function MFS:PickupSafe(source,safe)
   TriggerClientEvent('MF_PlayerSafes:DelSafe',-1,safe)
   local xPlayer = HHCore.GetPlayerFromId(source)
   while not xPlayer do xPlayer = HHCore.GetPlayerFromId(source); Citizen.Wait(0); end
-  xPlayer.addInventoryItem('playersafe',1)
+  --xPlayer.addInventoryItem('playersafe',1)
 end
 
 function MFS:RefreshListing(source,id)
@@ -276,10 +282,7 @@ end
 
 HHCore.RegisterUsableItem('playersafe', function(source) while not MFS.dS or not MFS.wDS do Citizen.Wait(0); end; MFS:UseSafeItem(source); end)
 
-RegisterNetEvent("OnSafeUse")
-AddEventHandler("OnSafeUse", function(source)
-  MFS:UseSafeItem(source)
-end)
+
 HHCore.RegisterServerCallback('MF_PlayerSafes:GetSafeInventory', function(source, cb, id)
   local safe = {}
   local found = false
@@ -319,7 +322,7 @@ AddEventHandler('MF_PlayerSafes:GetItem', function(identifier, typ, name, count,
 
   if name ~= "black_money" then
     local maxCount = MFS.ItemCache[name]
-    local curCount = xPlayer.getInventoryItem(name)
+    local curCount = 0 --xPlayer.getInventoryItem(name)
     if curCount and curCount.count then curCount = curCount.count; else curCount = 0; end
     if maxCount and (maxCount < 0 or maxCount > 0) and curCount and (curCount < maxCount or (maxCount < 0)) then
       if maxCount > 0 and curCount + count > maxCount then 
@@ -348,7 +351,7 @@ AddEventHandler('MF_PlayerSafes:GetItem', function(identifier, typ, name, count,
 
   if typ == 'item_account' then
     if count > safe.dirtymoney then count = safe.dirtymoney; end
-    xPlayer.addAccountMoney(name,count)    
+    --xPlayer.addAccountMoney(name,count)    
     if found then
       MFS.Safes[found].dirtymoney = MFS.Safes[found].dirtymoney - count
     else
@@ -362,7 +365,7 @@ AddEventHandler('MF_PlayerSafes:GetItem', function(identifier, typ, name, count,
         if maxCount and count and count > maxCount then count = maxCount; end
         foundItem = true
         safe.inventory[k].count = safe.inventory[k].count - count
-        xPlayer.addInventoryItem(name,count)
+        --xPlayer.addInventoryItem(name,count)
       end
     end
     if not foundItem then
@@ -370,7 +373,7 @@ AddEventHandler('MF_PlayerSafes:GetItem', function(identifier, typ, name, count,
       for k=1,#(weaps),1 do
         local v = weaps[k]
         if v.name == name then
-          xPlayer.addWeapon(name,v.ammo)
+          --xPlayer.addWeapon(name,v.ammo)
           table.remove(safe.weapons,k)
         end
       end

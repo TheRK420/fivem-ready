@@ -54,5 +54,5 @@ Locales['en'] = {
 	['pound_police'] = 'Police Pound',
 	['pound_ambulance'] = 'Ambulance Pound',
 	['return_owned_policing'] = 'Return Owned Policing Vehicles.',
-	['return_owned_ambulance'] = 'Return Owned Ambulance Vehicles.',
+	['return_owned_ambulance'] = 'Return Owned Ambulance Vehicles.'
 }
