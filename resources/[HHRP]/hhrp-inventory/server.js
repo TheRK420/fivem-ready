@@ -461,7 +461,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
 {
     var targetinvname = targetName;
     var shopArray = HardwareStore();
-    var shopAmount = 10;
+    var shopAmount = 13;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }
     else if(secondInventory == "5")
@@ -1239,7 +1239,7 @@ function JailMeth() {
 
 function JailPhone() {
     var shopItems = [
-    
+        { item_id: "mobilephone", id: 0, name: "Shop", information: "{}", slot: 1, amount: 1 },
     ];
     return JSON.stringify(shopItems);
 }
@@ -1284,6 +1284,15 @@ function Mechanic() {
     return JSON.stringify(shopItems);
 }
 
+function weed() {
+    var shopItems = [
+       { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 1, amount: 1},  
+       { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 2, amount: 1},
+       { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 3, amount: 1},
+ 
+    ];
+    return JSON.stringify(shopItems);
+}
 
 
 // stores
@@ -1305,9 +1314,6 @@ function ConvenienceStore() {
         { item_id: "bakingsoda", id: 0, name: "Shop", information: "{}", slot: 14, amount: 50 },
         { item_id: "glucose", id: 0, name: "Shop", information: "{}", slot: 15, amount: 50 },
         { item_id: "cigar", id: 0, name: "Shop", information: "{}", slot: 16, amount: 50 },
-        { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 17, amount: 1},  
-        { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 18, amount: 1},
-        { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 19, amount: 1},
     ];
     return JSON.stringify(shopItems);
 }
@@ -1324,9 +1330,9 @@ function HardwareStore() {
         { item_id: "DuffelBag", id: 0, name: "Shop", information: "{}", slot: 8, amount: 5 },
         { item_id: "MedicalBag", id: 0, name: "Shop", information: "{}", slot: 9, amount: 5 },
         { item_id: "fishingrod", id: 0, name: "Shop", information: "{}", slot: 10, amount: 1}, 
-        { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 11, amount: 1},  
-        { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 12, amount: 1},
-        { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 13, amount: 1},
+        { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 11, amount: 10},  
+        { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 12, amount: 10},
+        { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 13, amount: 10},
      
     ];
     return JSON.stringify(shopItems);

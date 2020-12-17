@@ -285,6 +285,12 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
         end
     end
 
+    if (itemid == "playersafe") then
+        local pl = GetPlayerServerId(player)
+        TriggerServerEvent("OnSafeUse1")
+        TriggerEvent("inventory:removeItem",itemid, 1)
+    end
+
     if (itemid == "decryptersess" or itemid == "decrypterfv2" or itemid == "decrypterenzo") then
       if (#(GetEntityCoords(player) - vector3( 1275.49, -1710.39, 54.78)) < 3.0) then
           local finished = exports["hhrp-taskbar"]:taskBar(25000,"Decrypting Data",false,false,playerVeh)

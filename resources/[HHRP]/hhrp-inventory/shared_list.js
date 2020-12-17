@@ -848,3 +848,6 @@ itemList["cb"]	= {fullyDegrades: false, decayrate: 0.003, displayname: "Security
 
 itemList["fishingrod"]	= {fullyDegrades: false, decayrate: 0.0, displayname: "Fishing Rod", price: 25, weight: 5, nonStack: false, model: "", image: "fishingrod.png", information: "Lets go fishing!" , deg: false}
 itemList["fish"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Fish", price: 0, weight: 2, nonStack: false, model: "", image: "fish.png", information: "Delicious" , deg: false}
+
+// Playersafe
+itemList["playersafe"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "playersafe", price: 0, weight: 2, nonStack: false, model: "", image: "np_supplycrate_large.png", information: "Private  Safe" , deg: false}
