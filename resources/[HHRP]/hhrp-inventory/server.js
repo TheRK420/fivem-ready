@@ -489,14 +489,14 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
 {
     var targetinvname = targetName;
     var shopArray = GangStore();
-    var shopAmount = 2;
+    var shopAmount = 7;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }   
     else if(secondInventory == "10")
 {
     var targetinvname = targetName;
     var shopArray = PoliceArmory();
-    var shopAmount = 12;
+    var shopAmount = 14;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }    
     else if(secondInventory == "12")
@@ -1112,15 +1112,18 @@ function PoliceArmory() {
         { item_id: "-86904375", id: 0, name: "Shop", information: "{}", slot: 1, amount: 1 },
         { item_id: "-2084633992", id: 0, name: "Shop", information: "{}", slot: 2, amount: 1 },
         { item_id: "-771403250", id: 0, name: "Shop", information: "{}", slot: 3, amount: 1 },
-        { item_id: "911657153", id: 0, name: "Shop", information: "{}", slot: 4, amount: 1 },
-        { item_id: "1737195953", id: 0, name: "Shop", information: "{}", slot: 5, amount: 1 },
-        { item_id: "2343591895", id: 0, name: "Shop", information: "{}", slot: 6, amount: 1 },
-        { item_id: "pistolammo", id: 0, name: "Shop", information: "{}", slot: 7, amount: 5 },
-        { item_id: "rifleammo", id: 0, name: "Shop", information: "{}", slot: 8, amount: 5 },
-        { item_id: "armor", id: 0, name: "Shop", information: "{}", slot: 9, amount: 10 },
-        { item_id: "watch", id: 0, name: "Shop", information: "{}", slot: 10, amount: 1 },
-        { item_id: "IFAK", id: 0, name: "Shop", information: "{}", slot: 11, amount: 10 },
-        { item_id: "radio", id: 0, name: "Shop", information: "{}", slot: 12, amount: 1 },
+        { item_id: "2024373456", id: 0, name: "Shop", information: "{}", slot: 4, amount: 1 },
+        { item_id: "911657153", id: 0, name: "Shop", information: "{}", slot: 5, amount: 1 },
+        { item_id: "1737195953", id: 0, name: "Shop", information: "{}", slot: 6, amount: 1 },
+        { item_id: "2343591895", id: 0, name: "Shop", information: "{}", slot: 7, amount: 1 },
+        { item_id: "pistolammo", id: 0, name: "Shop", information: "{}", slot: 8, amount: 5 },
+        { item_id: "subammo", id: 0, name: "Shop", information: "{}", slot: 9, amount: 5 },
+        { item_id: "rifleammo", id: 0, name: "Shop", information: "{}", slot: 10, amount: 5 },
+        { item_id: "armor", id: 0, name: "Shop", information: "{}", slot: 11, amount: 10 },
+        { item_id: "watch", id: 0, name: "Shop", information: "{}", slot: 12, amount: 1 },
+        { item_id: "IFAK", id: 0, name: "Shop", information: "{}", slot: 13, amount: 10 },
+        { item_id: "radio", id: 0, name: "Shop", information: "{}", slot: 14, amount: 1 },
+
     ];
     return JSON.stringify(shopItems);
 }
@@ -1138,6 +1141,18 @@ function MedicArmory() {
     return JSON.stringify(shopItems);
 }
 
+function GangStore() {
+    var shopItems = [
+        { item_id: "armor", id: 0, name: "Shop", information: "{}", slot: 1, amount: 10 },  
+        { item_id: "water", id: 0, name: "Shop", information: "{}", slot: 2, amount: 10 },
+        { item_id: "radio", id: 0, name: "Shop", information: "{}", slot: 3, amount: 1 },  
+        { item_id: "flowers", id: 0, name: "Shop", information: "{}", slot: 4, amount: 1 },  
+        { item_id: "sandwich", id: 0, name: "Shop", information: "{}", slot: 5, amount: 10 },
+        { item_id: "bandage", id: 0, name: "Shop", information: "{}", slot: 6, amount: 10 },  
+        { item_id: "MedicalBag", id: 0, name: "Shop", information: "{}", slot: 7, amount: 5 },
+    ];
+    return JSON.stringify(shopItems);
+}
 function MedicArmoryCiv() {
     var shopItems = [
         { item_id: "armor", id: 0, name: "Shop", information: "{}", slot: 1, amount: 10 },  
@@ -1354,11 +1369,15 @@ function GunStore() {
 
 function BurgieStore() {
     var shopItems = [
-        { item_id: "hamburger", id: 0, name: "Shop", information: "{}", slot: 1, amount: 5 },
-        { item_id: "heartstopper", id: 0, name: "Shop", information: "{}", slot: 2, amount: 5 },
-        { item_id: "moneyshot", id: 0, name: "Shop", information: "{}", slot: 3, amount: 5 },
-        { item_id: "meatfree", id: 0, name: "Shop", information: "{}", slot: 4, amount: 5 },
-        { item_id: "mshake", id: 0, name: "Shop", information: "{}", slot: 5, amount: 5 },
+        { item_id: "coffee", id: 0, name: "Craft", information: "{}", slot: 1, amount: 5 },
+        //{ item_id: "heartstopper", id: 0, name: "Shop", information: "{}", slot: 2, amount: 5 },
+        //{ item_id: "moneyshot", id: 0, name: "Shop", information: "{}", slot: 3, amount: 5 },
+        //{ item_id: "meatfree", id: 0, name: "Shop", information: "{}", slot: 4, amount: 5 },
+        { item_id: "mshake", id: 0, name: "Craft", information: "{}", slot: 2, amount: 5 },
+        { item_id: "icecream", id: 0, name: "Craft", information: "{}", slot: 3, amount: 5 },
+        { item_id: "cola", id: 0, name: "Craft", information: "{}", slot: 4, amount: 5 },
+        { item_id: "fries", id: 0, name: "Craft", information: "{}", slot: 5, amount: 5 },
+        
     ];
     return JSON.stringify(shopItems);
 };
