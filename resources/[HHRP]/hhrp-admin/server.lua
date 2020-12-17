@@ -139,6 +139,18 @@ AddEventHandler("playerDropped", function()
     TriggerClientEvent("hhrp-admin:RemoveRecent", -1, data)
 end)
 
+RegisterCommand('giveitem',function(source,args)
+if source == 0 or source=="console" then
+    if args[1] ~= nil then
+        TriggerClientEvent('player:receiveItem', args[1], args[2], args[3])
+    else
+        TriggerClientEvent("DoLongHudText", source, 'Invalid Input.',2)
+    end
+else
+    TriggerClientEvent("DoLongHudText", source, 'You Are Not An Admin.',2)
+end
+end)
+
 --[[ function ST.Scoreboard.RemovePlayerS(self, data)
     ST._Scoreboard.RecentS = data
 end
