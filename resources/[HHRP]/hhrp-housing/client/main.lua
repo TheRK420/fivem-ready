@@ -500,6 +500,7 @@ function openContract(bool)
 end
 
 function enterOwnedHouse(house)
+    TriggerEvent("instance:onEnter", house)
     TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.25)
     openHouseAnim()
     Citizen.Wait(250)
