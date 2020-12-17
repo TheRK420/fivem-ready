@@ -116,7 +116,7 @@ AddEventHandler("shop:isNearPed", function()
 	local found = false
 	for k,v in ipairs(twentyfourseven_shops)do
 		local dist = #(vector3(v.x, v.y, v.z) - vector3(pedpos.x,pedpos.y,pedpos.z))
-		if(dist < 10 and not found)then
+		if(dist < 5 and not found)then
 			found = true
 			TriggerServerEvent("exploiter", "User sold to a shop keeper at store.")
 		end
@@ -330,7 +330,7 @@ Citizen.CreateThread(function()
 			DrawMarker(27, 105.2,3600.14, 40.73 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(105.2,3600.14, 40.73, pos.x, pos.y, pos.z) < 3.0)then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to ~g~ Craft.")
-				if IsControlJustPressed(1, 38) and exports["isPed"]:GroupRank("lost_mc") >= 3 then	
+				if IsControlJustPressed(1, 38) then	
   					pos = GetEntityCoords(PlayerPedId(), false)
   					if(Vdist(105.2,3600.14, 40.73, pos.x, pos.y, pos.z) < 3.0)then
 						TriggerEvent("server-inventory-open", "9", "Craft");
@@ -363,10 +363,10 @@ Citizen.CreateThread(function()
 
 --[2] =  { ['x'] = 885.61,['y'] = -3199.84,['z'] = -98.19,['h'] = 56.8, ['info'] = ' crafting' },
 --[3] =  { ['x'] = 902.21,['y'] = -3182.47,['z'] = -97.05,['h'] = 272.78, ['info'] = ' Storage' },
-		if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 20.0)then
+		if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 5.0)then
 			found = true
 			DrawMarker(27,  1108.45, -2007.2, 30.95 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
-			if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 2.0)then
+			if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 1.0)then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to open the ~g~smelter.")
 				if IsControlJustPressed(1, 38) then	
 					local finished = exports["hhrp-taskbar"]:taskBar(60000,"Readying Smelter")
@@ -386,10 +386,10 @@ Citizen.CreateThread(function()
 
 
 		for k,v in ipairs(twentyfourseven_shops) do
-			if(Vdist(v.x, v.y, v.z, pos.x, pos.y, pos.z) < 20.0)then
+			if(Vdist(v.x, v.y, v.z, pos.x, pos.y, pos.z) < 5.0)then
 				found = true
 				DrawMarker(27, v.x, v.y, v.z - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
-				if(Vdist(v.x, v.y, v.z, pos.x, pos.y, pos.z) < 3.0)then
+				if(Vdist(v.x, v.y, v.z, pos.x, pos.y, pos.z) < 1.0)then
 					DisplayHelpText("Press ~INPUT_CONTEXT~ to open the ~g~shop.")
 					if IsControlJustPressed(1, 38) then	
 						TriggerEvent("server-inventory-open", "2", "Shop");	
@@ -543,7 +543,7 @@ Citizen.CreateThread(function()
 			if(Vdist(1777.58, 2565.15, 45.68, pos.x, pos.y, pos.z) < 2.0)then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) then
-					local finished = exports["hhrp-taskbar"]:taskBar(60000,"Searching...")
+					local finished = exports["hhrp-taskbar"]:taskBar(6000,"Searching...")
       				if (finished == 100) and (Vdist(1777.58, 2565.15, 45.68, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "23", "Craft");
 						Wait(1000)
@@ -557,10 +557,10 @@ Citizen.CreateThread(function()
 		if(Vdist(-632.64, 235.25, 81.89, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			DrawMarker(27, -632.64, 235.25, 81.89 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
-			if(Vdist(-632.64, 235.25, 81.89, pos.x, pos.y, pos.z) < 5.0)then
+			if(Vdist(-632.64, 235.25, 81.89, pos.x, pos.y, pos.z) < 1.0)then
 				DisplayHelpText("Press ~INPUT_CONTEXT~ to purchase Hipster")
 				if IsControlJustPressed(1, 38) then
-					TriggerEvent("server-inventory-open", "12", "Shop");
+					TriggerEvent("server-inventory-open", "12", "Craft");
 					Wait(1000)
 					--TriggerEvent("openSubMenu","burgershot")
 			    end
