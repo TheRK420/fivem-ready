@@ -3,8 +3,8 @@ Config = {}
 --[[
     This Is How Damage Must Be Applied To Trigger The Limb Damage Aspect
 ]]
-Config.HealthDamage = 10
-Config.ArmorDamage = 5
+Config.HealthDamage = 5
+Config.ArmorDamage = 2
 
 --[[
     This Is The Timer For How Long The Player Will Be In The Bed When They Check-In To Be Healed Automatically, This Is In Seconds
@@ -14,7 +14,7 @@ Config.AIHealTimer = 20
 --[[ 
     TIMERS This Is In Seconds - This Will Decide How Long The Thread Controlling This Functionality Is Slept For
 ]]
-Config.BleedTickRate = 90
+Config.BleedTickRate = 120
 
 --[[
     This is how many seconds is taken away from the bleed tick rate if the player is walking, jogging, or sprinting
@@ -36,7 +36,7 @@ Config.BlackoutTimer = 10
 --[[
     How Many Bleed Ticks Occur Before Your Bleed Level Is Increased
 ]]
-Config.AdvanceBleedTimer = 10
+Config.AdvanceBleedTimer = 15
 
 --[[
     How many times, in seconds, are certain injury types checked to have side-effects applied
@@ -48,19 +48,19 @@ Config.LegInjuryTimer = 15
 --[[
     The Chance, In Percent, That Certain Injury Side-Effects Get Applied
 ]]
-Config.HeadInjuryChance = 25
-Config.ArmInjuryChance = 25
+Config.HeadInjuryChance = 10
+Config.ArmInjuryChance = 10
 Config.LegInjuryChance = {
-    Running = 50,
+    Running = 35,
     Walking = 15
 }
 
-Config.ArmorStaggerChance = 65 -- Note : Small caliber weapons are this % halved
+Config.ArmorStaggerChance = 45 -- Note : Small caliber weapons are this % halved
 
 --[[
     The Base Damage That Is Multiplied By Bleed Level Every Time A Bleed Tick Occurs
 ]]
-Config.BleedTickDamage = 4
+Config.BleedTickDamage = 2
 
 --[[ ------------------------------------------------------------------------------------------------------------------------------------- ]]
 --[[ ------------------------------------------------------------------------------------------------------------------------------------- ]]
@@ -244,9 +244,9 @@ Config.Weapons = {
     --[`WEAPON_BALL`] = Config.WeaponClasses['LIGHT_IMPACT'],
     --[`WEAPON_FLASHLIGHT`] = Config.WeaponClasses['LIGHT_IMPACT'],
     [`WEAPON_KNUCKLE`] = Config.WeaponClasses['LIGHT_IMPACT'],
-    --[`WEAPON_NIGHTSTICK`] = Config.WeaponClasses['LIGHT_IMPACT'],
+    [`WEAPON_NIGHTSTICK`] = Config.WeaponClasses['LIGHT_IMPACT'],
     --[`WEAPON_SNOWBALL`] = Config.WeaponClasses['LIGHT_IMPACT'],
-    --[`WEAPON_UNARMED`] = Config.WeaponClasses['LIGHT_IMPACT'],
+    [`WEAPON_UNARMED`] = Config.WeaponClasses['LIGHT_IMPACT'],
     --[`WEAPON_PARACHUTE`] = Config.WeaponClasses['LIGHT_IMPACT'],
     --[`WEAPON_NIGHTVISION`] = Config.WeaponClasses['LIGHT_IMPACT'],
     
