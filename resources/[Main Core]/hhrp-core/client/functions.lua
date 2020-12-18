@@ -45,9 +45,10 @@ HHCore.SetPlayerData = function(key, val)
 end
 
 HHCore.ShowNotification = function(msg)
-	SetNotificationTextEntry('STRING')
-	AddTextComponentSubstringPlayerName(msg)
-	DrawNotification(false, true)
+	-- SetNotificationTextEntry('STRING')
+	-- AddTextComponentSubstringPlayerName(msg)
+	-- DrawNotification(false, true)
+	exports["mythic_notify"]:DoHudText('inform', msg)	
 end
 
 HHCore.ShowAdvancedNotification = function(title, subject, msg, icon, iconType)

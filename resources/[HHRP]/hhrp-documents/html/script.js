@@ -102,7 +102,7 @@ function Form (_title, _subtitle, _elements, _submittable)
 		var json_string = JSON.stringify(activeform);
 		
 		if (can_submit) {
-			$.post('http://hhrp-documnets/form_submit', json_string);
+			$.post('http://hhrp-documents/form_submit', json_string);
 			activeform.close();
 		}
 		
@@ -198,7 +198,7 @@ function Form (_title, _subtitle, _elements, _submittable)
 	this.close = function() {
 		$("#main_container").html("");
 		$("#main_container").css({display: 'none'});
-		$.post('http://hhrp-documnets/form_close', JSON.stringify({}));
+		$.post('http://hhrp-documents/form_close', JSON.stringify({}));
 	}
 }
 

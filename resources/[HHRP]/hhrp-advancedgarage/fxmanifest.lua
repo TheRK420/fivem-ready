@@ -8,7 +8,7 @@ version '1.0.0'
 
 server_scripts {
 	'@mysql-async/lib/MySQL.lua',
-	'@hhpr-core/locale.lua',
+	'@hhrp-core/locale.lua',
 	'locales/en.lua',
 	'config.lua',
 	'server/main.lua'

@@ -20,7 +20,7 @@ files {
 server_scripts {
 	'config.lua',
 	'@mysql-async/lib/MySQL.lua',
-	'@es_extended/locale.lua',
+	'@hhrp-core/locale.lua',
 	'locales/gr.lua',
 	'locales/en.lua',
 	'locales/br.lua',
@@ -31,7 +31,7 @@ server_scripts {
 
 client_scripts {
 	'config.lua',
-	'@es_extended/locale.lua',
+	'@hhrp-core/locale.lua',
 	'locales/gr.lua',
 	'locales/en.lua',
 	'locales/br.lua',
