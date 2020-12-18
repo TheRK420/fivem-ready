@@ -113,34 +113,34 @@ AddEventHandler('hhrp-jewelrobbery:RestTimer', function()
 end)
 
 
-AddEventHandler('hhrp-jewelrobbery:AwardItems', function(serverid)
-    local xPlayer = HHCore.GetPlayerFromId(serverid)
+-- AddEventHandler('hhrp-jewelrobbery:AwardItems', function(serverid)
+--     local xPlayer = HHCore.GetPlayerFromId(serverid)
 
-    local randomitem = math.random(1,100)
-    for i, v in pairs(Config.ItemDrops) do 
-        if randomitem <= v.chance then
-            randomamount = math.random(1, v.max)
-            sourceItem = xPlayer.getInventoryItem(v.name)
-            if sourceItem.limit ~= nil then
-                if sourceItem.limit ~= -1 and (sourceItem.count + randomamount) > sourceItem.limit then
-                    if sourceItem.count < sourceItem.limit then
-                        randomamount = sourceItem.limit - sourceItem.count
-                        xPlayer.addInventoryItem(v.name, randomamount)
-                    else
-                        TriggerClientEvent('DoLongHudText', _source, 'Not enough room in your inventory to carry more '.. sourceItem.label, 2) 
-                    end
-                else
-                    xPlayer.addInventoryItem(v.name, randomamount)
-                end
-                break
-            else
-                xPlayer.addInventoryItem(v.name, randomamount)
-                break
-            end
-        end
-    end
+--     local randomitem = math.random(1,100)
+--     for i, v in pairs(Config.ItemDrops) do 
+--         if randomitem <= v.chance then
+--             randomamount = math.random(1, v.max)
+--             sourceItem = xPlayer.getInventoryItem(v.name)
+--             if sourceItem.limit ~= nil then
+--                 if sourceItem.limit ~= -1 and (sourceItem.count + randomamount) > sourceItem.limit then
+--                     if sourceItem.count < sourceItem.limit then
+--                         randomamount = sourceItem.limit - sourceItem.count
+--                         xPlayer.addInventoryItem(v.name, randomamount)
+--                     else
+--                         TriggerClientEvent('DoLongHudText', _source, 'Not enough room in your inventory to carry more '.. sourceItem.label, 2) 
+--                     end
+--                 else
+--                     xPlayer.addInventoryItem(v.name, randomamount)
+--                 end
+--                 break
+--             else
+--                 xPlayer.addInventoryItem(v.name, randomamount)
+--                 break
+--             end
+--         end
+--     end
 
-end)
+-- end)
 
 function getIdentity(source)
 	local identifier = GetPlayerIdentifiers(source)[1]

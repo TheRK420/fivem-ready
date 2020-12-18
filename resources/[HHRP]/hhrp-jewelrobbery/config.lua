@@ -43,13 +43,13 @@ Config.AllowedWeapons = {
 
 -- List of all jobs that are law enforcement in your server.
 Config.PoliceJobs =  {
-   'sheriff',
+   'police',
 }
 
 --  These jobs will not be able to rob the jewelry store at all.
 Config.UnAuthJobs = {
    'doj',
-   'sheriff', 
+   'police', 
    'ambulance', 
 }
 

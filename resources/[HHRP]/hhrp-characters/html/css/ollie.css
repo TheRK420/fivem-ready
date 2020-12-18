@@ -92,15 +92,15 @@
 }
 
 .card.chosen-character > .card-body > .characterIconContainer > i {
-    color: #98b3ff!important;
+    color: #ff7b5a!important;
 }
 
 .card.chosen-character > .card-body > .list-unstyled > li > i {
-    color: #98b3ff!important;
+    color: #ff7b5a!important;
 }
 
 .card.chosen-character > .card-body > .list-unstyled > li {
-    color: #98b3ff!important;
+    color: #ff7b5a!important;
 }
 
 .card.chosen-character > .card-body > .list-unstyled > li > .informativeText {
