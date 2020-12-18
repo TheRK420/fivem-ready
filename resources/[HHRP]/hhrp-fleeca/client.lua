@@ -648,8 +648,8 @@ Citizen.CreateThread(function()
                             FreezeEntityPosition(PlayerPedId(), false)
                             TriggerServerEvent("hhrp-fleeca:startcheck", k)
                         else
-                            if exports['hhrp-inventory']:hasEnoughOfItem('thermite', 1) then
-                                TriggerEvent('inventory:removeItem', 'thermite', 1)
+                            if exports['hhrp-inventory']:hasEnoughOfItem('thermite', 5) then
+                                TriggerEvent('inventory:removeItem', 'thermite', 5)
                                 local coords = GetEntityCoords(PlayerPedId())
                                 exports['hhrp-thermite']:startFireAtLocation(coords.x, coords.y, coords.z - 1, 10000)
                             else
