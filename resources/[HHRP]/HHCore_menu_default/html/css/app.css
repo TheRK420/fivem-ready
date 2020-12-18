@@ -77,7 +77,7 @@
     padding-left: 5px;
     padding-right: 5px;
     display: block;
-    background-color: #6d0000;
+    background-color: #080808d0;
     height: 25px;
     line-height: 22px;
     color: rgb(255, 255, 255);
@@ -85,6 +85,8 @@
     font-size: 12px;
     font-weight: normal;
     font-weight: bold;
+    border: #f0f3f0;
+    border-width: 1px;
 }
 
 .menu .menu-items {
@@ -98,19 +100,21 @@
     padding-left: 10px;
     padding-right: 10px;
     display: block;
-    background-color: #050505;
+    background-color: #080808d0;
     height: 25px;
     line-height: 22px;
     color: rgb(255, 255, 255);
     text-align: center;
     font-size: 12px;
     font-weight: normal;
+    border: #f0f3f0;
+    border-width: 1px;
 }
 
 .menu .menu-items .menu-item.selected {
     font-family: 'Poppins', sans-serif;
-    background: #99aab5;
-    color: #2c2f33;
+    background: #18f5047c;
+    color: #1c1d1c;
     font-size: 13px;
     font-weight: bold;
 }
