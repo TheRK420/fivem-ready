@@ -644,7 +644,7 @@ else if(secondInventory == "104")
 {
     var targetinvname = targetName;
     var shopArray = SmallGunCraft();
-    var shopAmount = 4;
+    var shopAmount = 5;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }  
 
@@ -1109,13 +1109,13 @@ onNet("server-frisk-player-inventory", (searcher,cash,  DirtyMoney, inventoryNam
 
 function PoliceArmory() {
     var shopItems = [
-        { item_id: "-86904375", id: 0, name: "Shop", information: "{}", slot: 1, amount: 1 },
-        { item_id: "-2084633992", id: 0, name: "Shop", information: "{}", slot: 2, amount: 1 },
-        { item_id: "-771403250", id: 0, name: "Shop", information: "{}", slot: 3, amount: 1 },
-        { item_id: "2024373456", id: 0, name: "Shop", information: "{}", slot: 4, amount: 1 },
-        { item_id: "911657153", id: 0, name: "Shop", information: "{}", slot: 5, amount: 1 },
-        { item_id: "1737195953", id: 0, name: "Shop", information: "{}", slot: 6, amount: 1 },
-        { item_id: "2343591895", id: 0, name: "Shop", information: "{}", slot: 7, amount: 1 },
+        { item_id: "-86904375", id: 0, name: "Shop", information: "{}", slot: 1, amount: 1 },//pd 762
+        { item_id: "-2084633992", id: 0, name: "Shop", information: "{}", slot: 2, amount: 1 },//pd 556
+        { item_id: "3219281620", id: 0, name: "Shop", information: "{}", slot: 3, amount: 1 },//pd pistol
+        { item_id: "736523883", id: 0, name: "Shop", information: "{}", slot: 4, amount: 1 },//pd smg
+        { item_id: "911657153", id: 0, name: "Shop", information: "{}", slot: 5, amount: 1 },// stun gun
+        { item_id: "1737195953", id: 0, name: "Shop", information: "{}", slot: 6, amount: 1 },//night stick
+        { item_id: "2343591895", id: 0, name: "Shop", information: "{}", slot: 7, amount: 1 },//flash light
         { item_id: "pistolammo", id: 0, name: "Shop", information: "{}", slot: 8, amount: 5 },
         { item_id: "subammo", id: 0, name: "Shop", information: "{}", slot: 9, amount: 5 },
         { item_id: "rifleammo", id: 0, name: "Shop", information: "{}", slot: 10, amount: 5 },
@@ -1180,10 +1180,10 @@ function JailFood() {
 
 function Blackmarket() {
     var shopItems = [
-        { item_id: "3523564046", id: 0, name: "craft", information: "{}", slot: 1, amount: 1 },
-        { item_id: "584646201", id: 0, name: "craft", information: "{}", slot: 2, amount: 1 },
-        { item_id: "-619010992", id: 0, name: "craft", information: "{}", slot: 3, amount: 1 },
-        { item_id: "324215364", id: 0, name: "craft", information: "{}", slot: 4, amount: 1 },
+        { item_id: "3523564046", id: 0, name: "craft", information: "{}", slot: 1, amount: 1 },//heavy
+        { item_id: "584646201", id: 0, name: "craft", information: "{}", slot: 2, amount: 1 },//ap
+        { item_id: "-619010992", id: 0, name: "craft", information: "{}", slot: 3, amount: 1 },// tec -9 mk2
+        { item_id: "324215364", id: 0, name: "craft", information: "{}", slot: 4, amount: 1 },//micro smg mk2
         { item_id: "pistolammo", id: 0, name: "craft", information: "{}", slot: 5, amount: 5 },
         { item_id: "rifleammo", id: 0, name: "craft", information: "{}", slot: 6, amount: 5 },
         { item_id: "subammo", id: 0, name: "craft", information: "{}", slot: 7, amount: 5 },
@@ -1219,10 +1219,11 @@ function TacoTruck() {
 
 function SmallGunCraft() {
     var shopItems = [
-          { item_id: "-771403250", id: 0, name: "craft", information: "{}", slot: 1, amount: 1 },
-          { item_id: "3218215474", id: 0, name: "craft", information: "{}", slot: 2, amount: 1 },
-          { item_id: "584646201", id: 0, name: "craft", information: "{}", slot: 3, amount: 1 },
-          { item_id: "137902532", id: 0, name: "craft", information: "{}", slot: 4, amount: 1 },
+          { item_id: "-771403250", id: 0, name: "craft", information: "{}", slot: 1, amount: 1 },// heavy pistol
+          { item_id: "3218215474", id: 0, name: "craft", information: "{}", slot: 2, amount: 1 },// SNS Pistol
+          { item_id: "584646201", id: 0, name: "craft", information: "{}", slot: 3, amount: 1 },// Ap
+          { item_id: "137902532", id: 0, name: "craft", information: "{}", slot: 4, amount: 1 },// vintage
+          { item_id: "pistolammo", id: 0, name: "craft", information: "{}", slot: 5, amount: 50 }, // ammo
     ];
     return JSON.stringify(shopItems);
 }
