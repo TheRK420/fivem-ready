@@ -36,13 +36,13 @@
 --#####################################################################################################################
 
 -- Maximum traffic density for all players. Default is 0.9999
-ss_traffic_max_density = 0.9999
+ss_traffic_max_density = 0.2
 
 -- Enable scaling density by players. (More Players = Less AI Traffic, with a absolute minimum setting of 0.5)
-ss_enable_traffic_scaling = true
+ss_enable_traffic_scaling = false
 
 -- Maximum crowd density for all players. Default is 0.9999
-ss_crowd_max_density = 0.9999
+ss_crowd_max_density = 0.2
 
 -- Enable scaling density by players. (More Players = Less AI Pedestrians, with a absolute minimum setting of 0.5)
 ss_enable_crowd_scaling = true
