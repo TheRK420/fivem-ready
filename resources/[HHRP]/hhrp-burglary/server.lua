@@ -9,7 +9,7 @@ local robbableItems = {
  [7] = {chance = 6, id = 'highgrademaleseed', quantity = math.random(1, 4)},
  [8] = {chance = 4, id = 'rubber', quantity = math.random(1, 5)},
  [9] = {chance = 10, id = 'cb', quantity = 1}, -- rare
- --[6] = {chance = 14, id = 'keycard', name = 'Keycard', quantity = 1}, -- rare
+ [10] = {chance = 14, id = 'Gruppe6Card2', name = 'Gruppe Card', quantity = 1}, -- rare
  --[7] = {chance = 13, id = 'keycard2', name = 'Keycard', quantity = 1}, -- rare
  --[8] = {chance = 11, id = 'keycard3', name = 'Keycard', quantity = 1}, -- rare
  --[12] = {chance = 10, id = 'drugItem', name = 'Black USB-C', quantity = 1}, -- rare
@@ -54,6 +54,7 @@ AddEventHandler('houseRobberies:searchItem', function()
     if tonumber(item.id) == 0 and not gotID[item.id] then
         gotID[item.id] = true
         xPlayer.addMoney(item.quantity)
+        TriggerClientEvent("banking:updateCash", source, item.quantity, true)
         TriggerClientEvent('DoLongHudText',  source, 'You found $'..item.quantity , 1)
     elseif not gotID[item.id] then
         gotID[item.id] = true
