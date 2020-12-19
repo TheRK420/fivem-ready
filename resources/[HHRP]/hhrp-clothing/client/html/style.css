@@ -19,7 +19,7 @@ div {
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background-color: rgba(90, 178, 255, 0.75);
+  background-color: #ffa600d2;
   outline: 1px solid #313131;
   border-radius: 5px;
 }
@@ -39,12 +39,12 @@ input[type=number] {
     box-shadow: none !important;
 }
 input[type=number]:active {
-    border-bottom-color: rgba(90, 178, 255, 0.75) !important;
+    border-bottom-color: #ffa600d2 !important;
 }
 
 button {
-    background-color: rgba(90, 178, 255, 0.75) !important;
-    border-color: rgba(90, 178, 255, 0.75) !important;
+    background-color: #ffa600d2 !important;
+    border-color: #ffa600d2 !important;
     color: #ffffff !important;
 }
 
@@ -97,7 +97,7 @@ button {
 }
 
 h6 {
-    color: #3289FF !important;
+    color: #ff9900 !important;
 }
 
 .input-number {
@@ -135,10 +135,10 @@ h6 {
 }
 
 button.button-menu {
-    background-color: rgba(50, 137, 255, 0.55) !important;
+    background-color: #ca8505 !important;
 }
 button.button-menu.active {
-    background-color: rgba(90, 178, 255, 0.75) !important;
+    background-color: #ffa600d2d2 !important;
 }
 
 
@@ -167,7 +167,7 @@ button.button-menu.active {
     border-radius: 0px;
 }
 .collapsible-header {
-    background-color: rgba(90, 178, 255, 0.75) !important;
+    background-color: #ffa600d2 !important;
     color: #e7e7e7 !important;
     border: rgb(60,60,60) solid !important;
 }
@@ -208,12 +208,12 @@ input[type="range" i] {
  */
 input:focus,
 input:active {
-    border-bottom-color: rgba(90, 178, 255, 0.75) !important;
+    border-bottom-color: #ffa600d2 !important;
 }
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    background: rgba(90, 178, 255, 0.75) !important;
+    background: #ffa600d2 !important;
     cursor: pointer;
     border-radius: 2px !important;
 }

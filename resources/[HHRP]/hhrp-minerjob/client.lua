@@ -60,7 +60,7 @@ Citizen.CreateThread(function()
 					if IsControlJustPressed(0,Config.KeyToStartMining) and not keyPressed then
 						keyPressed = true
 						--HHCore.TriggerServerCallback("hhrp_MinerJob:getPickaxe", function(pickaxe)
-						if exports['hhrp-inventory']:hasEnoughOfItem('pickaxe', 1) then
+						if exports['hhrp-inventory']:hasEnoughOfItem('pickaxe', 1, true) then
 							local stone = exports['hhrp-inventory']:getQuantity('stone')
 							if stone <= 95 then		
 								HHCore.TriggerServerCallback("hhrp_MinerJob:didmining", function(didminingok) 
@@ -115,7 +115,7 @@ function MiningEvent(k,v)
 	local playerPed = PlayerPedId()
 	local coords = GetEntityCoords(playerPed)
 	
-	FreezeEntityPosition(playerPed, true)
+	--FreezeEntityPosition(playerPed, true)
 	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'))
 	Citizen.Wait(200)
 	
@@ -140,7 +140,7 @@ function MiningEvent(k,v)
 	AttachEntityToEntity(object, playerPed, GetPedBoneIndex(playerPed, 57005), 0.1, 0.0, 0.0, -90.0, 25.0, 35.0, true, true, false, true, 1, true)
 
 	-- exports['pogressBar']:drawBar(10000, 'Kasama')
-	exports['hhrp-taskbar']:taskBar(10000, "Mining")
+	exports['hhrp-taskbar']:taskBar(1000, "Mining")
 	Citizen.Wait(200)
 	TaskPlayAnim(PlayerPedId(), anim, action, 3.0, -3.0, -1, 31, 0, false, false, false)
 	Citizen.Wait(2000)
@@ -152,12 +152,12 @@ function MiningEvent(k,v)
 	Citizen.Wait(2000)
 	TaskPlayAnim(PlayerPedId(), anim, action, 3.0, -3.0, -1, 31, 0, false, false, false)
 	Citizen.Wait(2000)
-	
-	TriggerServerEvent("hhrp_MinerJob:reward",Config.Stone,Config.StoneReward)
+	TriggerEvent( "player:receiveItem", "stone", 5 )
+	--TriggerServerEvent("hhrp_MinerJob:reward",Config.Stone,Config.StoneReward)
 	TriggerServerEvent("hhrp_MinerJob:spotStatus", k, false)
 	
 	ClearPedTasks(PlayerPedId())
-	FreezeEntityPosition(playerPed, false)
+	--FreezeEntityPosition(playerPed, false)
     DeleteObject(object)
 	currentlyMining = false
 	keyPressed = false
@@ -236,15 +236,19 @@ function WashingEvent(k,v)
 	Citizen.Wait(200)
 	
 	--HHCore.TriggerServerCallback("hhrp_MinerJob:removeStone", function(stoneCount)
-	local WStoneCount = exports['hhrp-inventory']:hasEnoughOfItem('washedstone', 10)
+	local WStoneCount = exports['hhrp-inventory']:hasEnoughOfItem('stone', 10, true)
 		if WStoneCount then
 			-- exports['pogressBar']:drawBar(10000, 'Plaunami akmenys')
-			exports['hhrp-taskbar']:taskBar(10000, "Washing Stones")
+			exports['hhrp-taskbar']:taskBar(500, "Washing Stones")
 			Citizen.Wait(200)
 			TaskStartScenarioInPlace(playerPed, "PROP_HUMAN_BUM_BIN", 0, true)
+			TriggerEvent("inventory:removeItem", "stone", 10)
 			Citizen.Wait(10000)
-			TriggerEvent("inventory:removeItem", 'stone', 10)
-			TriggerEvent("player:recieveItem", 'washedstone', Config.WStoneReward)
+			--Citizen.Wait(1000)
+			TriggerEvent("player:receiveItem", "washedstone", 10)
+			--TriggerEvent("player:recieveItem", 'washedstone', Config.WStoneReward)
+			--TriggerEvent( "player:receiveItem", "heartstopper", 10 )
+
 			--TriggerServerEvent("hhrp_MinerJob:reward",Config.WStone,Config.WStoneReward)
 		else
 			exports['mythic_notify']:SendAlert('error', 'Here you need 10x washed stone!')
@@ -278,7 +282,7 @@ Citizen.CreateThread(function()
 						keyPressed = true
 						local closestPlayer, closestDistance = HHCore.Game.GetClosestPlayer()
 						if closestPlayer == -1 or closestDistance >= 0.7 then
-							local WStoneCount1 = exports['hhrp-inventory']:hasEnoughOfItem('washedstone', 10)
+							local WStoneCount1 = exports['hhrp-inventory']:hasEnoughOfItem('washedstone', 10, true)
 							if WStoneCount1 then
 								TriggerEvent("inventory:removeItem", 'washedstone', 10)
 								currentlySmelting = true
@@ -324,26 +328,28 @@ function SmeltingEvent()
 	local playerPed = PlayerPedId()
 	local coords = GetEntityCoords(playerPed)
 	
-	FreezeEntityPosition(playerPed, true)
+	--FreezeEntityPosition(playerPed, true)
 	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'))
 	Citizen.Wait(200)
 
 	-- exports['pogressBar']:drawBar(10000, 'Lydomi nuplauti akmenys')
 	exports['hhrp-taskbar']:taskBar(10000, "Smelting Stones")
-	Citizen.Wait(10000)
+	--Citizen.Wait(10000)
 	local rewardChance = math.random(1,10)
 	if rewardChance <= 2 then
-		TriggerEvent("player:recieveItem", 'goldbar', 1)
+		
+		TriggerEvent("player:receiveItem", 'goldbar', 1)
+
 	elseif rewardChance > 2 and rewardChance <= 5 then
-		TriggerEvent("player:recieveItem", 'aluminium', 10)
+		TriggerEvent("player:receiveItem", 'aluminium', 10)
 	elseif rewardChance > 5 and rewardChance <= 7 then
-		TriggerEvent("player:recieveItem", 'copper', 10)
+		TriggerEvent("player:receiveItem", 'copper', 10)
 	elseif rewardChance > 7 and rewardChance <= 10 then
-		TriggerEvent("player:recieveItem", 'steel', 10)
+		TriggerEvent("player:receiveItem", 'steel', 10)
 	end
 	--TriggerServerEvent("hhrp_MinerJob:rewardSmelting")
 	
-	FreezeEntityPosition(playerPed, false)
+	--FreezeEntityPosition(playerPed, false)
 	currentlySmelting = false
 	keyPressed = false
 
