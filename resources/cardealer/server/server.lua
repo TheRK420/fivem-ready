@@ -937,7 +937,8 @@ AddEventHandler('RS7x:phonePayment', function(plate)
                     if fuck then
                         local data = MySQL.Sync.fetchAll("SELECT finance FROM owned_vehicles WHERE plate=@plate",{['@plate'] = plate})
                         if not data or not data[1] then return; end
-                        local prevAmount = data[1].finance
+						local prevAmount = data[1].finance
+						local date = os.date('%Y-%m-%d')
                         if prevAmount - price <= 0 or prevAmount - price <= 0.0 then
                             settimer = 0
                         else
@@ -948,7 +949,9 @@ AddEventHandler('RS7x:phonePayment', function(plate)
                             MySQL.Sync.execute('UPDATE owned_vehicles SET repaytime=@financetimer WHERE plate=@plate',{['@financetimer'] = 0, ['@plate'] = plate})
                         else
                             MySQL.Sync.execute('UPDATE owned_vehicles SET finance=@finance WHERE plate=@plate',{['@finance'] = prevAmount - price, ['@plate'] = plate})
-                            MySQL.Sync.execute('UPDATE owned_vehicles SET repaytime=@financetimer WHERE plate=@plate',{['@financetimer'] = settimer, ['@plate'] = plate})
+							MySQL.Sync.execute('UPDATE owned_vehicles SET repaytime=@financetimer WHERE plate=@plate',{['@financetimer'] = settimer, ['@plate'] = plate})
+							--MySQL.Sync.execute('UPDATE owned_vehicles SET lastpaid=@date WHERE plate=@plate',{['@date'] = date, ['@plate'] = plate})
+
                         end
                     end
 
