@@ -49,10 +49,8 @@ end)
 RegisterNetEvent("hhrp_MinerJob:getStoneLimit")
 AddEventHandler("hhrp_MinerJob:getStoneLimit",function()
 	local xPlayer = HHCore.GetPlayerFromId(source)
-		local player = xPlayer.identifier
-		table.insert(didmining, {identifier = player})
-		--cb(false)
-	end
+	local player = xPlayer.identifier
+	table.insert(didmining, {identifier = player})
 end)
 
 HHCore.RegisterServerCallback("hhrp_MinerJob:didmining",function(source, cb) 

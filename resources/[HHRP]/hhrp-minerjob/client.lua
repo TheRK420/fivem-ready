@@ -140,25 +140,7 @@ function MiningEvent(k,v)
 	AttachEntityToEntity(object, playerPed, GetPedBoneIndex(playerPed, 57005), 0.1, 0.0, 0.0, -90.0, 25.0, 35.0, true, true, false, true, 1, true)
 
 	-- exports['pogressBar']:drawBar(10000, 'Kasama')
-	exports['mythic_progbar']:Progress({
-		name = "retrieving_card",
-		duration = 10000,
-		label = 'Mining',
-		useWhileDead = false,
-		canCancel = false,
-		controlDisables = {
-		  disableMovement = true,
-		  disableCarMovement = true,
-		  disableMouse = false,
-		  disableCombat = true,
-		},
-	  }, function(cancelled)
-		if not cancelled then
-		  ClearPedTasksImmediately(GetPlayerPed(PlayerId()))
-		else
-		  -- Do Something If Action Was Cancelled
-		end
-	end)
+	exports['hhrp-taskbar']:taskBar(10000, "Mining")
 	Citizen.Wait(200)
 	TaskPlayAnim(PlayerPedId(), anim, action, 3.0, -3.0, -1, 31, 0, false, false, false)
 	Citizen.Wait(2000)
