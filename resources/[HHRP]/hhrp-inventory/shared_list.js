@@ -830,8 +830,9 @@ itemList["packaged_chicken"]	= {fullyDegrades: false, decayrate: 0.0, displaynam
 
 // Mining Job
 
-itemList["stone"]	= {fullyDegrades: false, decayrate: 0.0, displayname: "Stone", price: 1, weight: 0, nonStack: true, model:  "", image: "np_supplycrate_large.png", information: "You completed step 1 to mining head to step 2!", deg: false }
-itemList["washedstone"]	= {fullyDegrades: false, decayrate: 0.0, displayname: "Washed Stone", price: 1, weight: 0, nonStack: true, model:  "", image: "np_supplycrate_large.png", information: "You completed step 2 to mining head to step 3!", deg: false }
+itemList["stone"]	= {fullyDegrades: false, decayrate: 0.0, displayname: "Stone", price: 1, weight: 0, nonStack: true, model:  "", image: "stone.png", information: "You completed step 1 to mining head to step 2!", deg: false }
+itemList["washedstone"]	= {fullyDegrades: false, decayrate: 0.0, displayname: "Washed Stone", price: 1, weight: 0, nonStack: true, model:  "", image: "washedstone.png", information: "You completed step 2 to mining head to step 3!", deg: false }
+itemList["pickaxe"]	= {fullyDegrades: false, decayrate: 0.0, displayname: "Pickaxe", price: 100, weight: 0, nonStack: true, model:  "", image: "pickaxe.png", information: "Basic Mining Tool!", deg: false }
 
 // Illegal Crafting
 
