@@ -1,5 +1,6 @@
 var open = false;
 $('#clothesmenu').fadeOut(0);
+$('#clothesm').fadeOut(0);
 $('#barbermenu').fadeOut(0);
 var currentMenu = null;
 var hairColors = null;
@@ -81,6 +82,14 @@ $(function () {
             UpdateTotals(drawTotal, propDrawTotal, textureTotal, headoverlayTotal, skinTotal);
         }
         if (event.data.type == "clothesmenudata") {
+            let drawables = event.data.drawables;
+            let props = event.data.props;
+            let drawtextures = event.data.drawtextures;
+            let proptextures = event.data.proptextures;
+            let skin = event.data.skin;
+            UpdateInputs(drawables, props, drawtextures, proptextures, skin);
+        }
+        if (event.data.type == "clothesmdata") {
             let drawables = event.data.drawables;
             let props = event.data.props;
             let drawtextures = event.data.drawtextures;
@@ -322,6 +331,68 @@ $(function () {
                 case "button-features":
                     SaveHeadOverlay(ele);
                     break;
+            }
+        }
+        else if (currentMenu.is($('#clothesm')) || $(ele).parents('.panel').hasClass('hair')) {
+            if (ele.is(inputs.eq(0))) {
+                total = inputs.eq(0).parent().find('.total-number').text();
+                inputs.eq(1).val(0);
+            } else {
+                total = inputs.eq(1).parent().find('.total-number').text();
+            }
+
+            if (parseInt($(ele).val()) > parseInt(total)-1) {
+                $(ele).val(-1)
+            } else if (parseInt($(ele).val()) < -1) {
+                $(ele).val(parseInt(total)-1)
+            }
+            if (ele.is(inputs.eq(1)) && $(ele).val() == -1) {
+                $(ele).val(0)
+            }
+
+            if(!isService && ($('#skin_female').val() == 1 || $('#skin_male').val() == 1)) {
+                let clothingName = $(ele).parents('.panel').attr('id');
+                let clothingID = parseInt($(ele).val());
+                let isNotValid = true
+                let gender = "male";
+                if($('#skin_female').val() >= 1 && $('#skin_male').val() == 0)
+                    gender = "female";
+
+                if(ele.is(inputs.eq(0)) && whitelisted[gender][clothingName]){
+                    while (isNotValid) {
+                        if(whitelisted[gender][clothingName].indexOf(clothingID) > -1 ){
+                            isNotValid = true
+                            if(inputType){clothingID++;}else{clothingID--;}
+
+                        }
+                        else
+                        {
+                            isNotValid = false;
+                        }
+                    }
+                }
+                $(ele).val(clothingID)
+            }
+
+            if ($(ele).parents('.panel').attr('id') == "skins") {
+                $.post('http://hhrp-clothing/setped', JSON.stringify({
+                    "name": $(ele).attr('id'),
+                    "value": $(ele).val()
+                }))
+            }
+            else {
+                let nameId = "";
+                if (currentMenu.is($('#barbermenu')))
+                    nameId = "hair"
+                else
+                    nameId = $(ele).parent().parent().parent().attr('id').split('#')[0]
+                $.post('http://hhrp-clothing/updateclothes', JSON.stringify({
+                    "name": nameId,
+                    "value": inputs.eq(0).val(),
+                    "texture": inputs.eq(1).val()
+                })).done(function (data) {
+                    inputs.eq(1).parent().find('.total-number').text(data);
+                });
             }
         }
         else if (currentMenu.is($('#tattoomenu'))) {

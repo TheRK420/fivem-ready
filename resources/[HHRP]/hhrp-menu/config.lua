@@ -33,7 +33,7 @@ rootMenuConfig =  {
             isDead = exports["hhrp-ambulancejob"]:GetDeath()
             return not isDead
         end,
-        subMenus = {"general:escort", "general:putinvehicle", "general:unseatnearest", "general:flipvehicle",  "general:keysgive",  "general:emotes",  "general:checkvehicle", "general:askfortrain", "general:apartgivekey", "general:apartremovekey",  }
+        subMenus = {"general:escort", "general:putinvehicle", "general:unseatnearest", "general:flipvehicle",  "general:keysgive",  "general:emotes", "general:askfortrain", "general:apartgivekey", "general:apartremovekey",  }
     },
     {
         id = "police-action",

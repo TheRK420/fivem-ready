@@ -122,6 +122,15 @@ function RefreshUI()
         oldPed = oldPed,
     })
     SendNUIMessage({
+        type = "clothesmdata",
+        drawables = GetDrawables(),
+        props = GetProps(),
+        drawtextures = GetDrawTextures(),
+        proptextures = GetPropTextures(),
+        skin = GetSkin(),
+        oldPed = oldPed,
+    })
+    SendNUIMessage({
         type = "tattoomenu",
         totals = tatCategory,
         values = GetTats()
@@ -821,7 +830,7 @@ function OpenMenu(name)
     oldPed = GetCurrentPed()
     local isAllowed = false
     if(oldPed.model == 1885233650 or oldPed.model == -1667301416) then isAllowed = true end
-    if((oldPed.model ~= 1885233650 or oldPed.model ~= -1667301416) and (name == "clothesmenu" or name == "tattoomenu" or name == "healmenu")) then isAllowed = true end
+    if((oldPed.model ~= 1885233650 or oldPed.model ~= -1667301416) and (name == "clothesmenu" or name == "tattoomenu" or name == "healmenu" or name == "clothesm")) then isAllowed = true end
     if isAllowed then
         FreezePedCameraRotation(player, true)
         RefreshUI()
@@ -884,7 +893,7 @@ Citizen.CreateThread(function()
         local menu = nil
 
         if nearcloth < 5.0 then
-            menu = {"clothesmenu", "Press ~g~M~s~ to change Clothes $"..StoreCost}
+            menu = {"clothesm", "Press ~g~M~s~ to change Clothes $"..StoreCost}
         elseif neartat < 5.0 then
             menu = {"tattoomenu", "Press ~g~M~s~ to change Tattoos $"..StoreCost}
         elseif nearbarber < 5.0 then
