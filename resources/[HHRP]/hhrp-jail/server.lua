@@ -104,7 +104,7 @@ RegisterCommand('jail', function(source, args)
     if xPlayer.job.name == 'police' then
         if args[1] and HHCore.GetPlayerFromId(args[1]) then
             if args[2] then
-                TriggerClientEvent("beginJail", args[1], args[2])
+                TriggerClientEvent("beginJail", args[1], args[2]*60)
             else
                 TriggerClientEvent("DoLongHudText", src, 'Invaild jail time. wtf?', 2)
             end

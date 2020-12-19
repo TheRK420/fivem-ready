@@ -25,8 +25,8 @@ Citizen.CreateThread(function()
     while true do
         local waitCheck = #(playerCoords - vector3(Config.Locations["reclaim_items"]["x"], Config.Locations["reclaim_items"]["y"], Config.Locations["reclaim_items"]["z"]))
         if waitCheck < 15 then
-            --DrawText3D(Config.Locations["reclaim_items"]["x"], Config.Locations["reclaim_items"]["y"], Config.Locations["reclaim_items"]["z"]+1, 'Press [E] to re-claim your possessions.')
-            --DrawMarker(27,vector3(Config.Locations["reclaim_items"]["x"], Config.Locations["reclaim_items"]["y"], Config.Locations["reclaim_items"]["z"]), 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 0.5001, 255, 255, 255, 55, 0, 0, 0, 0)
+            DrawText3D(Config.Locations["reclaim_items"]["x"], Config.Locations["reclaim_items"]["y"], Config.Locations["reclaim_items"]["z"]+1, 'Press [E] to re-claim your possessions.')
+            DrawMarker(27,vector3(Config.Locations["reclaim_items"]["x"], Config.Locations["reclaim_items"]["y"], Config.Locations["reclaim_items"]["z"]), 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 0.5001, 255, 255, 255, 55, 0, 0, 0, 0)
         end
         if waitCheck < 1.5 then
             if IsControlJustPressed(0,46) then
