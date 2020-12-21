@@ -2,21 +2,21 @@
 ------- Created by Hamza -------
 -------------------------------- 
 
-local ESX = nil
+local HHCore = nil
 
 local cooldownTimer = {}
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
 
 -- server side for cooldown timer
-RegisterServerEvent("esx_TruckRobbery:missionCooldown")
-AddEventHandler("esx_TruckRobbery:missionCooldown",function(source)
+RegisterServerEvent("hhrp_TruckRobbery:missionCooldown")
+AddEventHandler("hhrp_TruckRobbery:missionCooldown",function(source)
 	table.insert(cooldownTimer,{CoolTimer = GetPlayerIdentifier(source), time = (Config.CooldownTimer * 60000)}) -- cooldown timer for doing missions
 end)
 
-ESX.RegisterServerCallback('truck:HasItemkit', function(source, cb, item, count)
+HHCore.RegisterServerCallback('truck:HasItemkit', function(source, cb, item, count)
     local src = source
-    local xPlayer = ESX.GetPlayerFromId(src)
+    local xPlayer = HHCore.GetPlayerFromId(src)
 	local item = 'electronickit'
 	if (xPlayer.getInventoryItem(item)["count"] >= 1) then
 		cb(true)
@@ -25,9 +25,9 @@ ESX.RegisterServerCallback('truck:HasItemkit', function(source, cb, item, count)
 	end
 end)
 
-ESX.RegisterServerCallback('truck:HasItemc4', function(source, cb, item, count)
+HHCore.RegisterServerCallback('truck:HasItemc4', function(source, cb, item, count)
     local src = source
-    local xPlayer = ESX.GetPlayerFromId(src)
+    local xPlayer = HHCore.GetPlayerFromId(src)
 	local item = 'c4_bank'
 	if (xPlayer.getInventoryItem(item)["count"] >= 1) then
 		cb(true)
@@ -51,59 +51,59 @@ Citizen.CreateThread(function() -- do not touch this thread function!
 end)
 
 -- sync mission data
-RegisterServerEvent("esx_TruckRobbery:syncMissionData")
-AddEventHandler("esx_TruckRobbery:syncMissionData",function(data)
-	TriggerClientEvent("esx_TruckRobbery:syncMissionData",-1,data)
+RegisterServerEvent("hhrp_TruckRobbery:syncMissionData")
+AddEventHandler("hhrp_TruckRobbery:syncMissionData",function(data)
+	TriggerClientEvent("hhrp_TruckRobbery:syncMissionData",-1,data)
 end)
 
 -- server side function to accept the mission
-RegisterServerEvent('esx_TruckRobbery:missionAccepted')
-AddEventHandler('esx_TruckRobbery:missionAccepted', function()
+RegisterServerEvent('hhrp_TruckRobbery:missionAccepted')
+AddEventHandler('hhrp_TruckRobbery:missionAccepted', function()
 	local policeOnline = 0
-	local Players = ESX.GetPlayers()
+	local Players = HHCore.GetPlayers()
 	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
+	local xPlayer = HHCore.GetPlayerFromId(_source)
 	local accountMoney = 0
 	accountMoney = xPlayer.getAccount('bank').money
 	
 	if not CheckCooldownTimer(GetPlayerIdentifier(source)) then
 	
 		if accountMoney <= Config.MissionCost then
-			TriggerClientEvent('esx:showNotification', source, Config.NotEnoughMoney)
+			TriggerClientEvent('hhrp:showNotification', source, Config.NotEnoughMoney)
 		else
 			for i = 1, #Players do
-				local xPlayer = ESX.GetPlayerFromId(Players[i])
+				local xPlayer = HHCore.GetPlayerFromId(Players[i])
 				if xPlayer["job"]["name"] == Config.PoliceDatabaseName then
 					policeOnline = policeOnline + 1
 				end
 			end
 			if policeOnline >= Config.RequiredPoliceOnline then
-				TriggerEvent("esx_TruckRobbery:missionCooldown",source)
-				TriggerClientEvent("esx_TruckRobbery:HackingMiniGame",source)
+				TriggerEvent("hhrp_TruckRobbery:missionCooldown",source)
+				TriggerClientEvent("hhrp_TruckRobbery:HackingMiniGame",source)
 			
-				ESX.RegisterServerCallback("esx_TruckRobbery:StartMissionNow",function(source,cb)
+				HHCore.RegisterServerCallback("hhrp_TruckRobbery:StartMissionNow",function(source,cb)
 				local _source = source
-				local xPlayer = ESX.GetPlayerFromId(_source)
+				local xPlayer = HHCore.GetPlayerFromId(_source)
 				cb()
-				TriggerClientEvent("esx_TruckRobbery:startMission",source,0)
+				TriggerClientEvent("hhrp_TruckRobbery:startMission",source,0)
 				end)
 				xPlayer.removeAccountMoney('bank', Config.MissionCost)
 				xPlayer.removeInventoryItem('electronickit', 1)
 
 			else
-				TriggerClientEvent('esx:showNotification', source, Config.NotEnoughPolice)
+				TriggerClientEvent('hhrp:showNotification', source, Config.NotEnoughPolice)
 			end
 		end
 	else
-		TriggerClientEvent("esx:showNotification",source,string.format(Config.CooldownMessage,GetCooldownTimer(GetPlayerIdentifier(source))))
+		TriggerClientEvent("hhrp:showNotification",source,string.format(Config.CooldownMessage,GetCooldownTimer(GetPlayerIdentifier(source))))
 	end
 end)
 
 -- mission reward
-RegisterServerEvent('esx_TruckRobbery:missionComplete')
-AddEventHandler('esx_TruckRobbery:missionComplete', function()
+RegisterServerEvent('hhrp_TruckRobbery:missionComplete')
+AddEventHandler('hhrp_TruckRobbery:missionComplete', function()
 	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
+	local xPlayer = HHCore.GetPlayerFromId(_source)
 	local reward = math.random(Config.MinReward,Config.MaxReward)
 	
 	if Config.RewardInDirtyMoney then
@@ -111,13 +111,13 @@ AddEventHandler('esx_TruckRobbery:missionComplete', function()
 	else
 		xPlayer.addMoney(reward)
 	end	
-	TriggerClientEvent('esx:showNotification', source, string.format(Config.RewardMessage,reward))
+	TriggerClientEvent('hhrp:showNotification', source, string.format(Config.RewardMessage,reward))
 	
 	if Config.EnableItemReward == true then
 		local itemAmount1 = math.random(Config.ItemMinAmount1,Config.ItemMaxAmount1)
 		xPlayer.addInventoryItem(Config.ItemName1,itemAmount1)
-		local item1 = ESX.GetItemLabel(Config.ItemName1)
-		TriggerClientEvent('esx:showNotification', source, string.format(Config.Item1Message,itemAmount1))
+		local item1 = HHCore.GetItemLabel(Config.ItemName1)
+		TriggerClientEvent('hhrp:showNotification', source, string.format(Config.Item1Message,itemAmount1))
 	end
 	
 	if Config.EnableRareItemReward == true then
@@ -125,31 +125,31 @@ AddEventHandler('esx_TruckRobbery:missionComplete', function()
 		local itemAmount2 = math.random(Config.ItemMinAmount2,Config.ItemMaxAmount2)
 		if chance == 1 then
 			xPlayer.addInventoryItem(Config.ItemName2, 1)
-			local item2 = ESX.GetItemLabel(Config.ItemName2)
-			TriggerClientEvent('esx:showNotification', source, string.format(Config.Item2Message, 1))
+			local item2 = HHCore.GetItemLabel(Config.ItemName2)
+			TriggerClientEvent('hhrp:showNotification', source, string.format(Config.Item2Message, 1))
 		end	
 	end
 	
 	Wait(1000)
 end)
 
-RegisterServerEvent('esx_TruckRobbery:TruckRobberyInProgress')
-AddEventHandler('esx_TruckRobbery:TruckRobberyInProgress', function(targetCoords, streetName)
-	TriggerClientEvent('esx_TruckRobbery:outlawNotify', -1,string.format(Config.DispatchMessage,streetName))
-	TriggerClientEvent('esx_TruckRobbery:TruckRobberyInProgress', -1, targetCoords)
+RegisterServerEvent('hhrp_TruckRobbery:TruckRobberyInProgress')
+AddEventHandler('hhrp_TruckRobbery:TruckRobberyInProgress', function(targetCoords, streetName)
+	TriggerClientEvent('hhrp_TruckRobbery:outlawNotify', -1,string.format(Config.DispatchMessage,streetName))
+	TriggerClientEvent('hhrp_TruckRobbery:TruckRobberyInProgress', -1, targetCoords)
 end)
 
 RegisterServerEvent('truck:RemoveItemc4')
 AddEventHandler('truck:RemoveItemc4', function()
     local src = source
-    local xPlayer = ESX.GetPlayerFromId(src)
+    local xPlayer = HHCore.GetPlayerFromId(src)
     xPlayer.removeInventoryItem('c4_bank', 1)
 end)
 
 RegisterServerEvent('heist:truck')
 AddEventHandler('heist:truck', function(targetCoords, streetName, emergency)
     local _source = source
-    local xPlayers = ESX.GetPlayers()
+    local xPlayers = HHCore.GetPlayers()
 	local messageFull
     fal = "Bomb Blast on"
     msg = "LSPD HIGH Alert!"

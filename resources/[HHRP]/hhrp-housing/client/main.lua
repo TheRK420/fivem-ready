@@ -298,7 +298,7 @@ Citizen.CreateThread(function()
                             if(GetDistanceBetweenCoords(pos, stash2Location.x, stash2Location.y, stash2Location.z, true) < 1.5)then
                                 DrawText3Ds(stash2Location.x, stash2Location.y, stash2Location.z, '~g~E~w~ - Drawer 2')
                                 if IsControlJustPressed(0, Keys["E"]) then
-									TriggerEvent("server-inventory-open", "1", "Property: "..closesthouse)
+									TriggerEvent("server-inventory-open", "1", "Property2: "..closesthouse)
 									TriggerScreenblurFadeIn(0)
                                 end
                             elseif(GetDistanceBetweenCoords(pos, stash2Location.x, stash2Location.y, stash2Location.z, true) < 3)then

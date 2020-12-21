@@ -493,24 +493,29 @@ end)
 -- end)
 
 RegisterCommand('setlocation', function(source, args, rawCommand)
-	if args[1] ~= nil then 
+	local xPlayer = HHCore.GetPlayerFromId(source)
+	if xPlayer.job.name == "realestateagent" then
+		if args[1] ~= nil then 
 
-		if args[1] == 'stash' then 
-			TriggerClientEvent('hhrp-housing:client:setLocation', source, 'stash')
-		end
+			if args[1] == 'stash' then 
+				TriggerClientEvent('hhrp-housing:client:setLocation', source, 'stash')
+			end
 
-		if args[1] == 'outfit' then 
-			TriggerClientEvent('hhrp-housing:client:setLocation', source, 'outift')
-		end
+			if args[1] == 'outfit' then 
+				TriggerClientEvent('hhrp-housing:client:setLocation', source, 'outift')
+			end
 
-		if args[1] == 'logout' then 
-			TriggerClientEvent('hhrp-housing:client:setLocation', source, 'logout')
-		end
-		
-		if args[1] == 'stash2' then 
-			TriggerClientEvent('hhrp-housing:client:setLocation', source, 'stash2')
+			if args[1] == 'logout' then 
+				TriggerClientEvent('hhrp-housing:client:setLocation', source, 'logout')
+			end
+			
+			if args[1] == 'stash2' then 
+				TriggerClientEvent('hhrp-housing:client:setLocation', source, 'stash2')
+			end
+		else
+			TriggerClientEvent('DoLongHudText', source, "stash, outfit, stash2, logout?",2)
 		end
 	else
-		--
+		TriggerClientEvent('DoLongHudText', source, "You are Not State Employee",2)
 	end
 end)

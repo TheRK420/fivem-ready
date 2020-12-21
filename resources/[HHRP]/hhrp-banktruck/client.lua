@@ -2,7 +2,7 @@
 ------- Created by Hamza -------
 -------------------------------- 
 
-ESX = nil
+HHCore = nil
 
 local PlayerData = nil
 local CurrentEventNum = nil
@@ -21,14 +21,14 @@ local _
 local playerGender
 
 Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+	while HHCore == nil do
+		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
 		Citizen.Wait(0)
 	end
-	while ESX.GetPlayerData().job == nil do
+	while HHCore.GetPlayerData().job == nil do
 		Citizen.Wait(10)
 	end
-	PlayerData = ESX.GetPlayerData()
+	PlayerData = HHCore.GetPlayerData()
 	TriggerEvent('skinchanger:getSkin', function(skin)
 		playerGender = skin.sex
 	end)
@@ -36,42 +36,42 @@ Citizen.CreateThread(function()
 end)
 
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
+RegisterNetEvent('hhrp:playerLoaded')
+AddEventHandler('hhrp:playerLoaded', function(xPlayer)
+	HHCore.PlayerData = xPlayer
 end)
 
-RegisterNetEvent('esx:setJob')
-AddEventHandler('esx:setJob', function(job)
-	ESX.PlayerData.job = job
+RegisterNetEvent('hhrp:setJob')
+AddEventHandler('hhrp:setJob', function(job)
+	HHCore.PlayerData.job = job
 	isPlayerWhitelisted = refreshPlayerWhitelisted()
 end)
 
-RegisterNetEvent('esx_TruckRobbery:outlawNotify')
-AddEventHandler('esx_TruckRobbery:outlawNotify', function(alert)
+RegisterNetEvent('hhrp_TruckRobbery:outlawNotify')
+AddEventHandler('hhrp_TruckRobbery:outlawNotify', function(alert)
 	if isPlayerWhitelisted then
 		--TriggerEvent('chat:addMessage', { args = { "^5 Dispatch: " .. alert }})
 		streetName,_ = GetStreetNameAtCoord(playerCoords.x, playerCoords.y, playerCoords.z)
 		streetName = GetStreetNameFromHashKey(streetName)
 		local emergency = 'truck'
 		TriggerServerEvent('heist:truck',{
-			x = ESX.Math.Round(playerCoords.x, 1),
-			y = ESX.Math.Round(playerCoords.y, 1),
-			z = ESX.Math.Round(playerCoords.z, 1)
+			x = HHCore.Math.Round(playerCoords.x, 1),
+			y = HHCore.Math.Round(playerCoords.y, 1),
+			z = HHCore.Math.Round(playerCoords.z, 1)
 		}, streetName, emergency)
 	end
 end)
 
 function refreshPlayerWhitelisted()	
-	if not ESX.PlayerData then
+	if not HHCore.PlayerData then
 		return false
 	end
 
-	if not ESX.PlayerData.job then
+	if not HHCore.PlayerData.job then
 		return false
 	end
 
-	if Config.PoliceDatabaseName == ESX.PlayerData.job.name then
+	if Config.PoliceDatabaseName == HHCore.PlayerData.job.name then
 		return true
 	end
 
@@ -127,9 +127,9 @@ Citizen.CreateThread(function()
 			if distance <= 1.0 then
 				DrawText3Ds(v.x, v.y, v.z, Config.Draw3DText)
 				if IsControlJustPressed(0, Config.KeyToStartMission) then
-					ESX.TriggerServerCallback('truck:HasItemkit', function(cb)
+					HHCore.TriggerServerCallback('truck:HasItemkit', function(cb)
 						if cb == true then
-							TriggerServerEvent("esx_TruckRobbery:missionAccepted")
+							TriggerServerEvent("hhrp_TruckRobbery:missionAccepted")
 							Citizen.Wait(500)
 						else
 							exports['mythic_notify']:DoHudText('error', 'You Dont Have A ElectronicKit')
@@ -141,8 +141,8 @@ Citizen.CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('esx_TruckRobbery:TruckRobberyInProgress')
-AddEventHandler('esx_TruckRobbery:TruckRobberyInProgress', function(targetCoords)
+RegisterNetEvent('hhrp_TruckRobbery:TruckRobberyInProgress')
+AddEventHandler('hhrp_TruckRobbery:TruckRobberyInProgress', function(targetCoords)
 	if isPlayerWhitelisted and Config.PoliceBlipShow then
 		local alpha = Config.PoliceBlipAlpha
 		local policeNotifyBlip = AddBlipForRadius(targetCoords.x, targetCoords.y, targetCoords.z, Config.PoliceBlipRadius)
@@ -165,8 +165,8 @@ AddEventHandler('esx_TruckRobbery:TruckRobberyInProgress', function(targetCoords
 	end
 end)
 
-RegisterNetEvent("esx_TruckRobbery:HackingMiniGame")
-AddEventHandler("esx_TruckRobbery:HackingMiniGame",function()
+RegisterNetEvent("hhrp_TruckRobbery:HackingMiniGame")
+AddEventHandler("hhrp_TruckRobbery:HackingMiniGame",function()
 	toggleHackGame()
 end)
 
@@ -198,9 +198,9 @@ function AtmHackSuccess(success)
     FreezeEntityPosition(player,false)
     TriggerEvent('mhacking:hide')
     if success then
-		ESX.TriggerServerCallback("esx_TruckRobbery:StartMissionNow",function()	end)
+		HHCore.TriggerServerCallback("hhrp_TruckRobbery:StartMissionNow",function()	end)
     else
-		ESX.ShowNotification(Config.HackingFailed)
+		HHCore.ShowNotification(Config.HackingFailed)
 		ClearPedTasks(player)
 		ClearPedSecondaryTask(player)
 	end
@@ -209,8 +209,8 @@ function AtmHackSuccess(success)
 end
 
 -- Making sure that players don't get the same mission at the same time
-RegisterNetEvent("esx_TruckRobbery:startMission")
-AddEventHandler("esx_TruckRobbery:startMission",function(spot)
+RegisterNetEvent("hhrp_TruckRobbery:startMission")
+AddEventHandler("hhrp_TruckRobbery:startMission",function(spot)
 	local num = math.random(1,#Config.ArmoredTruck)
 	local numy = 0
 	while Config.ArmoredTruck[num].InUse and numy < 100 do
@@ -218,24 +218,24 @@ AddEventHandler("esx_TruckRobbery:startMission",function(spot)
 		num = math.random(1,#Config.ArmoredTruck)
 	end
 	if numy == 100 then
-		ESX.ShowNotification(Config.NoMissionsAvailable)
+		HHCore.ShowNotification(Config.NoMissionsAvailable)
 	else
 		CurrentEventNum = num
-		TriggerEvent("esx_TruckRobbery:startTheEvent",num)
+		TriggerEvent("hhrp_TruckRobbery:startTheEvent",num)
 		PlaySoundFrontend(-1, "Mission_Pass_Notify", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS", 0)
-		ESX.ShowNotification(Config.TruckMarkedOnMap)
+		HHCore.ShowNotification(Config.TruckMarkedOnMap)
 	end
 end)
 
 -- Core Mission Part
-RegisterNetEvent('esx_TruckRobbery:startTheEvent')
-AddEventHandler('esx_TruckRobbery:startTheEvent', function(num)
+RegisterNetEvent('hhrp_TruckRobbery:startTheEvent')
+AddEventHandler('hhrp_TruckRobbery:startTheEvent', function(num)
 	
 	local loc = Config.ArmoredTruck[num]
 	Config.ArmoredTruck[num].InUse = true
 	local playerped = GetPlayerPed(-1)
 	
-	TriggerServerEvent("esx_TruckRobbery:syncMissionData",Config.ArmoredTruck)
+	TriggerServerEvent("hhrp_TruckRobbery:syncMissionData",Config.ArmoredTruck)
 
 	RequestModel(GetHashKey('stockade'))
 	while not HasModelLoaded(GetHashKey('stockade')) do
@@ -292,15 +292,15 @@ AddEventHandler('esx_TruckRobbery:startTheEvent', function(num)
 
 			if distance <= 30.0  then
 				if KillGuardsText == false then
-					ESX.ShowNotification(Config.KillTheGuards)
+					HHCore.ShowNotification(Config.KillTheGuards)
 					KillGuardsText = true
 				end
 			end
 			
 			if distance <= 5 and TruckIsDemolished == false then
-				ESX.ShowHelpNotification(Config.OpenTruckDoor)
+				HHCore.ShowHelpNotification(Config.OpenTruckDoor)
 				if IsControlJustPressed(1, Config.KeyToOpenTruckDoor) then
-					ESX.TriggerServerCallback('truck:HasItemc4', function(cb)
+					HHCore.TriggerServerCallback('truck:HasItemc4', function(cb)
 						if cb == true then
 							TriggerServerEvent('truck:RemoveItemc4')
 							BlowTheTruckDoor()
@@ -323,7 +323,7 @@ AddEventHandler('esx_TruckRobbery:startTheEvent', function(num)
 			end
 			
 			if distance <= 4.5 then
-				ESX.ShowHelpNotification(Config.RobFromTruck)
+				HHCore.ShowHelpNotification(Config.RobFromTruck)
 				if IsControlJustPressed(0, Config.KeyToRobFromTruck ) then 
 					TruckIsExploded = false
 					RobbingTheMoney()
@@ -333,10 +333,10 @@ AddEventHandler('esx_TruckRobbery:startTheEvent', function(num)
 		end
 		
 		if missionCompleted == true then
-			ESX.ShowNotification(Config.MissionCompleted)
+			HHCore.ShowNotification(Config.MissionCompleted)
 			Config.ArmoredTruck[num].InUse = false
 			RemoveBlip(blip)
-			TriggerServerEvent("esx_TruckRobbery:syncMissionData",Config.ArmoredTruck)
+			TriggerServerEvent("hhrp_TruckRobbery:syncMissionData",Config.ArmoredTruck)
 			taken = true
 			missionInProgress = false
 			missionCompleted = false
@@ -361,7 +361,7 @@ function BlowTheTruckDoor()
 			end
 			
 			-- if Config.PoliceNotfiyEnabled == true then
-			-- 	TriggerServerEvent('esx_TruckRobbery:TruckRobberyInProgress',GetEntityCoords(PlayerPedId()),streetName)
+			-- 	TriggerServerEvent('hhrp_TruckRobbery:TruckRobberyInProgress',GetEntityCoords(PlayerPedId()),streetName)
 				local em = 'truck'
 				TriggerServerEvent('heist:truck', GetEntityCoords(PlayerPedId()), streetName, em)
 			-- end
@@ -393,12 +393,12 @@ function BlowTheTruckDoor()
 			AddExplosion(TruckPos.x,TruckPos.y,TruckPos.z, 'EXPLOSION_TANKER', 2.0, true, false, 2.0)
 			ApplyForceToEntity(ArmoredTruckVeh, 0, TruckPos.x,TruckPos.y,TruckPos.z, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
 			TruckIsExploded = true
-			ESX.ShowNotification(Config.BeginToRobTruck)
+			HHCore.ShowNotification(Config.BeginToRobTruck)
 		else
-			ESX.ShowNotification(Config.GuardsNotKilledYet)
+			HHCore.ShowNotification(Config.GuardsNotKilledYet)
 		end
 	else
-		ESX.ShowNotification(Config.TruckIsNotStopped)
+		HHCore.ShowNotification(Config.TruckIsNotStopped)
 	end
 end
 
@@ -429,7 +429,7 @@ function RobbingTheMoney()
 		SetPedComponentVariation(playerPed, 5, 45, 0, 2)
 	end
 	
-	TriggerServerEvent("esx_TruckRobbery:missionComplete")
+	TriggerServerEvent("hhrp_TruckRobbery:missionComplete")
 	
 	TruckIsExploded = false
 	TruckIsDemolished = false
@@ -500,7 +500,7 @@ function CreateMissionBlip(location)
 end
 
 -- Sync mission data
-RegisterNetEvent("esx_TruckRobbery:syncMissionData")
-AddEventHandler("esx_TruckRobbery:syncMissionData",function(data)
+RegisterNetEvent("hhrp_TruckRobbery:syncMissionData")
+AddEventHandler("hhrp_TruckRobbery:syncMissionData",function(data)
 	Config.ArmoredTruck = data
 end)

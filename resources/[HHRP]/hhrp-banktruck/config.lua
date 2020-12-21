@@ -72,7 +72,7 @@ Config.KeyToStartMission = 38	-- default: [E] // set key to start the mission
 Config.KeyToOpenTruckDoor = 47
 Config.KeyToRobFromTruck = 38										
 
--- ESX.ShowNotifications:
+-- HHCore.ShowNotifications:
 Config.NoMissionsAvailable = "No missions are currently available, please try again later!"
 Config.HackingFailed = "You failed the hacking"
 Config.TruckMarkedOnMap = "Armored Truck is marked on your map"
@@ -89,7 +89,7 @@ Config.Item1Message = "You received %sx Diamonds from the Armored Truck"
 Config.Item2Message = "You received %sx Bank Security Card from the Armored Truck"
 Config.DispatchMessage = "^3 10-90 ^0 on a Armored Truck at ^5%s^0"
 
--- ESX.ShowHelpNotifications:
+-- HHCore.ShowHelpNotifications:
 Config.OpenTruckDoor = "Press ~INPUT_DETONATE~ to open the door"
 Config.RobFromTruck = "Press ~INPUT_PICKUP~ to rob from the Truck"
 
