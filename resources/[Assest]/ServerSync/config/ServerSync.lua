@@ -57,7 +57,7 @@ ss_enable_dynamic_weather = true
 -- Default weather type for when the resource starts
 -- Options: EXTRASUNNY, CLEAR, NEUTRAL, SMOG, FOGGY, OVERCAST, CLOUDS, CLEARING, 
 -- Options: RAIN, THUNDER, SNOW, BLIZZARD, SNOWLIGHT, XMAS, HALLOWEEN
-ss_default_weather = "EXTRASUNNY"   
+ss_default_weather = "CLOUDS"   
 
 -- Weather timer (in minutes) between dynamic weather changes (Default: 10minutes)
 ss_weather_timer = 15
