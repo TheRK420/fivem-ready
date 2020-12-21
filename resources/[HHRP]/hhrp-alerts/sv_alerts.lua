@@ -81,3 +81,8 @@ AddEventHandler("hhrp-alerts:bjail",function()
     TriggerClientEvent('hhrp-alerts:jewelrobbey', -1)
 	return
 end)
+
+RegisterServerEvent("hhrp-alerts:gunshots")
+AddEventHandler("hhrp-alerts:gunshots", function(targetCoords)
+    TriggerClientEvent('hhrp-outlawalert:gunshotInProgress', -1, targetCoords)
+end)

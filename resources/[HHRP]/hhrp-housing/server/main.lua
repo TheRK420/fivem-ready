@@ -483,17 +483,14 @@ AddEventHandler('hhrp-housing:server:setLocation', function(coords, house, type)
 		MySQL.Async.execute("UPDATE `player_houses` SET `logout` = '"..json.encode(coords).."' WHERE `house` = '"..house.."'")
 	elseif type == 4 then
 		MySQL.Async.execute("UPDATE `player_houses` SET `stash2` = '"..json.encode(coords).."' WHERE `house` = '"..house.."'")
-	elseif type == 5 then
-		MySQL.Async.execute("UPDATE `player_houses` SET `garage` = '"..json.encode(coords).."' WHERE `house` = '"..house.."'")
-		MySQL.Async.execute("UPDATE `houselocations` SET `garage` = '"..json.encode(coords).."' WHERE `name` = '"..house.."'")
 	end
 
 	TriggerClientEvent('hhrp-housing:client:refreshLocations', -1, house, json.encode(coords), type)
 end)
 
-RegisterCommand('createhouse', function(source, args, rawCommand)
-	TriggerClientEvent("hhrp-housing:client:createHouses", source, tonumber(args[1]), tonumber(args[2]))
-end)
+-- RegisterCommand('createhouse', function(source, args, rawCommand)
+-- 	TriggerClientEvent("hhrp-housing:client:createHouses", source, tonumber(args[1]), tonumber(args[2]))
+-- end)
 
 RegisterCommand('setlocation', function(source, args, rawCommand)
 	if args[1] ~= nil then 
@@ -512,10 +509,6 @@ RegisterCommand('setlocation', function(source, args, rawCommand)
 		
 		if args[1] == 'stash2' then 
 			TriggerClientEvent('hhrp-housing:client:setLocation', source, 'stash2')
-		end
-
-		if args[1] == 'garage' then 
-			TriggerClientEvent('hhrp-housing:client:setLocation', source, 'garage')
 		end
 	else
 		--

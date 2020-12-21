@@ -453,3 +453,198 @@ AddEventHandler('skinchanger:loadClothes', function(playerSkin, clothesSkin)
   end)
 
 end)
+
+-- MENU--
+
+-- function OpenAccessoryMenu()
+-- 	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'set_unset_accessory', {
+-- 		title = 'PutOn/TakeOff',
+-- 		align = 'top-left',
+-- 		elements = {
+-- 			{label = "Put On Clothes" , value = 'ubie'},
+-- 			{label = "Remove Shirt" , value = 'tul'},
+-- 			{label = "Remove Pants", value = 'spo'},
+-- 			{label = "Take Off Shoes", value = 'but'},
+-- 			{label = "Take Off helmet", value = 'Helmet'},
+-- 			{label = "Take Off Accessories", value = 'Ears'},
+-- 			{label = "Take Off Mask", value = 'Mask'},
+-- 			{label = "Take Off Glasses", value = 'Glasses'}
+-- 		}}, function(data, menu)
+-- 		menu.close()
+-- 		if data.current.value == 'ubie' or data.current.value == 'tul' or data.current.value == 'spo' or data.current.value == 'but' then
+-- 			if data.current.value == 'ubie' then			
+-- 				HHCore.TriggerServerCallback('hhrp-skin:getPlayerSkin', function(skin)
+-- 					local ped = GetPlayerPed(-1)
+-- 					if not HasAnimDictLoaded("clothingtie") then
+-- 						loadAnimDict( "clothingtie" )
+-- 					end
+-- 					TaskPlayAnim(ped, "clothingtie", "try_tie_positive_a", 8.0, 2.0, 2000, 120, 1, 0, 0, 0)
+-- 					Citizen.Wait(2000)
+-- 				TriggerEvent('skinchanger:loadSkin', skin)
+-- 				end)
+-- 				HHCore.UI.Menu.CloseAll()	
+-- 				elseif data.current.value == 'tul' then
+-- 				TriggerEvent('smerfikubrania:koszulka')
+-- 				HHCore.UI.Menu.CloseAll()	
+-- 				elseif data.current.value == 'spo' then
+-- 				TriggerEvent('smerfikubrania:spodnie')
+-- 				HHCore.UI.Menu.CloseAll()	
+-- 				elseif data.current.value == 'but' then
+-- 				TriggerEvent('smerfikubrania:buty')
+-- 				HHCore.UI.Menu.CloseAll()	
+-- 			end
+-- 			menu.close()
+-- 		else
+-- 			SetUnsetAccessory(data.current.value)
+-- 		end
+-- 	end, function(data, menu)
+-- 		menu.close()
+-- 	end)
+-- end
+
+-- function SetUnsetAccessory(accessory)
+-- 	HHCore.TriggerServerCallback('HHCore_accessories:get', function(hasAccessory, accessorySkin)
+-- 		local _accessory = string.lower(accessory)
+
+-- 		if hasAccessory then
+-- 			local ped = GetPlayerPed(-1)
+-- 			if not HasAnimDictLoaded("mp_masks@standard_car@ds@") then
+-- 				loadAnimDict( "mp_masks@standard_car@ds@" )
+-- 			end 
+-- 			if IsPedInAnyVehicle(ped) then
+-- 				print('invehicle')
+-- 			else
+-- 				TaskPlayAnim(ped, "mp_masks@standard_car@ds@", "put_on_mask", 8.0, 2.0, 1000, 120, 1, 0, 0, 0)
+-- 			end
+-- 			Citizen.Wait(1000)
+-- 			TriggerEvent('skinchanger:getSkin', function(skin)
+-- 				local mAccessory = -1
+-- 				local mColor = 0
+
+-- 				if _accessory == "mask" then
+-- 					mAccessory = 0
+-- 				end
+
+-- 				if skin[_accessory .. '_1'] == mAccessory then
+-- 					mAccessory = accessorySkin[_accessory .. '_1']
+-- 					mColor = accessorySkin[_accessory .. '_2']
+-- 				end
+
+-- 				local accessorySkin = {}
+-- 				accessorySkin[_accessory .. '_1'] = mAccessory
+-- 				accessorySkin[_accessory .. '_2'] = mColor
+-- 				TriggerEvent('skinchanger:loadClothes', skin, accessorySkin)
+-- 			end)
+-- 		else
+-- 			HHCore.ShowNotification('no' .. _accessory)
+-- 		end
+-- 	end, accessory)
+-- end
+
+-- RegisterNetEvent('smerfikubrania:koszulka')
+-- AddEventHandler('smerfikubrania:koszulka', function()
+-- 	local ped = GetPlayerPed(-1)
+-- 	if not HasAnimDictLoaded("clothingtie") then
+-- 		loadAnimDict( "clothingtie" )
+-- 	end
+-- 	TaskPlayAnim(ped, "clothingtie", "try_tie_positive_a", 8.0, 2.0, 2000, 120, 1, 0, 0, 0)
+-- 	Citizen.Wait(2000)
+-- 	TriggerEvent('skinchanger:getSkin', function(skin)
+-- 		local clothesSkin = {
+-- 		['tshirt_1'] = 15, ['tshirt_2'] = 0,
+-- 		['torso_1'] = 15, ['torso_2'] = 0,
+-- 		['arms'] = 15, ['arms_2'] = 0
+-- 		}
+-- 		TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
+-- 	end)
+-- end)
+-- RegisterNetEvent('smerfikubrania:spodnie')
+-- AddEventHandler('smerfikubrania:spodnie', function()
+-- 	local ped = GetPlayerPed(-1)
+-- 	if not HasAnimDictLoaded("re@construction") then
+-- 		loadAnimDict( "re@construction" )
+-- 	end
+-- 	TaskPlayAnim(ped, "re@construction", "out_of_breath", 8.0, 2.0, 1000, 120, 1, 0, 0, 0)
+-- 	Citizen.Wait(1000)
+-- 	TriggerEvent('skinchanger:getSkin', function(skin)
+	
+
+-- 		local clothesSkin = {
+-- 		['pants_1'] = 21, ['pants_2'] = 0
+-- 		}
+-- 		TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
+-- 	end)
+-- end)
+
+-- RegisterNetEvent('smerfikubrania:buty')
+-- AddEventHandler('smerfikubrania:buty', function()
+-- 	local ped = GetPlayerPed(-1)
+-- 	if not HasAnimDictLoaded("random@domestic") then
+-- 		loadAnimDict( "random@domestic" )
+-- 	end
+-- 	TaskPlayAnim(ped, "random@domestic", "pickup_low", 8.0, 2.0, 2000, 120, 1, 0, 0, 0)
+-- 	Citizen.Wait(2000)
+-- 	TriggerEvent('skinchanger:getSkin', function(skin)
+	
+
+-- 		local clothesSkin = {
+-- 		['shoes_1'] = 34, ['shoes_2'] = 0
+-- 		}
+-- 		TriggerEvent('skinchanger:loadClothes', skin, clothesSkin)
+-- 	end)
+-- end)
+
+
+-- RegisterNetEvent('interactionmenu')
+-- AddEventHandler('interactionmenu', function(target)
+-- 	OpenAccessoryMenu()
+-- end)
+
+-- function OpenActionMenuInteraction(target)
+
+-- 	local elements = {}
+
+-- 	table.insert(elements, {label = ('put on clothes'), value = 'ubie'})
+-- 	table.insert(elements, {label = ('remove shirt'), value = 'tul'})
+-- 	table.insert(elements, {label = ('remove pants'), value = 'spo'})
+-- 	table.insert(elements, {label = ('take off shoes'), value = 'but'})
+--   		HHCore.UI.Menu.CloseAll()	
+
+
+-- 	HHCore.UI.Menu.Open(
+-- 		'default', GetCurrentResourceName(), 'action_menu',
+-- 		{
+-- 			title    = ('Clothes'),
+-- 			align    = 'top-left',
+-- 			elements = elements
+-- 		},
+--     function(data, menu)
+
+
+
+		
+-- 		if data.current.value == 'ubie' then			
+-- 		HHCore.TriggerServerCallback('hhrp-skin:getPlayerSkin', function(skin)
+-- 		TriggerEvent('skinchanger:loadSkin', skin)
+-- 		end)
+-- 		HHCore.UI.Menu.CloseAll()	
+-- 		elseif data.current.value == 'tul' then
+-- 		TriggerEvent('smerfikubrania:koszulka')
+-- 		HHCore.UI.Menu.CloseAll()	
+-- 		elseif data.current.value == 'spo' then
+-- 		TriggerEvent('smerfikubrania:spodnie')
+-- 		HHCore.UI.Menu.CloseAll()	
+-- 		elseif data.current.value == 'but' then
+-- 		TriggerEvent('smerfikubrania:buty')
+-- 		HHCore.UI.Menu.CloseAll()	
+-- 	  end
+-- 	end)
+
+
+-- end
+-- function loadAnimDict(dict)
+-- 	while (not HasAnimDictLoaded(dict)) do
+-- 		RequestAnimDict(dict)
+-- 		Citizen.Wait(10)
+-- 	end
+-- end

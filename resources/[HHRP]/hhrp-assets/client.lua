@@ -6,6 +6,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 	end
 end)
+local reti = false
 
 local HUD_ELEMENTS = {
     HUD = { id = 0, hidden = false },
@@ -22,7 +23,7 @@ local HUD_ELEMENTS = {
     HUD_FLOATING_HELP_TEXT_1 = { id = 11, hidden = false },
     HUD_FLOATING_HELP_TEXT_2 = { id = 12, hidden = false },
     HUD_CASH_CHANGE = { id = 13, hidden = true },
-    HUD_RETICLE = { id = 14, hidden = true },
+    HUD_RETICLE = { id = 14, hidden = false },
     HUD_SUBTITLE_TEXT = { id = 15, hidden = false },
     HUD_RADIO_STATIONS = { id = 16, hidden = false },
     HUD_SAVING_GAME = { id = 17, hidden = false },
@@ -33,8 +34,23 @@ local HUD_ELEMENTS = {
     MAX_HUD_WEAPONS = { id = 22, hidden = false },
     MAX_SCRIPTED_HUD_COMPONENTS = { id = 141, hidden = false }
 }
-
 -- Parameter for hiding radar when not in a vehicle
+local playerp = PlayerPedId()
+RegisterCommand("crosshair", function()
+    reti = not reti
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        if reti then
+            ShowHudComponentThisFrame(14)
+        else
+            HideHudComponentThisFrame(14)
+        end
+    end
+end)
+
 local HUD_HIDE_RADAR_ON_FOOT = true
 
 -- Main thread
@@ -52,7 +68,11 @@ Citizen.CreateThread(function()
             if val.hidden then
                 HideHudComponentThisFrame(val.id)
             else
-                ShowHudComponentThisFrame(val.id)
+                if val.id == 14 then
+                    --ShowHudComponentThisFrame(14)
+                else
+                    ShowHudComponentThisFrame(val.id)
+                end
             end
         end
     end
@@ -394,6 +414,29 @@ end)
 RegisterCommand("tpm", function(source)
     TeleportToWaypoint()
 end)
+
+Citizen.CreateThread(function()
+    while true do
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_UNARMED"), 0.1)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_FLASHLIGHT"), 0.2)
+    N_0x4757f00bc6323cfe(GetHashKey("WEAPON_BAT"), 0.3)
+    N_0x4757f00bc6323cfe(GetHashKey("WEAPON_PISTOL"), 0.2)
+    N_0x4757f00bc6323cfe(GetHashKey("WEAPON_COMBATPISTOL"), 0.2)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_WRENCH"), 0.3)
+    N_0x4757f00bc6323cfe(GetHashKey("WEAPON_NIGHTSTICK"), 0.2)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_POOLCUE"), 0.2)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_SMG"), 0.6)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_PISTOL_MK2"), 0.4)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_HEAVYPISTOL"), 0.4)
+	N_0x4757f00bc6323cfe(GetHashKey("WEAPON_APPISTOL"), 0.3)
+    N_0x4757f00bc6323cfe(GetHashKey("WEAPON_CARBINERIFLE"), 0.6)
+	Wait(0)
+    end
+end)
+
+local function DisableHeadshots()
+    SetPedSuffersCriticalHits(PlayerPedId(), false)
+end
 
 function TeleportToWaypoint()
     HHCore.TriggerServerCallback("tpm:fetchUserRank", function(playerRank)

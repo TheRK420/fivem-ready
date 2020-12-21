@@ -465,7 +465,8 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
     end
 
     if (itemid == "heavyammo") then
-        local finished = exports["hhrp-taskbar"]:taskBar(5000,"Reloading",false,false,playerVeh)
+        TaskReloadWeapon(player)
+        local finished = exports["hhrp-taskbar"]:taskBar(3000,"Reloading",false,false,playerVeh)
         if (finished == 100) then
             TriggerEvent("actionbar:ammo",1788949567,50,true)
             remove = true
@@ -473,7 +474,8 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
     end
 
     if (itemid == "pistolammo") then
-        local finished = exports["hhrp-taskbar"]:taskBar(5000,"Reloading",false,false,playerVeh)
+        TaskReloadWeapon(player)
+        local finished = exports["hhrp-taskbar"]:taskBar(3000,"Reloading",false,false,playerVeh)
         if (finished == 100) then
             TriggerEvent("actionbar:ammo",1950175060,50,true)
             remove = true
@@ -481,7 +483,8 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
     end
 
     if (itemid == "rifleammo") then
-        local finished = exports["hhrp-taskbar"]:taskBar(5000,"Reloading",false,false,playerVeh)
+        TaskReloadWeapon(player)
+        local finished = exports["hhrp-taskbar"]:taskBar(3000,"Reloading",false,false,playerVeh)
         if (finished == 100) then
             TriggerEvent("actionbar:ammo",218444191,50,true)
             remove = true
@@ -489,7 +492,8 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
     end
 
     if (itemid == "shotgunammo") then
-        local finished = exports["hhrp-taskbar"]:taskBar(5000,"Reloading",false,false,playerVeh)
+        TaskReloadWeapon(player)
+        local finished = exports["hhrp-taskbar"]:taskBar(3000,"Reloading",false,false,playerVeh)
         if (finished == 100) then
             TriggerEvent("actionbar:ammo",-1878508229,50,true)
             remove = true
@@ -497,7 +501,8 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
     end
 
     if (itemid == "subammo") then
-        local finished = exports["hhrp-taskbar"]:taskBar(5000,"Reloading",false,false,playerVeh)
+        TaskReloadWeapon(player)
+        local finished = exports["hhrp-taskbar"]:taskBar(3000,"Reloading",false,false,playerVeh)
         if (finished == 100) then
             TriggerEvent("actionbar:ammo",1820140472,50,true)
             remove = true
@@ -506,7 +511,7 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
 
 
     if (itemid == "armor") then
-        local finished = exports["hhrp-taskbar"]:taskBar(10000,"Armor",true,false,playerVeh)
+        local finished = exports["hhrp-taskbar"]:taskBar(6000,"Armor",true,false,playerVeh)
         if (finished == 100) then
             SetPlayerMaxArmour(PlayerId(), 60 )
             SetPedArmour( player, 60 )
@@ -698,6 +703,7 @@ end
 
     if (itemid =="advrepairkit") then
       TriggerEvent('veh:repairing',inventoryName,slot,itemid)
+      TriggerEvent("inventory:removeItem","advrepairkit", 1)  
            
     end
     if (itemid == "securityblue" or itemid == "securityblack" or itemid == "securitygreen" or itemid == "securitygold" or itemid == "securityred")  then

@@ -615,7 +615,7 @@ AddEventHandler("civilian:alertPolice",function(basedistance,alertType,objPassed
       AlertFight()      
     end
 
-    if (alertType == "gunshot" or alertType == "gunshotvehicle") and not HHCore.GetPlayerData().job.name == 'police' then
+    if (alertType == "gunshot" or alertType == "gunshotvehicle") then
       AlertGunShot()
     end
 
@@ -768,6 +768,31 @@ Citizen.CreateThread( function()
       end
   end
 end)
+
+-- Citizen.CreateThread(function()
+-- 	while true do
+-- 		Citizen.Wait(0)
+-- 		local playerPed = PlayerPedId()
+--     local playerCoords = GetEntityCoords(playerPed)
+--     local wait = math.random(1000, 5000)
+-- 		if IsPedShooting(playerPed) then
+--       Citizen.Wait(wait)
+--       if IsPedCurrentWeaponSilenced(ped) then
+--         TriggerEvent("civilian:alertPolice",15.0,"gunshot",0,true)
+--       elseif isInVehicle then
+--         TriggerEvent("civilian:alertPolice",150.0,"gunshotvehicle",0,true)
+--       else
+--         TriggerEvent("civilian:alertPolice",550.0,"gunshot",0, false)
+--       end
+--       TriggerServerEvent('hhrp-alerts:gunshots', {
+--         x = HHCore.Math.Round(playerCoords.x, 1),
+--         y = HHCore.Math.Round(playerCoords.y, 1),
+--         z = HHCore.Math.Round(playerCoords.z, 1)
+--       })
+
+-- 		end
+-- 	end
+-- end)
 
 RegisterNetEvent('police:tenThirteenA')
 AddEventHandler('police:tenThirteenA', function()
@@ -1034,7 +1059,7 @@ function AlertGunShot()
       local vehicleData = GetVehicleDescription() or {}
       local initialTenCode = (not isInVehicle and '10-71A' or '10-71B')
       local eventId = uuid()
-      Wait(math.random(30000))
+      Wait(math.random(5000))
       TriggerServerEvent('dispatch:svNotify', {
         dispatchCode = initialTenCode,
         firstStreet = street1,

@@ -893,7 +893,7 @@ Citizen.CreateThread(function()
         local menu = nil
 
         if nearcloth < 5.0 then
-            menu = {"clothesm", "Press ~g~M~s~ to change Clothes $"..StoreCost}
+            menu = {"clothesmenu", "Press ~g~M~s~ to change Clothes $"..StoreCost}
         elseif neartat < 5.0 then
             menu = {"tattoomenu", "Press ~g~M~s~ to change Tattoos $"..StoreCost}
         elseif nearbarber < 5.0 then
@@ -1153,6 +1153,10 @@ end)
 
 RegisterCommand("g1", function(source, args, rawCommand)
     TriggerEvent("facewear:adjust",2,false)
+end, false)
+
+RegisterCommand("interaction", function(source, args, rawCommand)
+    TriggerEvent('interactionmenu')
 end, false)
 
 RegisterCommand("g0", function(source, args, rawCommand)
