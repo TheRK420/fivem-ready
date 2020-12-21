@@ -13,7 +13,7 @@ end
 
 local Queue = {}
 -- EDIT THESE IN SERVER.CFG + OTHER OPTIONS IN CONFIG.LUA
-Queue.MaxPlayers = GetConvarInt("sv_maxclients", 64)
+Queue.MaxPlayers = GetConvarInt("sv_maxclients", 50)
 Queue.Debug = GetConvar("sv_debugqueue", "true") == "true" and true or false
 Queue.DisplayQueue = GetConvar("sv_displayqueue", "true") == "true" and true or false
 Queue.InitHostName = GetConvar("sv_hostname")
