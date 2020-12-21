@@ -51,7 +51,7 @@ AddEventHandler('hhrp-outlawalert:gunshotInProgress', function(targetCoords)
 		end
 	end
 end)
-
+RegisterNetEvent('hhrp-alerts:gunshot')
 AddEventHandler('hhrp-alerts:gunshot', function()
 	local pos = GetEntityCoords(PlayerPedId(), true)
 	TriggerServerEvent('hhrp-alerts:shoot', {x = pos.x, y = pos.y, z = pos.z})
