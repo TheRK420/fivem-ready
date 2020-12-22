@@ -81,7 +81,7 @@ function runRecycle()
     if math.random(1,10) == 8 then
     	TriggerEvent('player:receiveItem',"recyclablematerial", math.random(5,10))
     else
-    	TriggerEvent('player:receiveItem',"recyclablematerial", 3)
+    	TriggerEvent('player:receiveItem',"recyclablematerial", math.random(2,8))
 	end
 
 	TriggerEvent("DoLongHudText","Nice work, keep it up!")
