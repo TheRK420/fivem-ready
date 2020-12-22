@@ -20,7 +20,7 @@ end)
 
 -- // FRISK FUNCTION // --
 RegisterCommand("frisk", function()
-	if HHCore.PlayerData.job and HHCore.PlayerData.job.name == "police" then
+	if HHCore.PlayerData.job.name == "police" then
 		local closestPlayer, closestDistance = HHCore.Game.GetClosestPlayer()
 	
 		if closestPlayer == -1 or closestDistance > 2.0 then

@@ -1,408 +1,873 @@
+local HasAlreadyEnteredMarker, OnJob, IsNearCustomer, CustomerIsEnteringVehicle, CustomerEnteredVehicle, IsDead, CurrentActionData = false, false, false, false, false, false, {}
+local CurrentCustomer, CurrentCustomerBlip, DestinationBlip, targetCoords, LastZone, CurrentAction, CurrentActionMsg
+
+HHCore = nil
+
 Citizen.CreateThread(function()
-    while true do
-        for a = 1, #TaxiConfig.TaxiDepos do
-            local ped = GetPlayerPed(PlayerId())
-            local pedPos = GetEntityCoords(ped, false)
-            local distance = Vdist(pedPos.x, pedPos.y, pedPos.z, TaxiConfig.TaxiDepos[a].x, TaxiConfig.TaxiDepos[a].y, TaxiConfig.TaxiDepos[a].z)
-                if distance <= 15.0 then
-                    DrawMarker(1, TaxiConfig.TaxiDepos[a].x, TaxiConfig.TaxiDepos[a].y, TaxiConfig.TaxiDepos[a].z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 150, 61, 61, 1.0, 0, 0, 0, 0, 0, 0, 0)
-                    if distance <= 1.2 then
-                        if taxicab == nil then
-                            Draw3DText(TaxiConfig.TaxiDepos[a].x, TaxiConfig.TaxiDepos[a].y, TaxiConfig.TaxiDepos[a].z, tostring("[E] - Acquire a taxicab"))
-                        else
-                            Draw3DText(TaxiConfig.TaxiDepos[a].x, TaxiConfig.TaxiDepos[a].y, TaxiConfig.TaxiDepos[a].z, tostring("[E] - Return your taxicab"))
-                        end
-                        if IsControlJustPressed(1, 38) and attachedVehicle == nil then
-                            if taxicab == nil then
-                                Acquiretaxicab(TaxiConfig.TaxiDepos[a].spawn)
-                            else
-                                Returntaxicab()
-                        end
-                    end
-                end
-            end
-        end
-        Citizen.Wait(0)
-    end
+	while HHCore == nil do
+		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+		Citizen.Wait(0)
+	end
+
+	while HHCore.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+	HHCore.PlayerData = HHCore.GetPlayerData()
 end)
 
-function Acquiretaxicab(spawn)
-    local model = GetHashKey(TaxiConfig.TaxiModel)
-    RequestModel(model)
-    while not HasModelLoaded(model) do
-        Citizen.Wait(0)
-    end
-    local spawned = CreateVehicle(model, spawn.x, spawn.y, spawn.z, spawn.h, 1, 1)
-    PlaceObjectOnGroundProperly(spawned)
-    SetEntityAsMissionEntity(spawned, 1, 1)
-    SetEntityAsNoLongerNeeded(spawned)
-    taxicab = spawned
+function DrawSub(msg, time)
+	ClearPrints()
+	BeginTextCommandPrint('STRING')
+	AddTextComponentSubstringPlayerName(msg)
+	EndTextCommandPrint(time, 1)
 end
 
-function Returntaxicab()
-    DeleteEntity(taxicab)
-    if not DoesEntityExist(taxicab) then
-        taxicab = nil
-    end
+function ShowLoadingPromt(msg, time, type)
+	Citizen.CreateThread(function()
+		Citizen.Wait(0)
+
+		BeginTextCommandBusyString('STRING')
+		AddTextComponentSubstringPlayerName(msg)
+		EndTextCommandBusyString(type)
+		Citizen.Wait(time)
+
+		RemoveLoadingPrompt()
+	end)
 end
 
-function Draw3DText(x, y, z, text)
-	local onScreen,_x,_y=World3dToScreen2d(x,y,z)
-	local px,py,pz=table.unpack(GetGameplayCamCoords())
-	SetTextScale(0.35, 0.35)
-	SetTextFont(4)
-	SetTextProportional(1)
-	SetTextColour(255, 255, 255, 215)
-	SetTextDropshadow(0, 0, 0, 0, 155)
-	SetTextEdge(1, 0, 0, 0, 250)
-	SetTextDropShadow()
-	SetTextOutline()
-	SetTextEntry("STRING")
-	SetTextCentre(1)
-	AddTextComponentString(text)
-	DrawText(_x,_y)
-	local factor = (string.len(text)) / 370
-	DrawRect(_x,_y+0.0125, 0.015+ factor, 0.03, 41, 11, 41, 68)
+function GetRandomWalkingNPC()
+	local search = {}
+	local peds   = HHCore.Game.GetPeds()
+
+	for i=1, #peds, 1 do
+		if IsPedHuman(peds[i]) and IsPedWalking(peds[i]) and not IsPedAPlayer(peds[i]) then
+			table.insert(search, peds[i])
+		end
+	end
+
+	if #search > 0 then
+		return search[GetRandomIntInRange(1, #search)]
+	end
+
+	for i=1, 250, 1 do
+		local ped = GetRandomPedAtCoord(0.0, 0.0, 0.0, math.huge + 0.0, math.huge + 0.0, math.huge + 0.0, 26)
+
+		if DoesEntityExist(ped) and IsPedHuman(ped) and IsPedWalking(ped) and not IsPedAPlayer(ped) then
+			table.insert(search, ped)
+		end
+	end
+
+	if #search > 0 then
+		return search[GetRandomIntInRange(1, #search)]
+	end
+end
+
+function ClearCurrentMission()
+	if DoesBlipExist(CurrentCustomerBlip) then
+		RemoveBlip(CurrentCustomerBlip)
+	end
+
+	if DoesBlipExist(DestinationBlip) then
+		RemoveBlip(DestinationBlip)
+	end
+
+	CurrentCustomer           = nil
+	CurrentCustomerBlip       = nil
+	DestinationBlip           = nil
+	IsNearCustomer            = false
+	CustomerIsEnteringVehicle = false
+	CustomerEnteredVehicle    = false
+	targetCoords              = nil
+end
+
+function StartTaxiJob()
+	ShowLoadingPromt(_U('taking_service'), 5000, 3)
+	ClearCurrentMission()
+
+	OnJob = true
+end
+
+function StopTaxiJob()
+	local playerPed = PlayerPedId()
+
+	if IsPedInAnyVehicle(playerPed, false) and CurrentCustomer ~= nil then
+		local vehicle = GetVehiclePedIsIn(playerPed,  false)
+		TaskLeaveVehicle(CurrentCustomer,  vehicle,  0)
+
+		if CustomerEnteredVehicle then
+			TaskGoStraightToCoord(CurrentCustomer,  targetCoords.x,  targetCoords.y,  targetCoords.z,  1.0,  -1,  0.0,  0.0)
+		end
+	end
+
+	ClearCurrentMission()
+	OnJob = false
+	DrawSub(_U('mission_complete'), 5000)
+end
+
+function OpenCloakroom()
+	HHCore.UI.Menu.CloseAll()
+
+	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'taxi_cloakroom',
+	{
+		title    = _U('cloakroom_menu'),
+		align    = 'top-left',
+		elements = {
+			{ label = _U('wear_citizen'), value = 'wear_citizen' },
+			{ label = _U('wear_work'),    value = 'wear_work'}
+		}
+	}, function(data, menu)
+		if data.current.value == 'wear_citizen' then
+			HHCore.TriggerServerCallback('hhrp_skin:getPlayerSkin', function(skin)
+				TriggerEvent('skinchanger:loadSkin', skin)
+			end)
+		elseif data.current.value == 'wear_work' then
+			HHCore.TriggerServerCallback('hhrp_skin:getPlayerSkin', function(skin, jobSkin)
+				if skin.sex == 0 then
+					TriggerEvent('skinchanger:loadClothes', skin, jobSkin.skin_male)
+				else
+					TriggerEvent('skinchanger:loadClothes', skin, jobSkin.skin_female)
+				end
+			end)
+		end
+	end, function(data, menu)
+		menu.close()
+
+		CurrentAction     = 'cloakroom'
+		CurrentActionMsg  = _U('cloakroom_prompt')
+		CurrentActionData = {}
+	end)
 end
 
 
+function OpenVehicleSpawnerMenu()
+	HHCore.UI.Menu.CloseAll()
 
+	local elements = {}
 
+	if Config.EnableSocietyOwnedVehicles then
 
+		HHCore.TriggerServerCallback('hhrp-society:getVehiclesInGarage', function(vehicles)
 
+			for i=1, #vehicles, 1 do
+				table.insert(elements, {
+					label = GetDisplayNameFromVehicleModel(vehicles[i].model) .. ' [' .. vehicles[i].plate .. ']',
+					value = vehicles[i]
+				})
+			end
 
+			HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_spawner',
+			{
+				title    = _U('spawn_veh'),
+				align    = 'top-left',
+				elements = elements
+			}, function(data, menu)
+				if not HHCore.Game.IsSpawnPointClear(Config.Zones.VehicleSpawnPoint.Pos, 5.0) then
+					HHCore.ShowNotification(_U('spawnpoint_blocked'))
+					return
+				end
 
+				menu.close()
 
+				local vehicleProps = data.current.value
+				HHCore.Game.SpawnVehicle(vehicleProps.model, Config.Zones.VehicleSpawnPoint.Pos, Config.Zones.VehicleSpawnPoint.Heading, function(vehicle)
+					HHCore.Game.SetVehicleProperties(vehicle, vehicleProps)
+					local playerPed = PlayerPedId()
+					TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 
+					TriggerEvent('keys:addNew',vehicle,GetVehicleNumberPlateText(vehicle))
 
+				end)
 
+				TriggerServerEvent('hhrp-society:removeVehicleFromGarage', 'taxi', vehicleProps)
 
+			end, function(data, menu)
+				CurrentAction     = 'vehicle_spawner'
+				CurrentActionMsg  = _U('spawner_prompt')
+				CurrentActionData = {}
 
+				menu.close()
+			end)
+		end, 'taxi')
 
+	else -- not society vehicles
 
+		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_spawner',
+		{
+			title		= _U('spawn_veh'),
+			align		= 'top-left',
+			elements	= Config.AuthorizedVehicles
+		}, function(data, menu)
+			if not HHCore.Game.IsSpawnPointClear(Config.Zones.VehicleSpawnPoint.Pos, 5.0) then
+				HHCore.ShowNotification(_U('spawnpoint_blocked'))
+				return
+			end
 
+			menu.close()
+			HHCore.Game.SpawnVehicle(data.current.model, Config.Zones.VehicleSpawnPoint.Pos, Config.Zones.VehicleSpawnPoint.Heading, function(vehicle)
+				local playerPed = PlayerPedId()
+				TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+				SetVehicleNumberPlateText(vehicle, 'TAXI')
+			end)
+			TriggerEvent('notification', 'Vehicle Spawned', 1)
+		end, function(data, menu)
+			CurrentAction     = 'vehicle_spawner'
+			CurrentActionMsg  = _U('spawner_prompt')
+			CurrentActionData = {}
 
+			menu.close()
+		end)
+	end
+end
 
+function DeleteJobVehicle()
+	local playerPed = PlayerPedId()
 
+	if Config.EnableSocietyOwnedVehicles then
+		local vehicleProps = HHCore.Game.GetVehicleProperties(CurrentActionData.vehicle)
+		TriggerServerEvent('hhrp-society:putVehicleInGarage', 'taxi', vehicleProps)
+		HHCore.Game.DeleteVehicle(CurrentActionData.vehicle)
+	else
+		if IsInAuthorizedVehicle() then
+			HHCore.Game.DeleteVehicle(CurrentActionData.vehicle)
 
+			if Config.MaxInService ~= -1 then
+				TriggerServerEvent('hhrp_service:disableService', 'taxi')
+			end
+		else
+			HHCore.ShowNotification(_U('only_taxi'))
+		end
+	end
+end
 
+function OpenTaxiActionsMenu()
+	local elements = {
+		-- {label = _U('deposit_stock'), value = 'put_stock'},
+	 {label = _U('take_stock'), value = 'get_stock'}
+	}
 
+	if Config.EnablePlayerManagement and HHCore.PlayerData.job ~= nil and HHCore.PlayerData.job.grade_name == 'boss' then
+		table.insert(elements, {label = _U('boss_actions'), value = 'boss_actions'})
+	end
 
-local towtruck = nil
-local attachedVehicle = nil
-local createdBlips = {}
+	HHCore.UI.Menu.CloseAll()
 
----------------------------------------------------------------------------
--- Starter Blips
----------------------------------------------------------------------------
-Citizen.CreateThread(function()
-    for a = 1, #XTowConfig.TruckDepos do
-        local blip = AddBlipForCoord(XTowConfig.TruckDepos[a].x, XTowConfig.TruckDepos[a].y, XTowConfig.TruckDepos[a].z)
-        SetBlipSprite(blip, 357)
-        SetBlipColour(blip, 5)
-        SetBlipAsShortRange(blip, true)
-        SetBlipScale(blip, 0.7)
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString("Tow Yard")
-        EndTextCommandSetBlipName(blip)
-    end
-end)
+	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'taxi_actions', {
+		title    = 'Taxi',
+		align    = 'top-left',
+		elements = elements
+	}, function(data, menu)
 
----------------------------------------------------------------------------
--- TRUCK DEPOS
----------------------------------------------------------------------------
-Citizen.CreateThread(function()
-    while true do
-        for a = 1, #XTowConfig.TruckDepos do
-            local ped = GetPlayerPed(PlayerId())
-            local pedPos = GetEntityCoords(ped, false)
-            local distance = Vdist(pedPos.x, pedPos.y, pedPos.z, XTowConfig.TruckDepos[a].x, XTowConfig.TruckDepos[a].y, XTowConfig.TruckDepos[a].z)
-            if distance <= 15.0 then
-                DrawMarker(1, XTowConfig.TruckDepos[a].x, XTowConfig.TruckDepos[a].y, XTowConfig.TruckDepos[a].z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 150, 61, 61, 1.0, 0, 0, 0, 0, 0, 0, 0)
-                if distance <= 1.2 then
-                    if towtruck == nil then
-                        Draw3DText(XTowConfig.TruckDepos[a].x, XTowConfig.TruckDepos[a].y, XTowConfig.TruckDepos[a].z, tostring("[E] - Acquire a towtruck"))
-                    else
-                        Draw3DText(XTowConfig.TruckDepos[a].x, XTowConfig.TruckDepos[a].y, XTowConfig.TruckDepos[a].z, tostring("[E] - Return your towtruck"))
-                    end
-                    if IsControlJustPressed(1, 38) and attachedVehicle == nil then
-                        if towtruck == nil then
-                            AcquireTowtruck(XTowConfig.TruckDepos[a].spawn)
-                            TriggerServerEvent("TokoVoip:addPlayerToRadio", 7.0, GetPlayerServerId(PlayerId()))
-                        else
-                            ReturnTowtruck()
-                            TriggerServerEvent("TokoVoip:removePlayerFromAllRadio",GetPlayerServerId(PlayerId()))
-                        end
-                    end
-                end
-            end
-        end
-        Citizen.Wait(0)
-    end
-end)
+		--if data.current.value == 'put_stock' then
+			--OpenPutStocksMenu()
+		if data.current.value == 'get_stock' then
+			TriggerEvent("server-inventory-open", "1", "Taxi_inventory_items")
+			--OpenGetStocksMenu()
+		elseif data.current.value == 'boss_actions' then
+			TriggerEvent('hhrp-society:openBossMenu', 'taxi', function(data, menu)
+				menu.close()
+			end)
+		end
 
----------------------------------------------------------------------------
--- IMPOUNDS
----------------------------------------------------------------------------
-local busy = false
-Citizen.CreateThread(function()
-    while true do
-      while busy do
-        Citizen.Wait(0)
-      end
-        if towtruck ~= nil then
-            for a = 1, #XTowConfig.Impounds do
-                local vehPos = GetEntityCoords(towtruck, false)
-                local distance = Vdist(vehPos.x, vehPos.y, vehPos.z, XTowConfig.Impounds[a].x, XTowConfig.Impounds[a].y, XTowConfig.Impounds[a].z)
-                    if distance <= 10.0 then
-                        if attachedVehicle ~= nil then
-                            Draw3DText(XTowConfig.Impounds[a].x, XTowConfig.Impounds[a].y, XTowConfig.Impounds[a].z, tostring("[E] - Impound Vehicle"))
-                        else
-                            Draw3DText(XTowConfig.Impounds[a].x, XTowConfig.Impounds[a].y, XTowConfig.Impounds[a].z, tostring("You have no vehicle to impound"))
-                        end
-                        if IsControlJustPressed(1, 38) and attachedVehicle ~= nil then
-                          if not IsPedInAnyVehicle(PlayerPedId(), false) then
-                            busy = true
-                            ImpoundVehicle()
-                          else
-                            TriggerEvent('DoLongHudText', 'Must be outside of towtruck to impound', 2)
-                        end
-                    end
-                end
-            end
-        end
-        Citizen.Wait(0)
-    end
-end)
+	end, function(data, menu)
+		menu.close()
 
----------------------------------------------------------------------------
--- VEHICLE FLIPPED LOGIC
----------------------------------------------------------------------------
-Citizen.CreateThread(function()
-    while true do
-        if towtruck ~= nil then
-            if attachedVehicle ~= nil then
-                if IsEntityUpsidedown(towtruck) then
-                    DetachEntity(attachedVehicle, false, false)
-                    attachedVehicle = nil
-                end
-            end
-        end
-        Citizen.Wait(0)
-    end
-end)
+		CurrentAction     = 'taxi_actions_menu'
+		CurrentActionMsg  = _U('press_to_open')
+		CurrentActionData = {}
+	end)
+end
 
----------------------------------------------------------------------------
--- TOWTRUCK LOGIC
---------------------------------------------------------------------------- TOWTRUCK HEIGHT - 1.0866451263428
-RegisterCommand("tow", function()
-    if towtruck ~= nil then
-        if attachedVehicle == nil then
-            local frontVehicle = GetVehicleInFront()
-            if frontVehicle ~= towtruck then
-                if CheckBlacklist(frontVehicle) == false then
-                  local playerped = PlayerPedId()
-                  local coordA = GetEntityCoords(playerped, 1)
-		              local coordB = GetOffsetFromEntityInWorldCoords(playerped, 0.0, 5.0, 0.0)
-		              local targetVehicle = getVehicleInDirection(coordA, coordB)
-                  local d1,d2 = GetModelDimensions(GetEntityModel(towtruck))
-			            local back = GetOffsetFromEntityInWorldCoords(towtruck, 0.0,d1["y"]-1.0,0.0)
+function OpenMobileTaxiActionsMenu()
+	HHCore.UI.Menu.CloseAll()
 
-		            	local aDist = #(back - GetEntityCoords(targetVehicle))
-	        
-	                if aDist > 3.5 then
-	                	local count = 1000
-		                while count > 0 do
-		                  Citizen.Wait(1)
-		                  count = count - 1
-		                  Draw3DText(back["x"],back["y"],back["z"],"Vehicle must be here to tow.")
-		                end
-		                return
-                  end
-                  busy = true
-                    AttachVehicle(frontVehicle)
-                else
-                    TriggerEvent('DoLongHudText', 'That is a blacklisted vehicle. You can\'t attach that', 2)
-                end
-            end
-        else
-          busy = true
-            DetachVehicle()
-        end
-    end
-end, false)
+	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'mobile_taxi_actions', {
+		title    = 'Taxi',
+		align    = 'top-left',
+		elements = {
+			{label = _U('billing'),   value = 'billing'},
+			{label = _U('start_job'), value = 'start_job'}
+	}}, function(data, menu)
+		if data.current.value == 'billing' then
 
-function getVehicleInDirection(coordFrom, coordTo)
-	local offset = 0
-	local rayHandle
-	local vehicle
+			HHCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'billing', {
+				title = _U('invoice_amount')
+			}, function(data, menu)
 
-	for i = 0, 100 do
-		rayHandle = CastRayPointToPoint(coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z + offset, 10, PlayerPedId(), 0)	
-		a, b, c, d, vehicle = GetRaycastResult(rayHandle)
-		
-		offset = offset - 1
+				local amount = tonumber(data.value)
+				if amount == nil then
+					HHCore.ShowNotification(_U('amount_invalid'))
+				else
+					menu.close()
+					local closestPlayer, closestDistance = HHCore.Game.GetClosestPlayer()
+					if closestPlayer == -1 or closestDistance > 3.0 then
+						HHCore.ShowNotification(_U('no_players_near'))
+					else
+						TriggerServerEvent('hhrp_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_taxi', 'Taxi', amount)
+						HHCore.ShowNotification(_U('billing_sent'))
+					end
 
-		if vehicle ~= 0 then break end
+				end
+
+			end, function(data, menu)
+				menu.close()
+			end)
+
+		elseif data.current.value == 'start_job' then
+			if OnJob then
+				StopTaxiJob()
+			else
+				if HHCore.PlayerData.job ~= nil and HHCore.PlayerData.job.name == 'taxi' then
+					local playerPed = PlayerPedId()
+					local vehicle   = GetVehiclePedIsIn(playerPed, false)
+
+					if IsPedInAnyVehicle(playerPed, false) and GetPedInVehicleSeat(vehicle, -1) == playerPed then
+						if tonumber(HHCore.PlayerData.job.grade) >= 3 then
+							StartTaxiJob()
+						else
+							if IsInAuthorizedVehicle() then
+								StartTaxiJob()
+							else
+								HHCore.ShowNotification(_U('must_in_taxi'))
+							end
+						end
+					else
+						if tonumber(HHCore.PlayerData.job.grade) >= 3 then
+							HHCore.ShowNotification(_U('must_in_vehicle'))
+						else
+							HHCore.ShowNotification(_U('must_in_taxi'))
+						end
+					end
+				end
+			end
+		end
+	end, function(data, menu)
+		menu.close()
+	end)
+end
+
+function IsInAuthorizedVehicle()
+	local playerPed = PlayerPedId()
+	local vehModel  = GetEntityModel(GetVehiclePedIsIn(playerPed, false))
+
+	for i=1, #Config.AuthorizedVehicles, 1 do
+		if vehModel == GetHashKey(Config.AuthorizedVehicles[i].model) then
+			return true
+		end
 	end
 	
-	local distance = Vdist2(coordFrom, GetEntityCoords(vehicle))
-	
-	if distance > 25 then vehicle = nil end
-
-    return vehicle ~= nil and vehicle or 0
+	return false
 end
 
----------------------------------------------------------------------------
--- FUNCTIONS
----------------------------------------------------------------------------
-function AcquireTowtruck(spawn)
-    local model = GetHashKey(XTowConfig.TruckModel)
-    RequestModel(model)
-    while not HasModelLoaded(model) do
-        Citizen.Wait(0)
-    end
-    local spawned = CreateVehicle(model, spawn.x, spawn.y, spawn.z, spawn.h, 1, 1)
-    PlaceObjectOnGroundProperly(spawned)
-    SetEntityAsMissionEntity(spawned, 1, 1)
-    SetEntityAsNoLongerNeeded(spawned)
-    towtruck = spawned
+function OpenGetStocksMenu()
+	HHCore.TriggerServerCallback('hhrp_taxijob:getStockItems', function(items)
+		local elements = {}
 
-    -- Create Blips
-    for a = 1, #XTowConfig.Impounds do
-        local blip = AddBlipForCoord(XTowConfig.Impounds[a].x, XTowConfig.Impounds[a].y, XTowConfig.Impounds[a].z)
-        SetBlipSprite(blip, 398)
-        SetBlipColour(blip, 71)
-        SetBlipAsShortRange(blip, true)
-        SetBlipScale(blip, 1.0)
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString("Towtruck Impound")
-        EndTextCommandSetBlipName(blip)
-        table.insert(createdBlips, blip)
-    end
+		for i=1, #items, 1 do
+			table.insert(elements, {
+				label = 'x' .. items[i].count .. ' ' .. items[i].label,
+				value = items[i].name
+			})
+		end
+
+		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'stocks_menu', {
+			title    = 'Taxi Stock',
+			align    = 'top-left',
+			elements = elements
+		}, function(data, menu)
+			local itemName = data.current.value
+
+			HHCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'stocks_menu_get_item_count', {
+				title = _U('quantity')
+			}, function(data2, menu2)
+				local count = tonumber(data2.value)
+
+				if count == nil then
+					HHCore.ShowNotification(_U('quantity_invalid'))
+				else
+					menu2.close()
+					menu.close()
+
+					-- todo: refresh on callback
+					TriggerServerEvent('hhrp_taxijob:getStockItem', itemName, count)
+					Citizen.Wait(1000)
+					OpenGetStocksMenu()
+				end
+			end, function(data2, menu2)
+				menu2.close()
+			end)
+		end, function(data, menu)
+			menu.close()
+		end)
+	end)
 end
 
-function ReturnTowtruck()
-    DeleteEntity(towtruck)
-    if not DoesEntityExist(towtruck) then
-        towtruck = nil
-    end
+function OpenPutStocksMenu()
+	HHCore.TriggerServerCallback('hhrp_taxijob:getPlayerInventory', function(inventory)
 
-    for a = 1, #createdBlips do
-        RemoveBlip(createdBlips[a])
-    end
-    createdBlips = {}
+		local elements = {}
+
+		for i=1, #inventory.items, 1 do
+			local item = inventory.items[i]
+
+			if item.count > 0 then
+				table.insert(elements, {
+					label = item.label .. ' x' .. item.count,
+					type = 'item_standard', -- not used
+					value = item.name
+				})
+			end
+		end
+
+		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'stocks_menu', {
+			title    = _U('inventory'),
+			align    = 'top-left',
+			elements = elements
+		}, function(data, menu)
+			local itemName = data.current.value
+
+			HHCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'stocks_menu_put_item_count', {
+				title = _U('quantity')
+			}, function(data2, menu2)
+				local count = tonumber(data2.value)
+
+				if count == nil then
+					HHCore.ShowNotification(_U('quantity_invalid'))
+				else
+					menu2.close()
+					menu.close()
+
+					-- todo: refresh on callback
+					TriggerServerEvent('hhrp_taxijob:putStockItems', itemName, count)
+					Citizen.Wait(1000)
+					OpenPutStocksMenu()
+				end
+			end, function(data2, menu2)
+				menu2.close()
+			end)
+		end, function(data, menu)
+			menu.close()
+		end)
+	end)
 end
 
-local towingProcess = false
-RegisterNetEvent('animation:tow')
-AddEventHandler('animation:tow', function()
-	towingProcess = true
-    local lPed = PlayerPedId()
-    RequestAnimDict("mini@repair")
-    while not HasAnimDictLoaded("mini@repair") do
-        Citizen.Wait(0)
-    end
-    while towingProcess do
-
-        if not IsEntityPlayingAnim(lPed, "mini@repair", "fixing_a_player", 3) then
-            ClearPedSecondaryTask(lPed)
-            TaskPlayAnim(lPed, "mini@repair", "fixing_a_player", 8.0, -8, -1, 16, 0, 0, 0, 0)
-        end
-        Citizen.Wait(1)
-    end
-    ClearPedTasks(lPed)
+RegisterNetEvent('hhrp:playerLoaded')
+AddEventHandler('hhrp:playerLoaded', function(xPlayer)
+	HHCore.PlayerData = xPlayer
 end)
 
-function AttachVehicle(vehicle)
-  TriggerEvent('animation:tow')
-  TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 10.0, 'towtruck2', 0.5)
-  TaskTurnPedToFaceEntity(PlayerPedId(), towtruck, 1.0)
-  exports["hhrp-taskbar"]:taskBar(15000, "Hooking up vehicle")
-    local towOffset = GetOffsetFromEntityInWorldCoords(towtruck, 0.0, -2.2, 0.4)
-    local towRot = GetEntityRotation(towtruck, 1)
-    local vehicleHeightMin, vehicleHeightMax = GetModelDimensions(GetEntityModel(vehicle))
-    print(vehicleHeightMin, vehicleHeightMax)
-
-    AttachEntityToEntity(vehicle, towtruck, GetEntityBoneIndexByName(towtruck, "bodyshell"), 0, -2.2, 0.4 - vehicleHeightMin.z, 0, 0, 0, 1, 1, 0, 1, 0, 1)
-    attachedVehicle = vehicle
-    towingProcess = false
-    busy = false
-end
-
-function DetachVehicle()
-  TriggerEvent('animation:tow')
-  TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 10.0, 'towtruck', 0.5)
-  TaskTurnPedToFaceEntity(PlayerPedId(), towtruck, 1.0)
-  exports["hhrp-taskbar"]:taskBar(7000, "Unloading Vehicle")
-    local towOffset = GetOffsetFromEntityInWorldCoords(towtruck, 0.0, -10.0, 0.0)
-    DetachEntity(attachedVehicle, false, false)
-    SetEntityCoords(attachedVehicle, towOffset.x, towOffset.y, towOffset.z, 1, 0, 0, 1)
-    PlaceObjectOnGroundProperly(attachedVehicle)
-    attachedVehicle = nil
-    towingProcess = false
-    busy = false
-end
-
-function ImpoundVehicle()
-  TriggerEvent('animation:tow')
-  TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 10.0, 'towtruck', 0.5)
-  TaskTurnPedToFaceEntity(PlayerPedId(), towtruck, 1.0)
-  exports["hhrp-taskbar"]:taskBar(7000, "Unloading Vehicle")
-  licensePlate = GetVehicleNumberPlateText(attachedVehicle)
-  TriggerServerEvent("hhrp-imp:mechCar", licensePlate)
-    DeleteEntity(attachedVehicle)
-    if not DoesEntityExist(attachedVehicle) then
-        attachedVehicle = nil
-    end
-    TriggerServerEvent('towtruck:giveCash', math.ceil(math.random(50, 120)))
-    towingProcess = false
-    busy = false
-end
-
-function CheckBlacklist(vehicle)
-    for a = 1, #XTowConfig.BlacklistedVehicles do
-        if GetHashKey(XTowConfig.BlacklistedVehicles[a]) == GetEntityModel(vehicle) then
-            return true
-        end
-    end
-    return false
-end
-
-function GetVehicleInFront()
-    local plyCoords = GetEntityCoords(GetPlayerPed(PlayerId()), false)
-    local plyOffset = GetOffsetFromEntityInWorldCoords(GetPlayerPed(PlayerId()), 0.0, 5.0, 0.0)
-    local rayHandle = StartShapeTestCapsule(plyCoords.x, plyCoords.y, plyCoords.z, plyOffset.x, plyOffset.y, plyOffset.z, 1.0, 10, GetPlayerPed(PlayerId()), 7)
-    local _, _, _, _, vehicle = GetShapeTestResult(rayHandle)
-    return vehicle
-end
-
--- Animations
-RegisterNetEvent('animation:load')
-AddEventHandler('animation:load', function(dict)
-    while ( not HasAnimDictLoaded( dict ) ) do
-        RequestAnimDict( dict )
-        Citizen.Wait( 5 )
-    end
+RegisterNetEvent('hhrp:setJob')
+AddEventHandler('hhrp:setJob', function(job)
+	HHCore.PlayerData.job = job
 end)
 
-RegisterNetEvent('animation:repair')
-AddEventHandler('animation:repair', function(veh)
-    SetVehicleDoorOpen(veh, 4, 0, 0)
-    RequestAnimDict("mini@repair")
-    while not HasAnimDictLoaded("mini@repair") do
-        Citizen.Wait(0)
-    end
+AddEventHandler('hhrp_taxijob:hasEnteredMarker', function(zone)
+	if zone == 'VehicleSpawner' then
+		CurrentAction     = 'vehicle_spawner'
+		CurrentActionMsg  = _U('spawner_prompt')
+		CurrentActionData = {}
+	elseif zone == 'VehicleDeleter' then
+		local playerPed = PlayerPedId()
+		local vehicle   = GetVehiclePedIsIn(playerPed, false)
 
-    TaskTurnPedToFaceEntity(PlayerPedId(), veh, 1.0)
-    Citizen.Wait(1000)
+		if IsPedInAnyVehicle(playerPed, false) and GetPedInVehicleSeat(vehicle, -1) == playerPed then
+			CurrentAction     = 'delete_vehicle'
+			CurrentActionMsg  = _U('store_veh')
+			CurrentActionData = { vehicle = vehicle }
+		end
+	elseif zone == 'TaxiActions' then
+		CurrentAction     = 'taxi_actions_menu'
+		CurrentActionMsg  = _U('press_to_open')
+		CurrentActionData = {}
 
-    while fixingvehicle do
-        local anim3 = IsEntityPlayingAnim(PlayerPedId(), "mini@repair", "fixing_a_player", 3)
-        if not anim3 then
-            TaskPlayAnim(PlayerPedId(), "mini@repair", "fixing_a_player", 8.0, -8, -1, 16, 0, 0, 0, 0)
-        end
-        Citizen.Wait(1)
-    end
-    SetVehicleDoorShut(veh, 4, 1, 1)
+	elseif zone == 'Cloakroom' then
+		CurrentAction     = 'cloakroom'
+		CurrentActionMsg  = _U('cloakroom_prompt')
+		CurrentActionData = {}
+	end
 end)
+
+AddEventHandler('hhrp_taxijob:hasExitedMarker', function(zone)
+	HHCore.UI.Menu.CloseAll()
+	CurrentAction = nil
+end)
+
+RegisterNetEvent('hhrp_phone:loaded')
+AddEventHandler('hhrp_phone:loaded', function(phoneNumber, contacts)
+	local specialContact = {
+		name       = _U('phone_taxi'),
+		number     = 'taxi',
+		base64Icon = 'data:image/png;base64,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',
+	}
+
+	TriggerEvent('hhrp_phone:addSpecialContact', specialContact.name, specialContact.number, specialContact.base64Icon)
+end)
+
+-- Create Blips
+Citizen.CreateThread(function()
+	local blip = AddBlipForCoord(Config.Zones.TaxiActions.Pos.x, Config.Zones.TaxiActions.Pos.y, Config.Zones.TaxiActions.Pos.z)
+
+	SetBlipSprite (blip, 198)
+	SetBlipDisplay(blip, 4)
+	SetBlipScale  (blip, 0.7)
+	SetBlipColour (blip, 5)
+	SetBlipAsShortRange(blip, true)
+
+	BeginTextCommandSetBlipName('STRING')
+	AddTextComponentSubstringPlayerName(_U('blip_taxi'))
+	EndTextCommandSetBlipName(blip)
+end)
+
+-- Enter / Exit marker events, and draw markers
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+
+		if HHCore.PlayerData.job and HHCore.PlayerData.job.name == 'taxi' then
+			local coords = GetEntityCoords(PlayerPedId())
+			local isInMarker, letSleep, currentZone = false, true
+
+			for k,v in pairs(Config.Zones) do
+				local distance = GetDistanceBetweenCoords(coords, v.Pos.x, v.Pos.y, v.Pos.z, true)
+
+				if v.Type ~= -1 and distance < Config.DrawDistance then
+					letSleep = false
+					DrawMarker(v.Type, v.Pos.x, v.Pos.y, v.Pos.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, v.Size.x, v.Size.y, v.Size.z, v.Color.r, v.Color.g, v.Color.b, 100, false, false, 2, v.Rotate, nil, nil, false)
+				end
+
+				if distance < v.Size.x then
+					isInMarker, currentZone = true, k
+				end
+			end
+
+			if (isInMarker and not HasAlreadyEnteredMarker) or (isInMarker and LastZone ~= currentZone) then
+				HasAlreadyEnteredMarker, LastZone = true, currentZone
+				TriggerEvent('hhrp_taxijob:hasEnteredMarker', currentZone)
+			end
+
+			if not isInMarker and HasAlreadyEnteredMarker then
+				HasAlreadyEnteredMarker = false
+				TriggerEvent('hhrp_taxijob:hasExitedMarker', LastZone)
+			end
+
+			if letSleep then
+				Citizen.Wait(500)
+			end
+		else
+			Citizen.Wait(1000)
+		end
+	end
+end)
+
+-- Taxi Job
+Citizen.CreateThread(function()
+	while true do
+
+		Citizen.Wait(0)
+		local playerPed = PlayerPedId()
+
+		if OnJob then
+			if CurrentCustomer == nil then
+				DrawSub(_U('drive_search_pass'), 5000)
+
+				if IsPedInAnyVehicle(playerPed, false) and GetEntitySpeed(playerPed) > 0 then
+					local waitUntil = GetGameTimer() + GetRandomIntInRange(30000, 45000)
+
+					while OnJob and waitUntil > GetGameTimer() do
+						Citizen.Wait(0)
+					end
+
+					if OnJob and IsPedInAnyVehicle(playerPed, false) and GetEntitySpeed(playerPed) > 0 then
+						CurrentCustomer = GetRandomWalkingNPC()
+
+						if CurrentCustomer ~= nil then
+							CurrentCustomerBlip = AddBlipForEntity(CurrentCustomer)
+
+							SetBlipAsFriendly(CurrentCustomerBlip, true)
+							SetBlipColour(CurrentCustomerBlip, 2)
+							SetBlipCategory(CurrentCustomerBlip, 3)
+							SetBlipRoute(CurrentCustomerBlip, true)
+
+							SetEntityAsMissionEntity(CurrentCustomer, true, false)
+							ClearPedTasksImmediately(CurrentCustomer)
+							SetBlockingOfNonTemporaryEvents(CurrentCustomer, true)
+
+							local standTime = GetRandomIntInRange(60000, 180000)
+							TaskStandStill(CurrentCustomer, standTime)
+
+							HHCore.ShowNotification(_U('customer_found'))
+						end
+					end
+				end
+			else
+				if IsPedFatallyInjured(CurrentCustomer) then
+					HHCore.ShowNotification(_U('client_unconcious'))
+
+					if DoesBlipExist(CurrentCustomerBlip) then
+						RemoveBlip(CurrentCustomerBlip)
+					end
+
+					if DoesBlipExist(DestinationBlip) then
+						RemoveBlip(DestinationBlip)
+					end
+
+					SetEntityAsMissionEntity(CurrentCustomer, false, true)
+
+					CurrentCustomer, CurrentCustomerBlip, DestinationBlip, IsNearCustomer, CustomerIsEnteringVehicle, CustomerEnteredVehicle, targetCoords = nil, nil, nil, false, false, false, nil
+				end
+
+				if IsPedInAnyVehicle(playerPed, false) then
+					local vehicle          = GetVehiclePedIsIn(playerPed, false)
+					local playerCoords     = GetEntityCoords(playerPed)
+					local customerCoords   = GetEntityCoords(CurrentCustomer)
+					local customerDistance = #(playerCoords - customerCoords)
+
+					if IsPedSittingInVehicle(CurrentCustomer, vehicle) then
+						if CustomerEnteredVehicle then
+							local targetDistance = #(playerCoords - targetCoords)
+
+							if targetDistance <= 10.0 then
+								TaskLeaveVehicle(CurrentCustomer, vehicle, 0)
+
+								HHCore.ShowNotification(_U('arrive_dest'))
+
+								TaskGoStraightToCoord(CurrentCustomer, targetCoords.x, targetCoords.y, targetCoords.z, 1.0, -1, 0.0, 0.0)
+								SetEntityAsMissionEntity(CurrentCustomer, false, true)
+								TriggerServerEvent('hhrp_taxijob:success')
+								RemoveBlip(DestinationBlip)
+
+								local scope = function(customer)
+									HHCore.SetTimeout(60000, function()
+										DeletePed(customer)
+									end)
+								end
+
+								scope(CurrentCustomer)
+
+								CurrentCustomer, CurrentCustomerBlip, DestinationBlip, IsNearCustomer, CustomerIsEnteringVehicle, CustomerEnteredVehicle, targetCoords = nil, nil, nil, false, false, false, nil
+							end
+
+							if targetCoords then
+								DrawMarker(36, targetCoords.x, targetCoords.y, targetCoords.z + 1.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 234, 223, 72, 155, false, false, 2, true, nil, nil, false)
+							end
+						else
+							RemoveBlip(CurrentCustomerBlip)
+							CurrentCustomerBlip = nil
+							targetCoords = Config.JobLocations[GetRandomIntInRange(1, #Config.JobLocations)]
+							local distance = #(playerCoords - targetCoords)
+							while distance < Config.MinimumDistance do
+								Citizen.Wait(5)
+
+								targetCoords = Config.JobLocations[GetRandomIntInRange(1, #Config.JobLocations)]
+								distance = #(playerCoords - targetCoords)
+							end
+
+							local street = table.pack(GetStreetNameAtCoord(targetCoords.x, targetCoords.y, targetCoords.z))
+							local msg    = nil
+
+							if street[2] ~= 0 and street[2] ~= nil then
+								msg = string.format(_U('take_me_to_near', GetStreetNameFromHashKey(street[1]), GetStreetNameFromHashKey(street[2])))
+							else
+								msg = string.format(_U('take_me_to', GetStreetNameFromHashKey(street[1])))
+							end
+
+							HHCore.ShowNotification(msg)
+
+							DestinationBlip = AddBlipForCoord(targetCoords.x, targetCoords.y, targetCoords.z)
+
+							BeginTextCommandSetBlipName('STRING')
+							AddTextComponentSubstringPlayerName('Destination')
+							EndTextCommandSetBlipName(blip)
+							SetBlipRoute(DestinationBlip, true)
+
+							CustomerEnteredVehicle = true
+						end
+					else
+						DrawMarker(36, customerCoords.x, customerCoords.y, customerCoords.z + 1.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 234, 223, 72, 155, false, false, 2, true, nil, nil, false)
+
+						if not CustomerEnteredVehicle then
+							if customerDistance <= 40.0 then
+
+								if not IsNearCustomer then
+									HHCore.ShowNotification(_U('close_to_client'))
+									IsNearCustomer = true
+								end
+
+							end
+
+							if customerDistance <= 20.0 then
+								if not CustomerIsEnteringVehicle then
+									ClearPedTasksImmediately(CurrentCustomer)
+
+									local maxSeats, freeSeat = GetVehicleMaxNumberOfPassengers(vehicle)
+
+									for i=maxSeats - 1, 0, -1 do
+										if IsVehicleSeatFree(vehicle, i) then
+											freeSeat = i
+											break
+										end
+									end
+
+									if freeSeat then
+										TaskEnterVehicle(CurrentCustomer, vehicle, -1, freeSeat, 2.0, 0)
+										CustomerIsEnteringVehicle = true
+									end
+								end
+							end
+						end
+					end
+				else
+					DrawSub(_U('return_to_veh'), 5000)
+				end
+			end
+		else
+			Citizen.Wait(500)
+		end
+	end
+end)
+
+-- Key Controls
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+
+		if CurrentAction and not IsDead then
+			HHCore.ShowHelpNotification(CurrentActionMsg)
+
+			if IsControlJustReleased(0, 38) and HHCore.PlayerData.job and HHCore.PlayerData.job.name == 'taxi' then
+				if CurrentAction == 'taxi_actions_menu' then
+					OpenTaxiActionsMenu()
+				elseif CurrentAction == 'vehicle_spawner' then
+					OpenVehicleSpawnerMenu()
+				elseif CurrentAction == 'delete_vehicle' then
+					DeleteJobVehicle()
+				end
+
+				CurrentAction = nil
+			end
+		end
+
+		if IsControlJustReleased(0, 167) and IsInputDisabled(0) and not IsDead and Config.EnablePlayerManagement and HHCore.PlayerData.job and HHCore.PlayerData.job.name == 'taxi' then
+			OpenMobileTaxiActionsMenu()
+		end
+	end
+end)
+
+AddEventHandler('hhrp:onPlayerDeath', function()
+	IsDead = true
+end)
+
+AddEventHandler('playerSpawned', function(spawn)
+	IsDead = false
+end)
+
+------------------------------------------------------------------------------------------------------------------------------------
+-- local guiEnabled = false
+-- local Total = 10
+-- local PerMinute = 1
+-- local BaseFare = 10
+-- local taxiFreeze = false
+
+-- DecorRegister("totalCost", 3)
+-- DecorRegister("costPerMinute", 3)
+-- DecorRegister("taxiFreeze", 2)
+
+-- function openGui()
+--  guiEnabled = true
+--  SendNUIMessage({openSection = "openTaxiMeter"})
+-- end
+
+-- function closeGui()
+--  if guiEnabled then
+--   SendNUIMessage({openSection = "closeTaxiMeter"})
+--   guiEnabled = false
+--   SetPlayerControl(PlayerId(), 1, 0)
+-- end
+-- end
+
+-- Citizen.CreateThread(function()
+--  while true do
+--   Citizen.Wait(500)
+--   local isInVehicle = IsPedInAnyVehicle(PlayerPedId(), false)
+--   if isInVehicle then
+--    local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+--    if IsPedInAnyTaxi(PlayerPedId()) then
+--     PerMinute = DecorGetInt(currentVehicle, 'costPerMinute')
+--     openGui()
+--     updateDriverMeter()
+--    else
+--     Citizen.Wait(2500)
+--    end
+--   else
+--    closeGui()
+--    Citizen.Wait(2500)
+--   end
+--  end
+-- end)
+
+-- Citizen.CreateThread(function()
+--  while true do
+--   if guiEnabled then
+--    Citizen.Wait(6000)
+--    local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+--    if not DecorGetBool(currentVehicle, 'taxiFreeze') then
+--     local totalFare = DecorGetInt(currentVehicle, 'totalCost')
+--     local newFare = totalFare + math.ceil(PerMinute / 10)
+--     DecorSetInt(currentVehicle, 'totalCost', newFare)
+--     updateDriverMeter()
+--    end
+--   else
+--    Citizen.Wait(5000)
+--   end
+--  end
+-- end)
+
+
+-- function updateDriverMeter()
+--  local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+--  local updateTotal = DecorGetInt(currentVehicle, 'totalCost')
+
+--  SendNUIMessage({openSection = "updateTotal", sentnumber = "$"..updateTotal..".00" })
+--  SendNUIMessage({openSection = "updatePerMinute", sentnumber = "$"..PerMinute..".00" })
+--  SendNUIMessage({openSection = "updateBaseFare", sentnumber = "$"..BaseFare..".00" })
+-- end
+
+
+-- RegisterCommand("taximin", function(source, args)
+--  local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+
+--  if IsPedInAnyTaxi(PlayerPedId()) then
+--   DecorSetInt(currentVehicle, 'costPerMinute', tonumber(args[1]))
+--  end
+-- end)
+
+-- RegisterCommand("taxibase", function(source, args)
+--  local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+
+--  if IsPedInAnyTaxi(PlayerPedId()) then
+--   BaseFare = tonumber(args[1])
+--  end
+-- end)
+
+-- RegisterCommand("taxireset", function(source, args)
+--  local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+--  local driverPed = GetPedInVehicleSeat(currentVehicle, -1)
+--  if IsPedInAnyTaxi(PlayerPedId()) then
+--   if GetPlayerPed(-1) == driverPed then
+--    DecorSetInt(currentVehicle, 'totalCost', 0)
+--    DecorSetInt(currentVehicle, 'costPerMinute', 0)
+--    DecorSetInt(currentVehicle, 'totalCost', BaseFare)
+--   end
+--  end
+-- end)
+
+-- RegisterCommand("taxifreeze", function(source, args)
+--  local currentVehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+--  local driverPed = GetPedInVehicleSeat(currentVehicle, -1)
+--  if IsPedInAnyTaxi(PlayerPedId()) then
+--   if GetPlayerPed(-1) == driverPed then
+--    taxiFreeze = not DecorGetBool(currentVehicle, 'taxiFreeze')
+--    DecorSetBool(currentVehicle, 'taxiFreeze', taxiFreeze)
+--   end
+--  end
+-- end)

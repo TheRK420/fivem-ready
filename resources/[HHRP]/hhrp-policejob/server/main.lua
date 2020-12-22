@@ -470,12 +470,12 @@ function string.random(length)
 	return str;
 end
 
--- AddEventHandler('es:playerLoaded', function(source, user)
+AddEventHandler('es:playerLoaded', function(source, user)
 -- 	print
---     TriggerEvent("police:getAnimData",user)
---     TriggerEvent("police:getEmoteData",user)
---     TriggerEvent("stocks:retrieveclientstocks",user)
--- end)
+     TriggerEvent("police:getAnimData",user)
+     TriggerEvent("police:getEmoteData",user)
+     TriggerEvent("stocks:retrieveclientstocks",user)
+end)
 
 ----------------COMMAND-----------------
 TriggerEvent('es:addCommand', 'trunkin', function(source, args, user)
