@@ -14,27 +14,27 @@ AddEventHandler("hhrp_TruckRobbery:missionCooldown",function(source)
 	table.insert(cooldownTimer,{CoolTimer = GetPlayerIdentifier(source), time = (Config.CooldownTimer * 60000)}) -- cooldown timer for doing missions
 end)
 
-HHCore.RegisterServerCallback('truck:HasItemkit', function(source, cb, item, count)
-    local src = source
-    local xPlayer = HHCore.GetPlayerFromId(src)
-	local item = 'electronickit'
-	if (xPlayer.getInventoryItem(item)["count"] >= 1) then
-		cb(true)
-	else
-		cb(false)
-	end
-end)
+-- HHCore.RegisterServerCallback('truck:HasItemkit', function(source, cb, item, count)
+--     local src = source
+--     local xPlayer = HHCore.GetPlayerFromId(src)
+-- 	local item = 'electronickit'
+-- 	if (xPlayer.getInventoryItem(item)["count"] >= 1) then
+-- 		cb(true)
+-- 	else
+-- 		cb(false)
+-- 	end
+-- end)
 
-HHCore.RegisterServerCallback('truck:HasItemc4', function(source, cb, item, count)
-    local src = source
-    local xPlayer = HHCore.GetPlayerFromId(src)
-	local item = 'c4_bank'
-	if (xPlayer.getInventoryItem(item)["count"] >= 1) then
-		cb(true)
-	else
-		cb(false)
-	end
-end)
+-- HHCore.RegisterServerCallback('truck:HasItemc4', function(source, cb, item, count)
+--     local src = source
+--     local xPlayer = HHCore.GetPlayerFromId(src)
+-- 	local item = 'c4_bank'
+-- 	if (xPlayer.getInventoryItem(item)["count"] >= 1) then
+-- 		cb(true)
+-- 	else
+-- 		cb(false)
+-- 	end
+--end)
 
 -- thread for syncing the cooldown timer
 Citizen.CreateThread(function() -- do not touch this thread function!
@@ -88,7 +88,7 @@ AddEventHandler('hhrp_TruckRobbery:missionAccepted', function()
 				TriggerClientEvent("hhrp_TruckRobbery:startMission",source,0)
 				end)
 				xPlayer.removeAccountMoney('bank', Config.MissionCost)
-				xPlayer.removeInventoryItem('electronickit', 1)
+				--xPlayer.removeInventoryItem('electronickit', 1)
 
 			else
 				TriggerClientEvent('hhrp:showNotification', source, Config.NotEnoughPolice)
@@ -106,29 +106,29 @@ AddEventHandler('hhrp_TruckRobbery:missionComplete', function()
 	local xPlayer = HHCore.GetPlayerFromId(_source)
 	local reward = math.random(Config.MinReward,Config.MaxReward)
 	
-	if Config.RewardInDirtyMoney then
-		xPlayer.addAccountMoney('black_money', tonumber(reward))
-	else
+	-- if Config.RewardInDirtyMoney then
+	-- 	xPlayer.addAccountMoney('black_money', tonumber(reward))
+	-- else
 		xPlayer.addMoney(reward)
-	end	
+	-- end	
 	TriggerClientEvent('hhrp:showNotification', source, string.format(Config.RewardMessage,reward))
 	
-	if Config.EnableItemReward == true then
-		local itemAmount1 = math.random(Config.ItemMinAmount1,Config.ItemMaxAmount1)
-		xPlayer.addInventoryItem(Config.ItemName1,itemAmount1)
-		local item1 = HHCore.GetItemLabel(Config.ItemName1)
-		TriggerClientEvent('hhrp:showNotification', source, string.format(Config.Item1Message,itemAmount1))
-	end
+	-- if Config.EnableItemReward == true then
+	-- 	local itemAmount1 = math.random(Config.ItemMinAmount1,Config.ItemMaxAmount1)
+	-- 	xPlayer.addInventoryItem(Config.ItemName1,itemAmount1)
+	-- 	local item1 = HHCore.GetItemLabel(Config.ItemName1)
+	-- 	TriggerClientEvent('hhrp:showNotification', source, string.format(Config.Item1Message,itemAmount1))
+	-- end
 	
-	if Config.EnableRareItemReward == true then
-		local chance = math.random(1, 30)
-		local itemAmount2 = math.random(Config.ItemMinAmount2,Config.ItemMaxAmount2)
-		if chance == 1 then
-			xPlayer.addInventoryItem(Config.ItemName2, 1)
-			local item2 = HHCore.GetItemLabel(Config.ItemName2)
-			TriggerClientEvent('hhrp:showNotification', source, string.format(Config.Item2Message, 1))
-		end	
-	end
+	-- if Config.EnableRareItemReward == true then
+	-- 	local chance = math.random(1, 30)
+	-- 	local itemAmount2 = math.random(Config.ItemMinAmount2,Config.ItemMaxAmount2)
+	-- 	if chance == 1 then
+	-- 		xPlayer.addInventoryItem(Config.ItemName2, 1)
+	-- 		local item2 = HHCore.GetItemLabel(Config.ItemName2)
+	-- 		TriggerClientEvent('hhrp:showNotification', source, string.format(Config.Item2Message, 1))
+	-- 	end	
+	-- end
 	
 	Wait(1000)
 end)

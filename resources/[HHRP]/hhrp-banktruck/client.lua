@@ -127,14 +127,14 @@ Citizen.CreateThread(function()
 			if distance <= 1.0 then
 				DrawText3Ds(v.x, v.y, v.z, Config.Draw3DText)
 				if IsControlJustPressed(0, Config.KeyToStartMission) then
-					HHCore.TriggerServerCallback('truck:HasItemkit', function(cb)
-						if cb == true then
+					--HHCore.TriggerServerCallback('truck:HasItemkit', function(cb)
+						if exports['hhrp-inventory']:hasEnoughOfItem('electronickit', 1, true) then
 							TriggerServerEvent("hhrp_TruckRobbery:missionAccepted")
 							Citizen.Wait(500)
 						else
 							exports['mythic_notify']:DoHudText('error', 'You Dont Have A ElectronicKit')
 						end		
-					end)
+					--end)
 				end
 			end
 		end		
@@ -185,7 +185,7 @@ function toggleHackGame()
 	end
 	FreezeEntityPosition(player,true)
 	
-	exports['progressBars']:startUI((Config.RetrieveMissionTimer * 1000), Config.Progress1)
+	exports['hhrp-taskbar']:taskBar((Config.RetrieveMissionTimer * 1000), Config.Progress1)
 	Citizen.Wait((Config.RetrieveMissionTimer * 1000))	
 		
 	TriggerEvent("mhacking:show")
@@ -195,7 +195,7 @@ end
 
 function AtmHackSuccess(success)
 	local player = PlayerPedId()
-    FreezeEntityPosition(player,false)
+	FreezeEntityPosition(player,false)
     TriggerEvent('mhacking:hide')
     if success then
 		HHCore.TriggerServerCallback("hhrp_TruckRobbery:StartMissionNow",function()	end)
@@ -204,6 +204,7 @@ function AtmHackSuccess(success)
 		ClearPedTasks(player)
 		ClearPedSecondaryTask(player)
 	end
+	TriggerEvent("inventory:removeItem", 'electronickit', 1)
 	ClearPedTasks(player)
 	ClearPedSecondaryTask(player)
 end
@@ -300,15 +301,16 @@ AddEventHandler('hhrp_TruckRobbery:startTheEvent', function(num)
 			if distance <= 5 and TruckIsDemolished == false then
 				HHCore.ShowHelpNotification(Config.OpenTruckDoor)
 				if IsControlJustPressed(1, Config.KeyToOpenTruckDoor) then
-					HHCore.TriggerServerCallback('truck:HasItemc4', function(cb)
-						if cb == true then
+					--HHCore.TriggerServerCallback('truck:HasItemc4', function(cb)
+						if exports['hhrp-inventory']:hasEnoughOfItem('c4_bank', 1, true) then
 							TriggerServerEvent('truck:RemoveItemc4')
 							BlowTheTruckDoor()
 							Citizen.Wait(500)
 						else
 							exports['mythic_notify']:DoHudText('error', 'You Dont Have A C4 Bomb!')
 						end
-					end)
+						DropItemPedBankCard()
+					--end)
 				end
 			end
 		end
@@ -362,8 +364,8 @@ function BlowTheTruckDoor()
 			
 			-- if Config.PoliceNotfiyEnabled == true then
 			-- 	TriggerServerEvent('hhrp_TruckRobbery:TruckRobberyInProgress',GetEntityCoords(PlayerPedId()),streetName)
-				local em = 'truck'
-				TriggerServerEvent('heist:truck', GetEntityCoords(PlayerPedId()), streetName, em)
+				--TriggerServerEvent('heist:truck', GetEntityCoords(PlayerPedId()), streetName, em)
+				TriggerEvent("alert:noPedCheck", "banktruck")
 			-- end
 			
 			local playerPed = GetPlayerPed(-1)
@@ -375,7 +377,7 @@ function BlowTheTruckDoor()
 			FreezeEntityPosition(playerPed, true)
 			TaskPlayAnim(playerPed, 'anim@heists@ornate_bank@thermal_charge_heels', "thermal_charge", 3.0, -8, -1, 63, 0, 0, 0, 0 )
 			
-			exports['progressBars']:startUI(5500, Config.Progress2)
+			exports['hhrp-taskbar']:taskBar(5500, Config.Progress2)
 			Citizen.Wait(5500)
 			
 			ClearPedTasks(playerPed)
@@ -384,7 +386,7 @@ function BlowTheTruckDoor()
 			FreezeEntityPosition(playerPed, false)
 			Citizen.Wait(500)
 			
-			exports['progressBars']:startUI((Config.DetonateTimer * 1000), Config.Progress3)	
+			exports['hhrp-taskbar']:taskBar((Config.DetonateTimer * 1000), Config.Progress3)	
 			Citizen.Wait((Config.DetonateTimer * 1000))
 			
 			local TruckPos = GetEntityCoords(ArmoredTruckVeh)
@@ -392,6 +394,7 @@ function BlowTheTruckDoor()
 			SetVehicleDoorBroken(ArmoredTruckVeh, 3, false)
 			AddExplosion(TruckPos.x,TruckPos.y,TruckPos.z, 'EXPLOSION_TANKER', 2.0, true, false, 2.0)
 			ApplyForceToEntity(ArmoredTruckVeh, 0, TruckPos.x,TruckPos.y,TruckPos.z, 0.0, 0.0, 0.0, 1, false, true, true, true, true)
+
 			TruckIsExploded = true
 			HHCore.ShowNotification(Config.BeginToRobTruck)
 		else
@@ -409,7 +412,7 @@ function RobbingTheMoney()
 	while not HasAnimDictLoaded('anim@heists@ornate_bank@grab_cash_heels') do
 		Citizen.Wait(50)
 	end
-	
+	TriggerEvent("alert:noPedCheck", "banktruck")
 	local playerPed = GetPlayerPed(-1)
 	local pos = GetEntityCoords(playerPed)
 	
@@ -417,10 +420,9 @@ function RobbingTheMoney()
 	AttachEntityToEntity(moneyBag, playerPed, GetPedBoneIndex(playerPed, 57005), 0.0, 0.0, -0.16, 250.0, -30.0, 0.0, false, false, false, false, 2, true)
 	TaskPlayAnim(PlayerPedId(), "anim@heists@ornate_bank@grab_cash_heels", "grab", 8.0, -8.0, -1, 1, 0, false, false, false)
 	FreezeEntityPosition(playerPed, true)
-	
-	exports['progressBars']:startUI((Config.RobTruckTimer * 1000), Config.Progress4)
-	Citizen.Wait((Config.RobTruckTimer * 1000))
-	
+	TriggerEvent("player:receiveItem","band",math.random(50, 100))
+	exports['hhrp-taskbar']:taskBar((Config.RobTruckTimer * 1000), Config.Progress4)
+	--Citizen.Wait((Config.RobTruckTimer * 1000))
 	DeleteEntity(moneyBag)
 	ClearPedTasks(playerPed)
 	FreezeEntityPosition(playerPed, false)
@@ -439,42 +441,42 @@ function RobbingTheMoney()
 end
 
 
-RegisterNetEvent('heist:setblip')
-AddEventHandler('heist:setblip', function(targetCoords, type)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
-        local alpha = 250
-        local blipRobbery = AddBlipForCoord(targetCoords.x, targetCoords.y, targetCoords.z)
+-- RegisterNetEvent('heist:setblip')
+-- AddEventHandler('heist:setblip', function(targetCoords, type)
+--     if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+--         local alpha = 250
+--         local blipRobbery = AddBlipForCoord(targetCoords.x, targetCoords.y, targetCoords.z)
 
-		SetBlipSprite (blipRobbery, 67)
-        SetBlipScale  (blipRobbery, 1.5)
-        SetBlipColour(blipRobbery, 1)
-        PulseBlip(blipRobbery)
-        SetBlipAlpha(blipRobbery, alpha)
-        SetBlipHighDetail(blipRobbery, true)
+-- 		SetBlipSprite (blipRobbery, 67)
+--         SetBlipScale  (blipRobbery, 1.5)
+--         SetBlipColour(blipRobbery, 1)
+--         PulseBlip(blipRobbery)
+--         SetBlipAlpha(blipRobbery, alpha)
+--         SetBlipHighDetail(blipRobbery, true)
 
-        BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString('Bank Truck')
-        EndTextCommandSetBlipName(blipRobbery)
+--         BeginTextCommandSetBlipName('STRING')
+--         AddTextComponentString('Bank Truck')
+--         EndTextCommandSetBlipName(blipRobbery)
 
-        while alpha ~= 0 do
-			Citizen.Wait(100 * 8)
-			alpha = alpha - 1
-			SetBlipAlpha(blipRobbery, alpha)
+--         while alpha ~= 0 do
+-- 			Citizen.Wait(100 * 8)
+-- 			alpha = alpha - 1
+-- 			SetBlipAlpha(blipRobbery, alpha)
 
-			if alpha == 0 then
-				RemoveBlip(blipRobbery)
-				return
-			end
-        end
-    end
-end)
+-- 			if alpha == 0 then
+-- 				RemoveBlip(blipRobbery)
+-- 				return
+-- 			end
+--         end
+--     end
+-- end)
 
-RegisterNetEvent('heist:EmergencySend')
-AddEventHandler('heist:EmergencySend', function(messageFull)
-    if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
-		TriggerEvent('chat:addMessage', messageFull)
-    end
-end)
+-- RegisterNetEvent('heist:EmergencySend')
+-- AddEventHandler('heist:EmergencySend', function(messageFull)
+--     if PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' then
+-- 		TriggerEvent('chat:addMessage', messageFull)
+--     end
+-- end)
 -- Thread for Police Notify
 Citizen.CreateThread(function()
 	while true do
@@ -497,6 +499,18 @@ function CreateMissionBlip(location)
 	SetBlipScale(blip, Config.BlipScaleTruck) 
 	SetBlipAsShortRange(blip, true)
 	return blip
+end
+
+function DropItemPedBankCard()
+
+    local pos = GetEntityCoords(PlayerPedId())
+    local myluck = math.random(2)
+
+    if myluck == 1 then
+        TriggerEvent("player:receiveItem","gruppe63",1)
+    elseif myluck == 2 then
+        TriggerEvent("player:receiveItem","cb",1)
+    end
 end
 
 -- Sync mission data
