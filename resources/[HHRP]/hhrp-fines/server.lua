@@ -4,6 +4,7 @@ TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
 
 RegisterCommand('fine', function(source, args, raw)
     local src = source
+    local me = HHCore.GetPlayerFromId(src)
     local myPed = GetPlayerPed(src)
     local myPos = GetEntityCoords(myPed)
     local players = HHCore.GetPlayers()
@@ -22,6 +23,7 @@ RegisterCommand('fine', function(source, args, raw)
                     TriggerClientEvent('DoLongHudText',  v, 'You have been sent a Fine for $' .. tonumber(args[1]) .. '.', 1)
                     TriggerClientEvent('hhrp-fines:Anim', source)
                     xPlayer.removeAccountMoney('bank', tonumber(args[1]))
+                    me.addAccountMoney('bank', tonumber(args[1]))
                 end
             end
         end
