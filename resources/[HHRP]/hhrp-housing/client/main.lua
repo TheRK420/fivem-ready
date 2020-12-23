@@ -161,6 +161,33 @@ DrawText3Ds = function(x, y, z, text)
     ClearDrawOrigin()
 end
 
+RegisterCommand("enterhouse", function()
+    local pos = GetEntityCoords(GetPlayerPed(-1), true)
+    local inRange = false
+    if closesthouse ~= nil then
+        if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, false) < 30) then
+            inRange = false
+            if hasKey then
+                if not inside then
+                    if closesthouse ~= nil then
+                        if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
+                            --if Config.Houses[closesthouse].locked then
+                                --DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~b~E~w~ - Enter')
+                            --elseif not Config.Houses[closesthouse].locked then
+                                --DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~b~E~w~ - Enter')
+                            --end
+                            --if IsControlJustPressed(0, Keys["E"]) then
+                                enterOwnedHouse(closesthouse)
+                                TriggerEvent("inhouse",true)
+                            --end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
+
 Citizen.CreateThread(function()
     while true do
 
@@ -172,21 +199,21 @@ Citizen.CreateThread(function()
                 inRange = true
                 if hasKey then
                     -- ENTER HOUSE
-                    if not inside then
-                        if closesthouse ~= nil then
-                            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                                if Config.Houses[closesthouse].locked then
-                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~b~E~w~ - Enter')
-                                elseif not Config.Houses[closesthouse].locked then
-                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~b~E~w~ - Enter')
-                                end
-                                if IsControlJustPressed(0, Keys["E"]) then
-                                    enterOwnedHouse(closesthouse)
-									TriggerEvent("inhouse",true)
-                                end
-                            end
-                        end
-                    end
+                    -- if not inside then
+                    --     if closesthouse ~= nil then
+                    --         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
+                    --             if Config.Houses[closesthouse].locked then
+                    --                -- DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~b~E~w~ - Enter')
+                    --             elseif not Config.Houses[closesthouse].locked then
+                    --                -- DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~b~E~w~ - Enter')
+                    --             end
+                    --             --if IsControlJustPressed(0, Keys["E"]) then
+                    --                 enterOwnedHouse(closesthouse)
+					-- 				TriggerEvent("inhouse",true)
+                    --             --end
+                    --         end
+                    --     end
+                    -- end
 
                     if CurrentDoorBell ~= 0 then
                         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
