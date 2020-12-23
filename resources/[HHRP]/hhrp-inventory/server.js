@@ -496,7 +496,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
 {
     var targetinvname = targetName;
     var shopArray = PoliceArmory();
-    var shopAmount = 14;
+    var shopAmount = 16;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }    
     else if(secondInventory == "12")
@@ -519,7 +519,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
 {
     var targetinvname = targetName;
     var shopArray = MedicArmory();
-    var shopAmount = 7;
+    var shopAmount = 9;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }  
    else if(secondInventory == "29")
@@ -1123,6 +1123,8 @@ function PoliceArmory() {
         { item_id: "watch", id: 0, name: "Shop", information: "{}", slot: 12, amount: 1 },
         { item_id: "IFAK", id: 0, name: "Shop", information: "{}", slot: 13, amount: 10 },
         { item_id: "radio", id: 0, name: "Shop", information: "{}", slot: 14, amount: 1 },
+        { item_id: "-72657034", id: 0, name: "Shop", information: "{}", slot: 15, amount: 5 },
+        { item_id: "oxygentank", id: 0, name: "Shop", information: "{}", slot: 16, amount: 5 },
 
     ];
     return JSON.stringify(shopItems);
@@ -1137,6 +1139,9 @@ function MedicArmory() {
         { item_id: "sandwich", id: 0, name: "Shop", information: "{}", slot: 5, amount: 10 },
         { item_id: "bandage", id: 0, name: "Shop", information: "{}", slot: 6, amount: 10 },  
         { item_id: "MedicalBag", id: 0, name: "Shop", information: "{}", slot: 7, amount: 5 },
+        { item_id: "-72657034", id: 0, name: "Shop", information: "{}", slot: 8, amount: 5 },
+        { item_id: "oxygentank", id: 0, name: "Shop", information: "{}", slot: 9, amount: 5 },
+        
     ];
     return JSON.stringify(shopItems);
 }
