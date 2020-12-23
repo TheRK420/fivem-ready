@@ -4,7 +4,7 @@ HHCore = nil
 TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
 
 
-AddEventHandler('es:playerLoaded', function(source, user)
+AddEventHandler('hhrp:playerLoaded', function(source, user)
   balances[source] = user.getBank()
     local xPlayer = HHCore.GetPlayerFromId(source)
     local money

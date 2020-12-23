@@ -14,8 +14,8 @@ dependencies {
 
 files {
 	"index.html",
-	"on.ogg",
-	"off.ogg",
+	"on.wav",
+	"off.wav",
 }
 
 client_scripts {

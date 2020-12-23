@@ -52,7 +52,8 @@ HHCore.SavePlayer = function(xPlayer, cb)
 					cb()
 				end)
 			end)
-
+			local data2 = xPlayer.accounts[i].money
+			TriggerEvent("hhrp:money", data2, xPlayer)
 			HHCore.LastPlayerData[xPlayer.source].accounts[xPlayer.accounts[i].name] = xPlayer.accounts[i].money
 		end
 	end

@@ -56,8 +56,8 @@ local rollcashprice = math.random(200, 350)
 local inkedmoneybagprice = math.random(35000, 50000)
 local markedbillsprice = math.random(300, 400)
 
-local rollcount = 10
-local bandcount = 10
+local rollcount = 4
+local bandcount = 4
 
 local FoodTable = {
     [1] = { ["id"] = "coffee", ["name"] = "Coffee" },

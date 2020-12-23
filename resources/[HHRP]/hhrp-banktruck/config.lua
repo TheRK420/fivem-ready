@@ -5,7 +5,7 @@
 Config = {}
 
 -- Police Settings:
-Config.RequiredPoliceOnline = 3			-- required police online for players to do missions
+Config.RequiredPoliceOnline = 0			-- required police online for players to do missions
 Config.PoliceDatabaseName = "police"	-- set the exact name from your jobs database for police
 Config.PoliceNotfiyEnabled = true		-- police notification upon truck robbery enabled (true) or disabled (false)
 Config.PoliceBlipShow = true			-- enable or disable blip on map on police notify

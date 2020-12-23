@@ -10,8 +10,8 @@ ui_page "ui/index.html"
 
 files {
 	"ui/index.html",
-	"ui/mic_click_on.ogg",
-	"ui/mic_click_off.ogg",
+	"ui/on.wav",
+	"ui/off.wav",
 }
 
 shared_scripts {
