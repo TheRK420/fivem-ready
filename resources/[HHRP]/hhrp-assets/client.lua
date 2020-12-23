@@ -166,7 +166,7 @@ function TryTackle()
     if not TimerEnabled then
         --print("attempting a tackle.")
         t, distance = GetClosestPlayer()
-        if(distance ~= -1 and distance < 3) then
+        if(distance ~= -1 and distance < 1.5) then
             local maxheading = (GetEntityHeading(GetPlayerPed(-1)) + 15.0)
             local minheading = (GetEntityHeading(GetPlayerPed(-1)) - 15.0)
             local theading = (GetEntityHeading(t))
