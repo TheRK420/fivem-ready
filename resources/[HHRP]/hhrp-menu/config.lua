@@ -43,7 +43,7 @@ rootMenuConfig =  {
             isDead = exports["hhrp-ambulancejob"]:GetDeath()
             return (HHCore.GetPlayerData().job.name == 'police' and not isDead)
         end,
-        subMenus = {"general:putinvehicle", "general:escort", "medic:revive2", "cuffs:remmask", "police:checkbank", "cuffs:checkinventory" }
+        subMenus = {"general:putinvehicle", "general:escort", "medic:revive2", "cuffs:remmask", "police:checkbank", "cuffs:checkinventory", "police:panic" }
     },
     {
         id = "mdt",
