@@ -186,7 +186,7 @@ function toggleHackGame()
 	FreezeEntityPosition(player,true)
 	
 	exports['hhrp-taskbar']:taskBar((Config.RetrieveMissionTimer * 1000), Config.Progress1)
-	Citizen.Wait((Config.RetrieveMissionTimer * 1000))	
+	--Citizen.Wait((Config.RetrieveMissionTimer * 1000))	
 		
 	TriggerEvent("mhacking:show")
 	TriggerEvent("mhacking:start",Config.HackingBlocks,Config.HackingSeconds,AtmHackSuccess) 
@@ -243,13 +243,15 @@ AddEventHandler('hhrp_TruckRobbery:startTheEvent', function(num)
 		Citizen.Wait(0)
 	end
 
-	ClearAreaOfVehicles(loc.Location.x, loc.Location.y, loc.Location.z, 15.0, false, false, false, false, false) 	
+	--ClearAreaOfVehicles(loc.Location.x, loc.Location.y, loc.Location.z, 15.0, false, false, false, false, false) 	
 	ArmoredTruckVeh = CreateVehicle(GetHashKey('stockade'), loc.Location.x, loc.Location.y, loc.Location.z, -2.436,  996.786, 25.1887, true, true)
 	SetEntityAsMissionEntity(ArmoredTruckVeh)
 	SetEntityHeading(ArmoredTruckVeh, 52.00)
 	
 	local taken = false
+
 	local blip = CreateMissionBlip(loc.Location)
+	print(loc.Location)
 	
 	RequestModel("s_m_m_security_01")
 	while not HasModelLoaded("s_m_m_security_01") do
