@@ -48,9 +48,25 @@ local table_remove = table.remove
 
 Queue.InitHostName = Queue.InitHostName ~= "default FXServer" and Queue.InitHostName or false
 
-for id, power in pairs(Config.Priority) do
+Citizen.CreateThread(function()
+    while true do
+         PerformHttpRequest('http://localhost:8080/panel/get-priority?key=bhosdiwalechacha', function(statusCode, response, headers)
+            if response then
+                _Queue.Priority = {}
+                Config.Priority = json.decode(response)
+
+                for id, power in pairs(Config.Priority) do
+                    _Queue.Priority[string_lower(id)] = power
+                end
+            end
+        end)
+      Citizen.Wait(300000)
+    end
+end)
+
+--[[ for id, power in pairs(Config.Priority) do
     _Queue.Priority[string_lower(id)] = power
-end
+end ]]
 
 function Queue:DebugPrint(msg)
     if Queue.Debug then
