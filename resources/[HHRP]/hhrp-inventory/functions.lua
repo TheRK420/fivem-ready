@@ -393,7 +393,7 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
 
     if (itemid == "radio") then
         --TriggerEvent('radioGui')
-        TriggerEvent('radio:itemradio')
+        TriggerEvent('ls-radio:use')
     end
 
 
