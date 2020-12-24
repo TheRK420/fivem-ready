@@ -408,10 +408,10 @@ Citizen.CreateThread(function()
 	for k,v in pairs(Config.EMSGarage) do
 		local blip = AddBlipForCoord(v[1], v[2], v[3])
 
-		SetBlipSprite (blip, 61)
+		SetBlipSprite (blip, 153)
 		SetBlipDisplay(blip, 4)
-		SetBlipScale  (blip, 0.7)
-		SetBlipColour (blip, 2)
+		SetBlipScale  (blip, 1.3)
+		SetBlipColour (blip, 38)
 		SetBlipAsShortRange(blip, true)
 		BeginTextCommandSetBlipName('STRING')
 		AddTextComponentString('Hospital')
@@ -620,14 +620,14 @@ RegisterCommand('livery', function(source, args, raw)
     end
 end)
 
-RegisterCommand("svlist", function(source, args, rawCommand)
-	if HHCore.GetPlayerData().job.name == 'police' then
-	TriggerEvent("customNotification", " \n [1] Police Bike \n [3] Taurus \n [4] Tahoe \n [5] Ranger \n [6] Charger \n [8] Prison Bus \n [9] Transport Van \n [10] Mustang \n [12] Maverick Helicopter")
-	end
-end)
+-- RegisterCommand("svlist", function(source, args, rawCommand)
+-- 	if HHCore.GetPlayerData().job.name == 'police' then
+-- 	TriggerEvent("customNotification", " \n [1] Police Bike \n [2] Police Harley \n [3] Police Impala \n [4] 2014 Tahoe \n [5] 2018 Tahoe \n [6] 2018 Charger \n [7] 2010 Charger \n [8] Police Tauras \n [9] Police Interceptor \n [10] Police Explorer \n [11] S.E. Porche \n [12] S.E. Mustang \n [13] S.E. Camaro \n [14] Police Durango \n [15] Police F250 \n [16] Police F150 \n [17] Police Silverado \n [18] Police Maverick Helicopter")
+-- 	end
+-- end)
 
 RegisterCommand("svemslist", function(source, args, rawCommand)
 	if HHCore.GetPlayerData().job.name == 'ambulance' then
-	TriggerEvent("customNotification", " \n [1] Ambulance \n [2] Medical Examiner Van \n [3] Charger \n [4] F-350 \n [5] Tahoe \n [6] Helicopter")
+	TriggerEvent("customNotification", " \n [1] EMS Roamer \n [2] EMS Ambucara  \n [3] EMS Tahoe \n [4] EMS Special Ambulance \n [5] EMS Explorer \n [6] EMS Charger  \n [7] EMS Maverick")
 	end
 end)

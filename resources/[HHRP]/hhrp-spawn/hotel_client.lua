@@ -27,6 +27,7 @@ AddEventHandler('hotel:createRoom', function(numMultiplier,roomType,mykeys,illne
 	selectedspawnposition = HHCore.GetPlayerData()["lastPosition"]
 
 	myspawnpoints  = {
+		--[1] =  { ['x'] = selectedspawnposition.x,['y'] =  selectedspawnposition.y,['z'] = selectedspawnposition.z,['h'] = 180.99, ['info'] = ' Last Location', ["typeSpawn"] = 1 },
 		[1] =  { ['x'] = -204.93,['y'] = -1010.13,['z'] = 29.55,['h'] = 180.99, ['info'] = ' Altee Street Train Station', ["typeSpawn"] = 1 },
 		[2] =  { ['x'] = 272.16,['y'] = 185.44,['z'] = 104.67,['h'] = 320.57, ['info'] = ' Vinewood Blvd Taxi Stand', ["typeSpawn"] = 1 },
 		--[3] =  { ['x'] = -1833.96,['y'] = -1223.5,['z'] = 13.02,['h'] = 310.63, ['info'] = ' The Boardwalk', ["typeSpawn"] = 1 },

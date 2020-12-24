@@ -295,7 +295,7 @@ Citizen.CreateThread(function()
                     local ped = GetPlayerPed(id)
                     local playerCoords = GetPedBoneCoords(playerped, HeadBone)
                     if ped == playerped then
-                        DrawText3DTalking(playerCoords.x, playerCoords.y, playerCoords.z+0.5, " ".. GetPlayerServerId(id) .. " ", {152, 251, 152, 255})
+                       -- DrawText3DTalking(playerCoords.x, playerCoords.y, playerCoords.z+0.5, " ".. GetPlayerServerId(id) .. " ", {152, 251, 152, 255})
                     else
                         local pedCoords = GetPedBoneCoords(ped, HeadBone)
                         local distance = math.floor(#(playerCoords - pedCoords))
@@ -319,11 +319,11 @@ Citizen.CreateThread(function()
                         if (distance < disPlayerNames) then
                             if exports.tokovoip_script:getPlayerData(GetPlayerServerId(id), 'voip:talking') == 1 then
                                 if cansee then
-                                    DrawText3DTalking(pedCoords.x, pedCoords.y, pedCoords.z+0.5, " ".. GetPlayerServerId(id) .. " ", {140, 204, 239, 255})
+                                   -- DrawText3DTalking(pedCoords.x, pedCoords.y, pedCoords.z+0.5, " ".. GetPlayerServerId(id) .. " ", {140, 204, 239, 255})
                                 end
                             else
                                 if cansee then
-                                    DrawText3DTalking(pedCoords.x, pedCoords.y, pedCoords.z+0.5, " ".. GetPlayerServerId(id) .. " ", {255, 255, 255, 255})
+                                  --  DrawText3DTalking(pedCoords.x, pedCoords.y, pedCoords.z+0.5, " ".. GetPlayerServerId(id) .. " ", {255, 255, 255, 255})
                                 end
                             end
                         end

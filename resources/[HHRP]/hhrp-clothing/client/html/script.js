@@ -87,6 +87,10 @@ $(function () {
             let drawtextures = event.data.drawtextures;
             let proptextures = event.data.proptextures;
             let skin = event.data.skin;
+            // headBlend = event.data.headBlend;
+            // SetupHeadBlend();
+            // SetupHeadOverlay(event.data.headOverlay);
+            // SetupHeadStructure(event.data.headStructure);
             UpdateInputs(drawables, props, drawtextures, proptextures, skin);
         }
         if (event.data.type == "clothesmdata") {
@@ -428,6 +432,22 @@ $(function () {
                     break;
             }
         }
+        // else if (currentMenu.is($('#clothesmenudata'))) {
+        //     var activeID = $('#clothesmenudata').find('.active').attr('id');
+        //     switch (activeID) {
+        //         case "button-inheritancecustom":
+        //             SaveHeadBlend();
+        //             break;
+        //         case "button-faceshapecustom":
+        //             SaveFaceShape($(this));
+        //             break;
+        //         case "button-appearcustom":
+        //         case "button-haircustom":
+        //         case "button-featurescustom":
+        //             SaveHeadOverlay($(this));
+        //             break;
+        //     }
+        // }
     })
 
     // camera buttons

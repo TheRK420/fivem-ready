@@ -31,7 +31,19 @@
                         class="button-menu waves-effect waves-light btn-large">Accessories</button>
                     <button id="button-ped" data-target="ped"
                         class="button-menu waves-effect waves-light btn-large">Ped</button>
+                    <!-- <button id="button-inheritancecustom" data-target="inheritancecustom"
+                        class="button-menu waves-effect waves-light btn-large">Parents</button> -->
                 </div>
+                <!-- <div id="button_menu" class="row">
+                    <button id="button-faceshapecustom" data-target="faceshapecustom"
+                        class="button-menu waves-effect waves-light btn-large">Face</button>
+                    <button id="button-appearcustom" data-target="appearcustom"
+                        class="button-menu waves-effect waves-light btn-large">Skin</button>
+                    <button id="button-haircustom" data-target="bodyhaircustom"
+                        class="button-menu waves-effect waves-light btn-large">Hair</button>
+                    <button id="button-featurescustom" data-target="featurescustom"
+                        class="button-menu waves-effect waves-light btn-large">Makeup</button>
+                </div> -->
                 <div id="camera_menu" class="row">
                     <div class="col s12">
                         <button class="tog_hat col s2 btn-cam waves-effect waves-light btn-large">
@@ -645,18 +657,763 @@
                         </div>
                     </div>
                 </div>
+                <!-- <div id="inheritancecustom" class="row" style="display: none;">
+                    <div class="scroll-container">
+                        <div id="shapeFirstP" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Face One</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Heads: <span
+                                            class="total-number">46</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input id="shapeFirst" class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Skin: <span
+                                            class="total-number">46</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input id="skinFirst" class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="shapeSecondP" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Face Two</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Heads: <span
+                                            class="total-number">46</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input id="shapeSecond" class="input-number col s4" type="number" value="0" min="0"
+                                        max="45" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Skin: <span
+                                            class="total-number">46</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input id="skinSecond" class="input-number col s4" type="number" value="0" min="0"
+                                        max="45" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="shapeThirdP" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Face Three</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Heads: <span
+                                            class="total-number">46</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input id="shapeThird" class="input-number col s4" type="number" value="0" min="0"
+                                        max="45" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Skin: <span
+                                            class="total-number">46</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input id="skinThird" class="input-number col s4" type="number" value="0" min="0"
+                                        max="45" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="fmix" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Face Mix</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s12 panel-col">
+                                    <input id="shapeMix" type="range" class="slider-range" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="smix" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Skin Mix</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s12 panel-col">
+                                    <input id="skinMix" type="range" class="slider-range" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tmix" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Third Face Mix</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s12 panel-col">
+                                    <input id="thirdMix" type="range" class="slider-range" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="faceshapecustom" style="display: none;" class="row">
+                    <div class="scroll-container">
+                        <div id="brow" class="eyecolor col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Eye Color</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container eyecolor"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="nose" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Nose</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Nose Width: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Nose_Width" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Bone Height: <span
+                                            class="total-number"></span></h6>
+                                    <input type="range" class="slider-range" data-value="Nose_Peak_Hight" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Peak Height: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Nose_Peak_Lenght" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Peak Length: <span
+                                            class="total-number"></span></h6>
+                                    <input type="range" class="slider-range" data-value="Nose_Bone_High" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Peak Lowering: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Nose_Peak_Lowering" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Bone Twist: <span
+                                            class="total-number"></span></h6>
+                                    <input type="range" class="slider-range" data-value="Nose_Bone_Twist" min="-100"
+                                        max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="brow" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Eyebrow</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Eyebrow Height: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="EyeBrown_High" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Eyebrow Depth: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="EyeBrown_Forward" min="-100"
+                                        max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="cheek" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Cheeks</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Cheek Bone Height: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Cheeks_Bone_High" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Cheek Bone Width: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Cheeks_Bone_Width" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Cheek Width: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Cheeks_Width" min="-100"
+                                        max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="jaw" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Jaw Bone</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Jaw Bone Width: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Jaw_Bone_Width" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Jaw Bone Length: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Jaw_Bone_Back_Lenght"
+                                        min="-100" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="chin" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Chin</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Chin Bone Height: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Chimp_Bone_Lowering" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Chin Bone Length: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Chimp_Bone_Lenght" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Chin Bone Width: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Chimp_Bone_Width" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Chin Cleft: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Chimp_Hole" min="-100"
+                                        max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="facefeats" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Misc. Features</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Eye Squint: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Eyes_Openning" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Lips Thickness: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Lips_Thickness" min="-100"
+                                        max="100" />
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Neck Thickness: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="Neck_Thikness" min="-100"
+                                        max="100" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="appearcustom" style="display: none;" class="row">
+                    <div class="scroll-container">
+                        <div id="Blemishes" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Blemishes</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">23</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Ageing" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Ageing</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">14</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Complexion" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Complexion</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">11</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="SunDamage" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Sun Damage</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">10</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="MolesFreckles" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Moles & Freckles</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">17</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="BodyBlemishes" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Body Blemishes</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">11</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="bodyhaircustom" style="display: none;" class="row">
+                    <div class="scroll-container">
+                        <div class="hair col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Hair</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Textures: <span
+                                            class="total-number"></span></h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container haircol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette Secondary</div>
+                                            <div class="collapsible-body color_palette_container haircol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="FacialHair" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Facial Hair</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container haircol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Eyebrows" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Eyebrows</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">33</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container haircol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ChestHair" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Chest Hair</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">16</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container haircol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="featurescustom" style="display: none;" class="row">
+                    <div class="scroll-container">
+                        <div id="Makeup" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Makeup</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">74</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container makeupcol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette Secondary</div>
+                                            <div class="collapsible-body color_palette_container makeupcol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Blush" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Blush</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">6</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container makeupcol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Lipstick" class="col s12 panel">
+                            <div class="col s12 panel-title">
+                                <h6 class="grey-text text-lighten-3 panel-label">Lipstick</h6>
+                            </div>
+                            <div class="col s12 panel-bottom">
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Item: <span
+                                            class="total-number">9</span>
+                                    </h6>
+                                    <button class="button-left col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_left</i>
+                                    </button>
+                                    <input class="input-number col s4" type="number" value="0" />
+                                    <button class="button-right col s4 waves-effect waves-light btn">
+                                        <i class="material-icons">chevron_right</i>
+                                    </button>
+                                </div>
+                                <div class="col s6 panel-col">
+                                    <h6 class="grey-text text-lighten-3 panel-label">Opacity: <span
+                                            class="total-number"></span>
+                                    </h6>
+                                    <input type="range" class="slider-range" data-value="0" min="0" max="100" />
+                                </div>
+                                <div class="col s12">
+                                    <ul class="collapsible">
+                                        <li>
+                                            <div class="collapsible-header">Color Palette</div>
+                                            <div class="collapsible-body color_palette_container makeupcol"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
             </div>
         </div>
+        
         <!-- new -->
         <div id="clothesm" style="display: none" class="row">
             <div id="clothes-container" class="col s5">
                 <div id="button_menu" class="row">
-                    <button id="button-clothes" data-target="clothes"
+                    <button id="button-clothescustom" data-target="clothescustom"
                         class="button-menu waves-effect waves-light btn-large active">Clothes</button>
-                    <button id="button-access" data-target="access"
+                    <button id="button-accesscustom" data-target="accesscustom"
                         class="button-menu waves-effect waves-light btn-large">Accessories</button>
-                    <button id="button-ped" data-target="ped"
-                        class="button-menu waves-effect waves-light btn-large">Ped</button>
+                    <!-- <button id="button-ped" data-target="ped"
+                        class="button-menu waves-effect waves-light btn-large">Ped</button> -->
                 </div>
                 <div id="camera_menu" class="row">
                     <div class="col s12">
@@ -680,7 +1437,7 @@
                         </button>
                     </div>
                 </div>
-                <div id="clothes" class="row">
+                <div id="clothescustom" class="row">
                     <div class="scroll-container">
                         <div id="hats" class="col s12 panel">
                             <div class="col s12 panel-title">
@@ -940,7 +1697,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="access" class="row" style="display: none;">
+                <div id="accesscustom" class="row" style="display: none;">
                     <div class="scroll-container">
                         <div id="masks" class="col s12 panel">
                             <div class="col s12 panel-title">

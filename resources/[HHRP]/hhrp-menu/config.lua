@@ -33,7 +33,7 @@ rootMenuConfig =  {
             isDead = exports["hhrp-ambulancejob"]:GetDeath()
             return not isDead
         end,
-        subMenus = {"general:escort", "general:putinvehicle", "general:unseatnearest", "general:flipvehicle",  "general:keysgive",  "general:emotes", "general:askfortrain", "general:apartgivekey", "general:apartremovekey",  }
+        subMenus = {"general:escort", "general:putinvehicle", "general:unseatnearest", "general:flipvehicle",  "general:keysgive",  "general:emotes", "general:askfortrain", "general:apartgivekey", "general:apartremovekey", "general:lockhouse" }
     },
     {
         id = "police-action",
@@ -276,6 +276,11 @@ newSubMenus = {
         title = "Remove Key",
         icon = "#general-apart-givekey",
         functionName = "hhrp-housing:client:removeHouseKey"
+    },
+    ['general:lockhouse'] = {
+        title = "Lock/Unlock House",
+        icon = "#general-apart-givekey",
+        functionName = "hhrp-housing:client:lockHouse"
     },
     ['general:askfortrain'] = {
         title = "Request Train",

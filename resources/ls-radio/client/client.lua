@@ -1,0 +1,175 @@
+HHCore = nil
+
+local PlayerData                = {}
+
+Citizen.CreateThread(function()
+  while HHCore == nil do
+    TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+    Citizen.Wait(0)
+	end
+end)
+
+RegisterNetEvent('hhrp:setJob')
+AddEventHandler('hhrp:setJob', function(job)
+  PlayerData.job = job
+end)
+
+local radioMenu = false
+
+function PrintChatMessage(text)
+    TriggerEvent('chatMessage', "system", { 255, 0, 0 }, text)
+end
+
+function enableRadio(enable)
+  SetNuiFocus(true, true)
+  radioMenu = enable
+  PhonePlayIn()
+
+  SendNUIMessage({
+    type = "enableui",
+    enable = enable
+  })
+end
+
+RegisterCommand('radio', function(source, args)
+  if exports["hhrp-inventory"]:hasEnoughOfItem("radio", 1) then
+    if Config.enableCmd then
+      enableRadio(true)
+    end
+  end
+end, false)
+
+RegisterNUICallback('joinRadio', function(data, cb)
+    local _source = source
+    local PlayerData = HHCore.GetPlayerData(_source)
+    local playerName = GetPlayerName(PlayerId())
+
+      if tonumber(data.channel) <= Config.RestrictedChannels then
+          if(PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' or PlayerData.job.name == 'fire') then            
+            exports["mumble-voip"]:SetRadioChannel(0)
+            exports["mumble-voip"]:SetRadioChannel(tonumber(data.channel))
+            exports["mumble-voip"]:SetMumbleProperty("radioEnabled", true)          
+            --exports['mythic_notify']:DoHudText('inform', Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>')
+            TriggerEvent('DoLongHudText',Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>',1)
+          elseif not (PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance' or PlayerData.job.name == 'fire') then  
+            TriggerEvent('DoLongHudText',Config.messages['restricted_channel_error'],1)  
+             --exports['mythic_notify']:DoHudText('error', Config.messages['restricted_channel_error'])
+          end
+      else
+        if tonumber(data.channel) > Config.RestrictedChannels then
+          exports["mumble-voip"]:SetRadioChannel(0)
+          exports["mumble-voip"]:SetRadioChannel(tonumber(data.channel))
+          exports["mumble-voip"]:SetMumbleProperty("radioEnabled", true)
+          TriggerEvent('DoLongHudText',Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>',1)  
+          --exports['mythic_notify']:DoHudText('inform', Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>')        
+        else
+          TriggerEvent('DoLongHudText',Config.messages['you_on_radio'] .. data.channel .. '.00 MHz </b>',1)  
+          --exports['mythic_notify']:DoHudText('error', Config.messages['you_on_radio'] .. data.channel .. '.00 MHz </b>')
+        end
+      end
+    cb('ok')
+end)
+
+RegisterNUICallback('leaveRadio', function(data, cb)
+   local playerName = GetPlayerName(PlayerId())
+    exports["mumble-voip"]:SetRadioChannel(0)
+    exports["mumble-voip"]:SetMumbleProperty("radioEnabled", false)
+    TriggerEvent('DoLongHudText', Config.messages['you_leave'],1)  
+    --exports['mythic_notify']:DoHudText('inform', Config.messages['you_leave'] )    
+   cb('ok')
+
+end)
+
+RegisterNUICallback('escape', function(data, cb)
+    enableRadio(false)
+    SetNuiFocus(false, false)
+    PhonePlayOut()
+    cb('ok')
+end)
+
+RegisterNetEvent('ls-radio:use')
+AddEventHandler('ls-radio:use', function()
+  enableRadio(true)
+end)
+
+RegisterNetEvent('ls-radio:onRadioDrop')
+AddEventHandler('ls-radio:onRadioDrop', function(source)
+  local playerName = GetPlayerName(source)
+    exports["mumble-voip"]:SetRadioChannel(0)     
+   -- TriggerEvent('DoLongHudText', Config.messages['you_leave'],1)     
+    --exports['mythic_notify']:DoHudText('inform', Config.messages['you_leave'])
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        if radioMenu then                      
+            DisableControlAction(0, 1, guiEnabled) -- LookLeftRight
+            DisableControlAction(0, 2, guiEnabled) -- LookUpDown
+            DisableControlAction(0, 142, guiEnabled) -- MeleeAttackAlternate
+            DisableControlAction(0, 106, guiEnabled) -- VehicleMouseControlOverride
+            if IsDisabledControlJustReleased(0, 142) then -- MeleeAttackAlternate
+                SendNUIMessage({
+                    type = "click"
+                })
+            end
+        end
+        Citizen.Wait(0)
+    end
+end)
+
+local Radio = {
+
+	Prop = `prop_cs_hand_radio`,
+	Bone = 28422,
+	Offset = vector3(0.0, 0.0, 0.0),
+	Rotation = vector3(0.0, 0.0, 0.0),
+	Dictionary = {
+		"cellphone@",
+		"cellphone@in_car@ds",
+		"cellphone@str",
+		"random@arrests",
+	},
+	Animation = {
+		"cellphone_text_in",
+		"cellphone_text_out",
+		"cellphone_call_listen_a",
+		"generic_radio_chatter",
+	},
+	Clicks = true, -- Radio clicks
+}
+
+Citizen.CreateThread(function()
+	while true do
+    Citizen.Wait(0)
+    if IsControlJustPressed(0, 137) then
+      loadanimdict('random@arrests')
+      TaskPlayAnim(GetPlayerPed(-1), 'random@arrests', 'generic_radio_chatter', 8.0, -8, -1 , 63 , 0, 0, 0, 0)      
+      SetEnableHandcuffs(PlayerId(), true)
+    elseif IsControlJustReleased(0, 137) then  
+      StopAnimTask(GetPlayerPed(-1), 'random@arrests', 'generic_radio_chatter', 2.0)       
+      --ClearPedTasks(GetPlayerPed(-1))         
+      SetEnableHandcuffs(PlayerId(), false)
+    end
+    if IsEntityPlayingAnim(GetPlayerPed(PlayerId()), 'random@arrests', 'generic_radio_enter', 3) then
+      DisableActions(PlayerId())
+    elseif IsEntityPlayingAnim(GetPlayerPed(PlayerId()), 'random@arrests', 'radio_chatter', 3) then
+      DisableActions(PlayerId())
+    end
+	end
+end )
+function loadanimdict(dictname)
+  if not HasAnimDictLoaded(dictname) then
+	  RequestAnimDict(dictname) 
+	  while not HasAnimDictLoaded(dictname) do 
+		  Citizen.Wait(1)
+	  end
+  end
+end	
+
+function DisableActions(ped)
+	DisableControlAction(1, 140, true)
+	DisableControlAction(1, 141, true)
+	DisableControlAction(1, 142, true)
+	DisableControlAction(1, 37, true) -- Disables INPUT_SELECT_WEAPON (TAB)
+	DisablePlayerFiring(ped, true) -- Disable weapon firing
+end
