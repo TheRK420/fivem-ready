@@ -138,25 +138,49 @@ local Radio = {
 	Clicks = true, -- Radio clicks
 }
 
+-- Citizen.CreateThread(function()
+-- 	while true do
+--     Citizen.Wait(0)
+--     if IsControlJustPressed(0, 137) then
+--       loadanimdict('random@arrests')
+--       TaskPlayAnim(GetPlayerPed(-1), 'random@arrests', 'generic_radio_chatter', 8.0, -8, -1 , 63 , 0, 0, 0, 0)      
+--       SetEnableHandcuffs(PlayerId(), true)
+--     elseif IsControlJustReleased(0, 137) then  
+--       StopAnimTask(GetPlayerPed(-1), 'random@arrests', 'generic_radio_chatter', 2.0)       
+--       --ClearPedTasks(GetPlayerPed(-1))         
+--       SetEnableHandcuffs(PlayerId(), false)
+--     end
+--     if IsEntityPlayingAnim(GetPlayerPed(PlayerId()), 'random@arrests', 'generic_radio_enter', 3) then
+--       DisableActions(PlayerId())
+--     elseif IsEntityPlayingAnim(GetPlayerPed(PlayerId()), 'random@arrests', 'radio_chatter', 3) then
+--       DisableActions(PlayerId())
+--     end
+-- 	end
+-- end )
+
+
 Citizen.CreateThread(function()
 	while true do
-    Citizen.Wait(0)
-    if IsControlJustPressed(0, 137) then
-      loadanimdict('random@arrests')
-      TaskPlayAnim(GetPlayerPed(-1), 'random@arrests', 'generic_radio_chatter', 8.0, -8, -1 , 63 , 0, 0, 0, 0)      
-      SetEnableHandcuffs(PlayerId(), true)
-    elseif IsControlJustReleased(0, 137) then  
-      StopAnimTask(GetPlayerPed(-1), 'random@arrests', 'generic_radio_chatter', 2.0)       
-      --ClearPedTasks(GetPlayerPed(-1))         
-      SetEnableHandcuffs(PlayerId(), false)
-    end
-    if IsEntityPlayingAnim(GetPlayerPed(PlayerId()), 'random@arrests', 'generic_radio_enter', 3) then
-      DisableActions(PlayerId())
-    elseif IsEntityPlayingAnim(GetPlayerPed(PlayerId()), 'random@arrests', 'radio_chatter', 3) then
-      DisableActions(PlayerId())
-    end
+		Citizen.Wait( 0 )
+		local ped = PlayerPedId()
+		if DoesEntityExist( ped ) and not IsEntityDead( ped ) then
+			if not IsPauseMenuActive() then 
+				loadAnimDict( "random@arrests" )
+				loadAnimDict("cellphone@")
+				if IsControlJustReleased( 0, 137 ) and IsEntityPlayingAnim(ped, "random@arrests", "generic_radio_enter", 3) or IsEntityPlayingAnim(ped, "random@arrests", "radio_chatter", 3) then -- INPUT_CHARACTER_WHEEL (LEFT ALT)
+					ClearPedTasks(ped)
+				else
+					if IsControlJustPressed( 0, 137 ) and not IsEntityPlayingAnim(ped, "cellphone@", "cellphone_text_to_call", 3) and not IsPlayerFreeAiming(PlayerId()) then -- INPUT_CHARACTER_WHEEL (LEFT ALT)
+						TaskPlayAnim(ped, "random@arrests", "generic_radio_enter", 8.0, 2.0, -1, 50, 2.0, 0, 0, 0 )
+					elseif IsControlJustPressed( 0, 137 ) and not IsEntityPlayingAnim(ped, "cellphone@", "cellphone_text_to_call", 3) and IsPlayerFreeAiming(PlayerId()) then -- INPUT_CHARACTER_WHEEL (LEFT ALT)
+						TaskPlayAnim(ped, "random@arrests", "radio_chatter", 8.0, 2.0, -1, 50, 2.0, 0, 0, 0 )
+					end 
+				end
+			end 
+		end 
 	end
 end )
+
 function loadanimdict(dictname)
   if not HasAnimDictLoaded(dictname) then
 	  RequestAnimDict(dictname) 
