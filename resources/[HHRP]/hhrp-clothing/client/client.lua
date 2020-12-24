@@ -892,11 +892,11 @@ Citizen.CreateThread(function()
 
         local menu = nil
 
-        if nearcloth < 5.0 then
-            menu = {"clothesmenu", "Press ~g~M~s~ to change Clothes $"..StoreCost}
-        elseif neartat < 5.0 then
+        if nearcloth < 2 then
+            menu = {"clothesm", "Press ~g~M~s~ to change Clothes $"..StoreCost}
+        elseif neartat < 2 then
             menu = {"tattoomenu", "Press ~g~M~s~ to change Tattoos $"..StoreCost}
-        elseif nearbarber < 5.0 then
+        elseif nearbarber < 2 then
             menu = {"barbermenu", "Press ~g~M~s~ to visit the Barber $"..StoreCost}
         elseif startingMenu then
             menu = "clothesmenu"
