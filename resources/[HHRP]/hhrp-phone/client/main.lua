@@ -732,7 +732,7 @@ AddEventHandler("phone:Garage", function(vehs)
       name = vehName,
       plate = vehPlate,
       garage = currentGarage,
-      state = state,
+      state = value.garage,
       enginePercent = enginePercent,
       bodyPercent = bodyPercent,
       payments = value.finance,
