@@ -89,7 +89,7 @@
 	"done":"Zrobione!",
 	"adminkickedplayer":"**%s** wyrzucony **%s**, Powód: %s",
 	"adminbannedplayer":"**%s** zablokowany **%s**, Powód: %s, Czas trwania: %s",
-	"adminunbannedplayer":"**%s** odblokowany **%s** [ %s ]",
+	"adminunbannedplayer":"**%s** odblokowany **%s**",
 	"adminslappedplayer":"**%s** jebnięty **%s** za **%s HP**",
 	
 	"adminfrozeplayer":"**%s** zamrożony **%s**.",
@@ -124,8 +124,5 @@
 	"alreadyreported":"Już zreportowałeś tego gracza!",
 	"reportedusageerror":"Błąd! Użyj: /report nick powód",
 	"admincalled":"Pomyślnie zawiadomiono Administratora!",
-
-	"spectatedplayer":"%s ogląda %s",
-	"teleportedtoplayer":"**%s** teleportowany do **%s**"
 	}
 ]

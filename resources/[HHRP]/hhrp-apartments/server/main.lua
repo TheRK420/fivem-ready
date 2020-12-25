@@ -11,14 +11,14 @@ AddEventHandler('apartments:server:CreateApartment', function(type, label)
     local num =  tostring(math.random(1, 9999))
     local apartmentId = tostring(type .. num)
     local label = tostring(label .. " " .. num)
-    if ( xPlayer.getAccount('bank').money >= 1000 ) then
-        xPlayer.removeBank(1000)
+    if ( xPlayer.getAccount('bank').money >= 10000 ) then
+        xPlayer.removeBank(10000)
         MySQL.Async.execute("INSERT INTO apartments (name, type, label, identifier) VALUES (@name, @type, @label, @identifier)",{['@name'] = apartmentId, ['@type'] = type , ['@label'] = label,['@identifier'] = xPlayer.identifier })
         TriggerClientEvent('DoLongHudText', src,('You have apartment ('..label..')'), 3)
         TriggerClientEvent("apartments:client:SpawnInApartment", src, apartmentId, type)
         TriggerClientEvent("apartments:client:SetHomeBlip", src, type)
     else
-        TriggerClientEvent('DoLongHudText', src,('You Dont Have Enough Money In The Bank. Amount Required: $1000'), 2)
+        TriggerClientEvent('DoLongHudText', src,('You Dont Have Enough Money In The Bank. Amount Required: $10000'), 2)
     end
 end)
 

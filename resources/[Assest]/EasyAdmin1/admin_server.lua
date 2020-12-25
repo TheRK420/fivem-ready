@@ -4,13 +4,30 @@
 ---- THESE ARE **NOT** CONFIG VALUES, USE THE CONVARS IF YOU WANT TO CHANGE SOMETHING
 ------------------------------------
 ------------------------------------
-if GetConvar("gamename", "not-rdr3") == "rdr3" then 
-	RedM = true
-else
-	RedM = false
-end
+-- THIS IS OBSOLETE NOW, PLEASE USE THE WIKI TO ADD ADMINS
+admins = {}
+-- THIS IS OBSOLETE NOW, PLEASE USE THE WIKI TO ADD ADMINS
+permissions = {
+	ban = false,
+	kick = false,
+	spectate = false,
+	unban = false,
+	teleport = false,
+	manageserver = false,
+	slap = false,
+	freeze = false,
+	screenshot = false,
+	immune = false,
+	anon = false,
+	mute = false,
+}
+-- Muted Players Table
+MutedPlayers = {} 
+-- cached players, for offline banning
+CachedPlayers = {}
+OnlineAdmins = {}
+ChatReminders = {}
 
-ExcludedWebhookFeatures = {}
 
 Citizen.CreateThread(function()
 	while true do 
@@ -52,7 +69,7 @@ function sendRandomReminder()
 
 		reminder = string.gsub(reminder, "@time", os.date("%X", os.time()))
 		reminder = string.gsub(reminder, "@date", os.date("%x", os.time()))
-		TriggerClientEvent("chat:addMessage", -1, { args = { "EasyAdmin", reminder } })
+		TriggerClientEvent('chatMessagess', -1, 'EasyAdmin: ', 3, reminder)
 	end
 end
 
@@ -82,44 +99,10 @@ AddEventHandler('playerDropped', function (reason)
 end)
 
 AddEventHandler("EasyAdmin:amiadmin", function()
-	if not CachedPlayers[source] then
-		CachedPlayers[source] = {id = source, name = GetPlayerName(source), identifiers = GetPlayerIdentifiers(source), immune = DoesPlayerHavePermission(source,"easyadmin.immune")}
+	if not CachedPlayers[source] and not DoesPlayerHavePermission(source,"easyadmin.immune") then
+		CachedPlayers[source] = {id = source, name = GetPlayerName(source), identifiers = GetPlayerIdentifiers(source)}
 	end
 end)
-
-RegisterServerEvent("EasyAdmin:GetPlayerList")
-AddEventHandler("EasyAdmin:GetPlayerList", function()
-	if IsPlayerAdmin(source) then
-		local l = {}
-		local players = GetPlayers()
-		for i, player in pairs(players) do
-			if CachedPlayers[player] then
-				table.insert(l, CachedPlayers[player])
-			end
-		end
-		TriggerClientEvent("EasyAdmin:GetPlayerList", source, l) 
-	end
-end)
-
-
-RegisterServerEvent("EasyAdmin:GetInfinityPlayerList")
-AddEventHandler("EasyAdmin:GetInfinityPlayerList", function()
-	if IsPlayerAdmin(source) then
-		local l = {}
-		local players = GetPlayers()
-
-		for i, player in pairs(players) do
-			local player = tonumber(player)
-			for i, cached in pairs(CachedPlayers) do
-				if (cached.id == player) then
-					table.insert(l, CachedPlayers[i])
-				end
-			end
-		end
-		TriggerClientEvent("EasyAdmin:GetInfinityPlayerList", source, l) 
-	end
-end)
-
 
 RegisterServerEvent("EasyAdmin:requestCachedPlayers")
 AddEventHandler('EasyAdmin:requestCachedPlayers', function(playerId)
@@ -129,15 +112,6 @@ AddEventHandler('EasyAdmin:requestCachedPlayers', function(playerId)
 		PrintDebugMessage("Cached Players requested by "..getName(src,true))
 	end
 end)
-
-function GetOnlineAdmins()
-	return OnlineAdmins
-end
-
-function IsPlayerAdmin(pid)
-	return OnlineAdmins[pid]
-end
-
 
 function DoesPlayerHavePermission(player, object)
 	local haspermission = false
@@ -175,20 +149,6 @@ RegisterCommand("ea_addReminder", function(source, args, rawCommand)
 	end
 end, false)
 
-RegisterCommand("ea_testWebhook", function(source, args, rawCommand)
-	if DoesPlayerHavePermission(source,"easyadmin.manageserver") then
-		SendWebhookMessage(moderationNotification, "EasyAdmin: **WEBHOOK TEST**")
-		PrintDebugMessage("Webhook Message Sent")
-	end
-end, false)
-
-RegisterCommand("ea_excludeWebhookFeature", function(source, args, rawCommand)
-    if DoesPlayerHavePermission(source, "easyadmin.manageserver") then
-        ExcludedWebhookFeatures = Set(args)
-        PrintDebugMessage("Webhook excludes set")
-    end
-end, false)
-
 AnonymousAdmins = {}
 Citizen.CreateThread(function()
 	local strfile = LoadResourceFile(GetCurrentResourceName(), "language/"..GetConvar("ea_LanguageName", "en")..".json")
@@ -206,7 +166,7 @@ Citizen.CreateThread(function()
 	else
 		enableDebugging = false
 	end
-	minimumMatchingIdentifiers = GetConvarInt("ea_minIdentifierMatches", 2)
+	minimumMatchingIdentifiers = GetConvarInt("ea_minIdentifierMatches", 1)
 	
 	RegisterServerEvent('EasyAdmin:amiadmin')
 	AddEventHandler('EasyAdmin:amiadmin', function()
@@ -217,10 +177,6 @@ Citizen.CreateThread(function()
 			if perm == "screenshot" and not screenshots then
 				thisPerm = false
 			end
-			--if (perm == "teleport" or perm == "spectate") and infinity then
-			--if (perm == "spectate") and infinity then
-			--	thisPerm = false
-			--end 
 			if thisPerm == true then
 				OnlineAdmins[source] = true 
 			end
@@ -240,7 +196,7 @@ Citizen.CreateThread(function()
 		if DoesPlayerHavePermission(source,"easyadmin.unban") then
 			TriggerClientEvent('chat:addSuggestion', source, '/unban', GetLocalisedText("chatsuggestionunban"), { {name='identifier', help="the identifier ( such as steamid, ip or license )"} })
 		end
-		if DoesPlayerHavePermission(source,"easyadmin.teleport.player") then
+		if DoesPlayerHavePermission(source,"easyadmin.teleport") then
 			TriggerClientEvent('chat:addSuggestion', source, '/teleport', GetLocalisedText("chatsuggestionteleport"), { {name='player id', help="the player's server id"} })
 		end
 		if DoesPlayerHavePermission(source,"easyadmin.manageserver") then
@@ -257,11 +213,7 @@ Citizen.CreateThread(function()
 		end
 		
 		-- give player the right settings to work with
-		local key = GetConvar("ea_MenuButton", 289)
-		if RedM then
-			key = GetConvar("ea_MenuButton", "PhotoModePc")
-		end
-		TriggerClientEvent("EasyAdmin:SetSetting", source, "button", key)
+		TriggerClientEvent("EasyAdmin:SetSetting", source, "button",GetConvarInt("ea_MenuButton", 289) )
 		if GetConvar("ea_alwaysShowButtons", "false") == "true" then
 			TriggerClientEvent("EasyAdmin:SetSetting", source, "forceShowGUIButtons", true)
 		else
@@ -275,7 +227,7 @@ Citizen.CreateThread(function()
 	RegisterServerEvent("EasyAdmin:kickPlayer")
 	AddEventHandler('EasyAdmin:kickPlayer', function(playerId,reason)
 		if DoesPlayerHavePermission(source,"easyadmin.kick") and not DoesPlayerHavePermission(playerId,"easyadmin.immune") then
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminkickedplayer"), getName(source), getName(playerId), reason), "kick")
+			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminkickedplayer"), getName(source), getName(playerId), reason))
 			PrintDebugMessage("Kicking Player "..getName(source).." for "..reason)
 			DropPlayer(playerId, string.format(GetLocalisedText("kicked"), getName(source), reason) )
 		end
@@ -285,9 +237,7 @@ Citizen.CreateThread(function()
 	AddEventHandler('EasyAdmin:requestSpectate', function(playerId)
 		if DoesPlayerHavePermission(source,"easyadmin.spectate") then
 			PrintDebugMessage("Player "..getName(source,true).." Requested Spectate to "..getName(playerId,true))
-			local tgtCoords = GetEntityCoords(GetPlayerPed(playerId))
-			TriggerClientEvent("EasyAdmin:requestSpectate", source, playerId, tgtCoords)
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText('spectatedplayer'), getName(source), getName(playerId)), "spectate")
+			TriggerClientEvent("EasyAdmin:requestSpectate", source, playerId)
 		end
 	end)
 	
@@ -338,7 +288,7 @@ Citizen.CreateThread(function()
 				local ban = {banid = GetFreshBanId(), identifiers = bannedIdentifiers, banner = getName(source, true), reason = reason, expire = expires }
 				updateBlacklist( ban )
 				PrintDebugMessage("Player "..getName(source,true).." banned player "..CachedPlayers[playerId].name.." for "..reason)
-				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminbannedplayer"), getName(source), CachedPlayers[playerId].name, reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ), "ban")
+				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminbannedplayer"), getName(source), CachedPlayers[playerId].name, reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ))
 				DropPlayer(playerId, string.format(GetLocalisedText("banned"), reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ) )
 			end
 		end
@@ -346,7 +296,7 @@ Citizen.CreateThread(function()
 
 	RegisterServerEvent("EasyAdmin:offlinebanPlayer")
 	AddEventHandler('EasyAdmin:offlinebanPlayer', function(playerId,reason,expires)
-		if playerId ~= nil and not CachedPlayers[playerId].immune then
+		if playerId ~= nil then
 			if DoesPlayerHavePermission(source,"easyadmin.ban") and not DoesPlayerHavePermission(playerId,"easyadmin.immune") then
 				local bannedIdentifiers = CachedPlayers[playerId].identifiers or GetPlayerIdentifiers(playerId)
 				if expires and expires < os.time() then
@@ -358,7 +308,7 @@ Citizen.CreateThread(function()
 				local ban = {banid = GetFreshBanId(), identifiers = bannedIdentifiers, banner = getName(source, true), reason = reason, expire = expires }
 				updateBlacklist( ban )
 				PrintDebugMessage("Player "..getName(source,true).." offline banned player "..CachedPlayers[playerId].name.." for "..reason)
-				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminofflinebannedplayer"), getName(source), CachedPlayers[playerId].name, reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ), "ban")
+				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminofflinebannedplayer"), getName(source), CachedPlayers[playerId].name, reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ))
 			end
 		end
 	end)
@@ -372,7 +322,7 @@ Citizen.CreateThread(function()
 		
 		updateBlacklist( ban )
 		PrintDebugMessage("Console banned player "..getName(playerId,true).." for "..reason)
-		SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminbannedplayer"), 'Console', getName(playerId), reason, os.date('%d/%m/%Y 	%H:%M:%S', expires or 10444633200 ) ), "ban")
+		SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminbannedplayer"), 'Console', getName(playerId), reason, os.date('%d/%m/%Y 	%H:%M:%S', expires or 10444633200 ) ))
 		DropPlayer(playerId, GetLocalisedText("bancheating"))
 	end)
 	
@@ -391,7 +341,7 @@ Citizen.CreateThread(function()
 		
 		
 		PrintDebugMessage("Player "..getName(source,true).." added ban "..reason)
-		SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminbannedplayer"), "Console", getName(tostring(playerId) or "?"), reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ), "ban")
+		SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminbannedplayer"), "Console", getName(tostring(playerId) or "?"), reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ))
 		if not offline then
 			DropPlayer(playerId, string.format(GetLocalisedText("banned"), reason, os.date('%d/%m/%Y 	%H:%M:%S', expires ) ) )
 		end
@@ -431,26 +381,19 @@ Citizen.CreateThread(function()
 			if getName(args[1]) then
 				TriggerClientEvent("EasyAdmin:requestSpectate", source, args[1])
 			else
-				TriggerClientEvent("chat:addMessage", source, { args = { "EasyAdmin", GetLocalisedText("playernotfound") } })
+				TriggerClientEvent('chatMessagess', source, 'EasyAdmin: ', 3, GetLocalisedText("playernotfound"))
 			end
 		end
 	end, false)
 	
 	RegisterCommand("unban", function(source, args, rawCommand)
 		if args[1] and DoesPlayerHavePermission(source,"easyadmin.unban") then
-			PrintDebugMessage("Player "..getName(source,true).." Unbanned "..args[1])
-			UnbanIdentifier(args[1])
-			if (source ~= 0) then
-				TriggerClientEvent("chat:addMessage", source, { args = { "EasyAdmin", GetLocalisedText("done") } })
-			else
-				Citizen.Trace(GetLocalisedText("done"))
-			end
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminunbannedplayer"), getName(source), args[1])) -- Use the "safe" getName function instead.
+			TriggerClientEvent('chatMessagess', source, 'EasyAdmin: ', 3, "Please use the WebAdmin Interface, if possible.")
 		end
 	end, false)
 	
 	RegisterCommand("teleport", function(source, args, rawCommand)
-		if args[1] and DoesPlayerHavePermission(source,"easyadmin.teleport.player") then
+		if args[1] and DoesPlayerHavePermission(source,"easyadmin.teleport") then
 			PrintDebugMessage("Player Requested Teleport something")
 			-- not yet
 		end
@@ -472,7 +415,7 @@ Citizen.CreateThread(function()
 
 	RegisterCommand("slap", function(source, args, rawCommand)
 		if args[1] and args[2] and DoesPlayerHavePermission(source,"easyadmin.slap") then
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminslappedplayer"), getName(source), getName(args[1]), args[2]), "slap")
+			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminslappedplayer"), getName(source), getName(args[1]), args[2]))
 			PrintDebugMessage("Player "..getName(source,true).." slapped "..getName(args[1],true).." for "..args[2].." HP")
 			TriggerClientEvent("EasyAdmin:SlapPlayer", args[1], args[2])
 		end
@@ -487,7 +430,7 @@ Citizen.CreateThread(function()
 			for i,_ in pairs(OnlineAdmins) do 
 				TriggerClientEvent('chatMessage', i, "^3!!EasyAdmin Admin Call!!^7\n"..string.format(string.gsub(GetLocalisedText("playercalledforadmin"), "```", ""), getName(source), source, reason))
 			end
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("playercalledforadmin"), getName(source), source, reason), "calladmin")
+			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("playercalledforadmin"), getName(source), source, reason))
 			TriggerClientEvent('chatMessage', source, "^3EasyAdmin^7", {255,255,255}, GetLocalisedText("admincalled"))
 		end
 	end, false)
@@ -529,7 +472,7 @@ Citizen.CreateThread(function()
 				end
 				if addReport then
 					table.insert(PlayerReports[id], {source = source, sourceName = GetPlayerName(source), reason = reason, time = os.time()})
-					SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("playerreportedplayer"), getName(source), source, GetPlayerName(id), id, reason, #PlayerReports[id], minimumreports), "report")
+					SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("playerreportedplayer"), getName(source), source, GetPlayerName(id), id, reason, #PlayerReports[id], minimumreports))
 					-- "playerreportedplayer":"```\nUser %s (ID: %a) reported a player!\n%s (%a), Reason: %s\nReport %a/%a\n```",
 					for i,_ in pairs(OnlineAdmins) do 
 						TriggerClientEvent('chatMessage', i, "^3!!EasyAdmin Report!!^7\n"..string.format(string.gsub(GetLocalisedText("playerreportedplayer"), "```", ""), getName(source), source, GetPlayerName(id), id, reason, #PlayerReports[id], minimumreports))
@@ -548,23 +491,10 @@ Citizen.CreateThread(function()
 	end, false)
 	
 	RegisterServerEvent("EasyAdmin:TeleportPlayerToCoords")
-	AddEventHandler('EasyAdmin:TeleportPlayerToCoords', function(playerId,tgtCoords)
-		if DoesPlayerHavePermission(source,"easyadmin.teleport.player") then
-			PrintDebugMessage("Player "..getName(source,true).." requsted teleport to "..tgtCoords.x..", "..tgtCoords.y..", "..tgtCoords.z)
-			TriggerClientEvent("EasyAdmin:TeleportRequest", playerId, tgtCoords)
-		end
-	end)
-
-	RegisterServerEvent("EasyAdmin:TeleportAdminToPlayer")
-	AddEventHandler("EasyAdmin:TeleportAdminToPlayer", function(id)
-		if GetPlayerName(id) and DoesPlayerHavePermission(source, "easyadmin.teleport") then
-			local tgtPlayer = id
-			local tgtPed = GetPlayerPed(tgtPlayer)
-			local tgtCoords = GetEntityCoords(tgtPed)
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("teleportedtoplayer"), getName(source), getName(id)), "teleport")
-			TriggerClientEvent('EasyAdmin:TeleportRequest', source,tgtCoords)
-		else
-			print('EASYADMIN FAILED TO TELEPORT'..source..' TO ID: '..id)
+	AddEventHandler('EasyAdmin:TeleportPlayerToCoords', function(playerId,px,py,pz)
+		if DoesPlayerHavePermission(source,"easyadmin.teleport") then
+			PrintDebugMessage("Player "..getName(source,true).." requsted teleport to "..px..", "..py..", "..pz)
+			TriggerClientEvent("EasyAdmin:TeleportRequest", playerId, px,py,pz)
 		end
 	end)
 	
@@ -572,7 +502,7 @@ Citizen.CreateThread(function()
 	AddEventHandler('EasyAdmin:SlapPlayer', function(playerId,slapAmount)
 		if DoesPlayerHavePermission(source,"easyadmin.slap") then
 			PrintDebugMessage("Player "..getName(source,true).." slapped "..getName(playerId,true).." for "..slapAmount.." HP")
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminslappedplayer"), getName(source), getName(playerId), slapAmount), "slap")
+			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminslappedplayer"), getName(source), getName(playerId), slapAmount))
 			TriggerClientEvent("EasyAdmin:SlapPlayer", playerId, slapAmount)
 		end
 	end)
@@ -581,10 +511,10 @@ Citizen.CreateThread(function()
 	AddEventHandler('EasyAdmin:FreezePlayer', function(playerId,toggle)
 		if DoesPlayerHavePermission(source,"easyadmin.freeze") then
 			if toggle then
-				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminfrozeplayer"), getName(source), getName(playerId)), "freeze")
+				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminfrozeplayer"), getName(source), getName(playerId)))
 				PrintDebugMessage("Player "..getName(source,true).." froze "..getName(playerId,true))
 			else
-				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminunfrozeplayer"), getName(source), getName(playerId)), "freeze")
+				SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminunfrozeplayer"), getName(source), getName(playerId)))
 				PrintDebugMessage("Player "..getName(source,true).." unfroze "..getName(playerId,true))
 			end
 			TriggerClientEvent("EasyAdmin:FreezePlayer", playerId, toggle)
@@ -596,7 +526,7 @@ Citizen.CreateThread(function()
 	RegisterServerEvent("EasyAdmin:TakeScreenshot")
 	AddEventHandler('EasyAdmin:TakeScreenshot', function(playerId)
 		if scrinprogress then
-			TriggerClientEvent("chat:addMessage", source, { args = { "EasyAdmin", GetLocalisedText("screenshotinprogress") } })
+			TriggerClientEvent('chatMessagess', source, 'EasyAdmin: ', 3, GetLocalisedText("screenshotinprogress"))
 			return
 		end
 		scrinprogress = true
@@ -606,12 +536,9 @@ Citizen.CreateThread(function()
 		if DoesPlayerHavePermission(source,"easyadmin.screenshot") then
 			thistemporaryevent = AddEventHandler("EasyAdmin:TookScreenshot", function(result)
 				res = tostring(result)
-				if (moderationNotification == GetConvar("ea_screenshoturl", 'https://wew.wtf/upload.php')) then
-					res = ""
-				end
-				SendWebhookMessage(moderationNotification, string.format(GetLocalisedText("admintookscreenshot"), getName(src), getName(playerId), res), "screenshot")
-				TriggerClientEvent('chat:addMessage', src, { template = '<img src="{0}" style="max-width: 400px;" />', args = { res } })
-				TriggerClientEvent("chat:addMessage", src, { args = { "EasyAdmin", string.format(GetLocalisedText("screenshotlink"), res) } })
+				SendWebhookMessage(moderationNotification, string.format(GetLocalisedText("admintookscreenshot"), getName(src), getName(playerId), res))
+				TriggerClientEvent('chatMessagess', src, 'EasyAdmin: ', 3, res)
+				TriggerClientEvent('chatMessagess', src, 'EasyAdmin: ', 3, string.format(GetLocalisedText("screenshotlink"), res))
 				PrintDebugMessage("Screenshot for Player "..getName(playerId,true).." done, "..res.." requsted by"..getName(src,true))
 				scrinprogress = false
 				RemoveEventHandler(thistemporaryevent)
@@ -625,7 +552,7 @@ Citizen.CreateThread(function()
 				if timeoutwait == 5 then
 					RemoveEventHandler(thistemporaryevent)
 					scrinprogress = false -- cancel screenshot, seems like it failed
-					TriggerClientEvent("chat:addMessage", src, { args = { "EasyAdmin", "Screenshot Failed!" } })
+					TriggerClientEvent('chatMessagess', src, 'EasyAdmin: ', 3, "Screenshot Failed!")
 				end
 			until not scrinprogress
 		end
@@ -633,17 +560,20 @@ Citizen.CreateThread(function()
 	
 	RegisterServerEvent("EasyAdmin:unbanPlayer")
 	AddEventHandler('EasyAdmin:unbanPlayer', function(banId)
-		local thisBan = nil
 		if DoesPlayerHavePermission(source,"easyadmin.unban") then
-			for i,ban in ipairs(blacklist) do 
-				if ban.banid == banId then
-					thisBan = ban
-					break
-				end
-			end
 			UnbanId(banId)
 			PrintDebugMessage("Player "..getName(source,true).." unbanned "..banId)
-			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminunbannedplayer"), getName(source), banId, thisBan.reason), "ban")
+			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminunbannedplayer"), getName(source), banId))
+			SaveResourceFile(GetCurrentResourceName(), "banlist.json", json.encode(blacklist, {indent = true}), -1)
+		end
+	end)
+
+	RegisterServerEvent("EasyAdmin:unbanIdent")
+	AddEventHandler('EasyAdmin:unbanIdent', function(banId)
+		if DoesPlayerHavePermission(source,"easyadmin.unban") then
+			UnbanIdentifier(banId)
+			PrintDebugMessage("Player "..getName(source,true).." unbanned "..banId)
+			SendWebhookMessage(moderationNotification,string.format(GetLocalisedText("adminunbannedplayer"), getName(source), banId))
 			SaveResourceFile(GetCurrentResourceName(), "banlist.json", json.encode(blacklist, {indent = true}), -1)
 		end
 	end)
@@ -654,12 +584,12 @@ Citizen.CreateThread(function()
 		if DoesPlayerHavePermission(src,"easyadmin.mute") then
 			if not MutedPlayers[playerId] then 
 				MutedPlayers[playerId] = true
-				TriggerClientEvent("chat:addMessage", src, { args = { "EasyAdmin", getName(playerId) .. " " .. GetLocalisedText("playermuted") } })
-				PrintDebugMessage("Player "..getName(source,true).." muted "..getName(playerId,true))
+				TriggerClientEvent('chatMessagess', src, 'EasyAdmin: ', 3, "Group: " .. getName(playerId) .. " " .. GetLocalisedText("playermuted"))
+				PrintDebugMessage("Player "..getName(source,true).." muted ".. getName(playerId,true))
 			else 
 				MutedPlayers[playerId] = nil
-				TriggerClientEvent("chat:addMessage", src, { args = { "EasyAdmin", getName(playerId) .. " " .. GetLocalisedText("playerunmuted") } })
-				PrintDebugMessage("Player "..getName(source,true).." unmuted "..getName(playerId,true))
+				TriggerClientEvent('chatMessagess', src, 'EasyAdmin: ', 3, "Group: " .. getName(playerId) .. " " .. GetLocalisedText("playerunmuted"))
+				PrintDebugMessage("Player "..getName(source,true).." unmuted ".. getName(playerId,true))
 			end
 		end
 	end)
@@ -747,8 +677,6 @@ Citizen.CreateThread(function()
 		else
 			if AnonymousAdmins[src] and not anonymousdisabled then
 				return GetLocalisedText("anonymous")
-			elseif CachedPlayers[src] and CachedPlayers[src].name then
-				return CachedPlayers[src].name
 			elseif (GetPlayerName(src)) then
 				return GetPlayerName(src)
 			else
@@ -832,7 +760,7 @@ Citizen.CreateThread(function()
 		if not blacklist then
 			print("^1-^2-^3-^4-^5-^6-^8-^9-^1-^2-^3-^4-^5-^6-^8-^9-^1-^2-^3-^3!^1FATAL ERROR^3!^3-^2-^1-^9-^8-^6-^5-^4-^3-^2-^1-^9-^8-^6-^5-^4-^3-^2-^7\n")
 			print("EasyAdmin: ^1Failed^7 to load Banlist!\n")
-			print("EasyAdmin: Please check your banlist file for errors, ^1Bans *will not* work!^7\n")
+			print("EasyAdmin: Please check this error soon, ^1Bans *will not* work!^7\n")
 			print("^1-^2-^3-^4-^5-^6-^8-^9-^1-^2-^3-^4-^5-^6-^8-^9-^1-^2-^3-^3!^1FATAL ERROR^3!^3-^2-^1-^9-^8-^6-^5-^4-^3-^2-^1-^9-^8-^6-^5-^4-^3-^2-^7\n")
 		end
 		
@@ -1002,16 +930,16 @@ Citizen.CreateThread(function()
 	AddEventHandler('chatMessage', function(Source, Name, Msg)
 		if MutedPlayers[Source] then
 			CancelEvent()
-			TriggerClientEvent("chat:addMessage", Source, { args = { "EasyAdmin", GetLocalisedText("playermute") } })
+			TriggerClientEvent('chatMessagess', Source, 'EasyAdmin: ', 3, GetLocalisedText("playermute"))
 		end
 	end)
 	
 	
 	---------------------------------- USEFUL
 	
-	function SendWebhookMessage(webhook,message,feature)
+	function SendWebhookMessage(webhook,message)
 		moderationNotification = GetConvar("ea_moderationNotification", "false")
-		if webhook ~= "false" and ExcludedWebhookFeatures[feature] ~= true then
+		if webhook ~= "false" then
 			PerformHttpRequest(webhook, function(err, text, headers) end, 'POST', json.encode({content = message}), { ['Content-Type'] = 'application/json' })
 		end
 	end
@@ -1029,54 +957,6 @@ Citizen.CreateThread(function()
 	end
 	
 	
-	local verFile = LoadResourceFile(GetCurrentResourceName(), "version.json")
-	local verContent = json.decode(verFile)
-	if RedM then
-		curVersion = verContent.redm.version
-	else
-		curVersion = verContent.fivem.version
-	end
-	local updatePath = "/Blumlaut/EasyAdmin"
-	local resourceName = "EasyAdmin ("..GetCurrentResourceName()..")"
-	function checkVersion(err,response, headers)
-		if err == 200 then
-			local data = json.decode(response)
-			local remoteVersion = data.fivem.version
-			local changelog = data.fivem.changelog
-			if RedM then
-				remoteVersion = data.redm.version
-				changelog = data.redm.changelog
-			end
-			if curVersion ~= remoteVersion and tonumber(curVersion) < tonumber(remoteVersion) then
-				print("\n--------------------------------------------------------------------------")
-				print("\n"..resourceName.." is outdated.\nNewest Version: "..remoteVersion.."\nYour Version: "..curVersion.."\nPlease update it from https://github.com"..updatePath.."")
-				print("\nUpdate Changelog:\n"..changelog)
-				print("\n--------------------------------------------------------------------------")
-			elseif tonumber(curVersion) > tonumber(remoteVersion) then
-				print("Your version of "..resourceName.." seems to be higher than the current version.")
-			else
-				print(resourceName.." is up to date!")
-			end
-		else
-			print("EasyAdmin Version Check failed!")
-		end
-		if GetResourceState("screenshot-basic") == "missing" then 
-			print("\nEasyAdmin: screenshot-basic is not installed on this Server, screenshots unavailable")
-		else
-			StartResource("screenshot-basic")
-			screenshots = true
-		end
-		local onesync = GetConvar("onesync", "off")
-		if (onesync ~= "off" and onesync ~= "legacy") then 
-			infinity = true
-		end
-		
-		SetTimeout(3600000, checkVersionHTTPRequest)
-	end
-	
-	function checkVersionHTTPRequest()
-		PerformHttpRequest("https://raw.githubusercontent.com/"..updatePath.."/master/version.json", checkVersion, "GET")
-	end
 	
 	function loopUpdateBlacklist()
 		updateBlacklist()
@@ -1088,20 +968,4 @@ Citizen.CreateThread(function()
 	---------------------------------- END USEFUL
 	loopUpdateBlacklist()
 	updateAdmins()
-	checkVersionHTTPRequest()
 end)
-
-
--- DO NOT TOUCH THESE
--- DO NOT TOUCH THESE
--- DO NOT TOUCH THESE
--- DO NOT TOUCH THESE
-admins = {} -- DO NOT TOUCH THIS
-MutedPlayers = {} -- DO NOT TOUCH THIS
-CachedPlayers = {} -- DO NOT TOUCH THIS
-OnlineAdmins = {} -- DO NOT TOUCH THIS
-ChatReminders = {} -- DO NOT TOUCH THIS
--- DO NOT TOUCH THESE
--- DO NOT TOUCH THESE
--- DO NOT TOUCH THESE
--- DO NOT TOUCH THESE

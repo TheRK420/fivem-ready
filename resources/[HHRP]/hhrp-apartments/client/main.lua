@@ -133,7 +133,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         local distance = #(GetEntityCoords(PlayerPedId()) - vector3(Config.Apartmanal["x"], Config.Apartmanal["y"], Config.Apartmanal["z"]))
         if distance < 0.7 then
-            DrawText3D(Config.Apartmanal["x"], Config.Apartmanal["y"], Config.Apartmanal["z"], "[E] Buy Apartment")
+            DrawText3D(Config.Apartmanal["x"], Config.Apartmanal["y"], Config.Apartmanal["z"], "[E] Buy Government Apartment For $10000")
             if IsControlJustReleased(0, 38) then
                 apartal()
             end

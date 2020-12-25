@@ -89,7 +89,7 @@
 	"done":"Done!",
 	"adminkickedplayer":"**%s** kicked **%s**, Reason: %s",
 	"adminbannedplayer":"**%s** banned **%s**, Reason: %s, Ban Expires: %s",
-	"adminunbannedplayer":"**%s** unbanned **%s** [ %s ]",
+	"adminunbannedplayer":"**%s** unbanned **%s**",
 	"adminslappedplayer":"**%s** slapped **%s** for **%s HP**",
 	
 	"adminfrozeplayer":"**%s** froze **%s**.",
@@ -124,7 +124,6 @@
 	"alreadyreported":"You already reported this player!",
 	"reportedusageerror":"Error! Usage: /report name reason",
 	"admincalled":"Successfully called an Admin!",
-	"spectatedplayer":"**%s** has Spectated **%s**",
-	"teleportedtoplayer":"**%s** has Teleported to **%s**"
+
 	}
 ]

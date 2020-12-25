@@ -6,7 +6,9 @@ client_scripts {
 	"client/garageMenu.lua",
 	"client/gui.lua",
 	"client/functions.lua",
-	"client/main.lua"
+	"client/main.lua",
+	"client/chopshop.lua",
+	"client/illegal_parts",
 }
 
 server_scripts {

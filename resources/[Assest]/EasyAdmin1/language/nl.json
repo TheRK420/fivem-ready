@@ -92,7 +92,7 @@
 
         "adminkickedplayer": "**%s** Gekickt **%s**, Reden: %s",
         "adminbannedplayer": "**%s** banned **%s**, Reden: %s, Ban Vervalt: %s",
-        "adminunbannedplayer": "**%s** Ban ongedaan gemaakt **%s** [ %s ]",
+        "adminunbannedplayer": "**%s** Ban ongedaan gemaakt **%s**",
         "adminslappedplayer": "**%s** sloeg **%s** for **%s HP**",
         "adminfrozeplayer": "**%s** bevroor **%s**.",
         "adminunfrozeplayer": "**%s** gestopt met bevriezen **%s**.",
@@ -125,9 +125,6 @@
 	"reportbantext":"Reported by %s Players in short time.",
 	"alreadyreported":"You already reported this player!",
 	"reportedusageerror":"Error! Usage: /report name reason",
-    "admincalled":"Successfully called an Admin!",
-    
-    "spectatedplayer":"%s is aan het kijken %s",
-	"teleportedtoplayer":"**%s** geteleporteerd naar **%s**"
+	"admincalled":"Successfully called an Admin!",
     }
 ]

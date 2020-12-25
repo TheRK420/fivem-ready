@@ -1,10 +1,3 @@
-Citizen.CreateThread(function()
-
-    if  CompendiumHorseObserved then
-        return
-    end
-    
-
 UIResRectangle = setmetatable({}, UIResRectangle)
 UIResRectangle.__index = UIResRectangle
 UIResRectangle.__call = function() return "Rectangle" end
@@ -3862,5 +3855,3 @@ end
 function NativeUI.CreateText(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)
     return UIResText.New(Text, X, Y, Scale, R, G, B, A, Font, Alignment, DropShadow, Outline, WordWrap)
 end
-
-end)

@@ -90,7 +90,7 @@
 	"done":"Fertig!",
 	"adminkickedplayer":"**%s** hat **%s** gekickt, Grund: %s",
 	"adminbannedplayer":"**%s** hat **%s** gebannt, Grund: %s, Ban Entfällt: %s",
-	"adminunbannedplayer":"**%s** hat **%s** entbannt. [ %s ]",
+	"adminunbannedplayer":"**%s** hat **%s** entbannt.",
 	"adminslappedplayer":"**%s** hat **%s** geslappt **(%s HP)**.",
 	
 	"adminfrozeplayer":"**%s** hat **%s** eingefroren.",
@@ -125,7 +125,5 @@
 	"alreadyreported":"Du hast diesen Spieler schon Gemeldet!",
 	"reportedusageerror":"Fehler! Nutzung: /report name grund",
 	"admincalled":"Ein Admin wurde erfolgreich Gerufen!",
-	"spectatedplayer":"%s hat zugesehen %s",
-	"teleportedtoplayer":"**%s** teleportiert nach **%s**"
 	}
 ]

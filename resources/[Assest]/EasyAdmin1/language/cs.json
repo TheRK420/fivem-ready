@@ -89,7 +89,7 @@
 	"done":"Hotovo!",
 	"adminkickedplayer":"**%s** vyhodil **%s**, Duvod: %s",
 	"adminbannedplayer":"**%s** zabanoval **%s**, Duvod: %s, Ban vyprsi: %s",
-	"adminunbannedplayer":"**%s** odbanoval **%s** [ %s ]",
+	"adminunbannedplayer":"**%s** odbanoval **%s**",
 	"adminslappedplayer":"**%s** profackoval **%s** za **%s HP**",
 	
 	"adminfrozeplayer":"**%s** zmrazil **%s**.",
@@ -124,8 +124,6 @@
 	"alreadyreported":"Tohoto hrace jsi uz nahlasil!",
 	"reportedusageerror":"Chyba! Pouziti: /report jmeno duvod",
 	"admincalled":"Uspesne jsi zavolal admina!",
-	"spectatedplayer":"%s je divácký %s",
-	"teleportedtoplayer":"**%s** teleportuje se do **%s**"
 
 	}
 ]

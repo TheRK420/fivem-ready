@@ -566,7 +566,12 @@ AddEventHandler('RunUseItem', function(itemid, slot, inventoryName, isWeapon)
 
 
     if (itemid == "armor") then
-        local finished = exports["hhrp-taskbar"]:taskBar(6000,"Armor",true,false,playerVeh)
+        local playerPed = GetPlayerPed(-1)
+        if not HasAnimDictLoaded("missmic4") then
+            loadAnimDict( "missmic4" )
+        end
+        TaskPlayAnim(player, "missmic4", "michael_tux_fidget", 8.0, 2.0, 5000, 120, 1, 0, 0, 0)
+        local finished = exports["hhrp-taskbar"]:taskBar(5000,"Armor",true,false,playerVeh)
         if (finished == 100) then
             SetPlayerMaxArmour(PlayerId(), 60 )
             SetPedArmour( player, 60 )

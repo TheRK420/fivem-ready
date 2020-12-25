@@ -33,7 +33,7 @@ AddEventHandler('playerDropped', function()
 	if _source ~= nil then
 		local xPlayer = HHCore.GetPlayerFromId(_source)
 		local user = HHCore.GetPlayerFromId(_source)
-		local player = user.identifier
+		--local player = user.identifier
 		-- Is it worth telling all clients to refresh?
 		if xPlayer ~= nil and xPlayer.job ~= nil and xPlayer.job.name == 'police' then
 			Citizen.Wait(5000)
@@ -291,9 +291,9 @@ RegisterServerEvent('police:getAnimData')
 AddEventHandler('police:getAnimData', function()
     local src = source
     local xPlayer = HHCore.GetPlayerFromId(src)
-    local identifier = xPlayer.identifier
+    --local identifier = xPlayer.identifier
 
-	exports.ghmattimysql:execute("SELECT metaData FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)
+	exports.ghmattimysql:execute("SELECT metaData FROM users WHERE identifier = @identifier", {['identifier'] = xPlayer.identifier}, function(result)
 		if (result[1]) then
 			if not result[1].metaData then
 				TriggerClientEvent('checkDNA', src)
@@ -360,9 +360,9 @@ RegisterServerEvent('police:getEmoteData')
 AddEventHandler('police:getEmoteData', function()
 	local src = source
 	local xPlayer = HHCore.GetPlayerFromId(src)
-	local identifier = xPlayer.identifier
+	--local identifier = xPlayer.identifier
 
-	exports.ghmattimysql:execute("SELECT emotes FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)
+	exports.ghmattimysql:execute("SELECT emotes FROM users WHERE identifier = @identifier", {['identifier'] = xPlayer.identifier}, function(result)
 		if(result[1]) then
 			local emotes = json.decode(result[1].emotes)
 			if result[1] ~= nil then
@@ -387,7 +387,7 @@ AddEventHandler('police:getEmoteData', function()
 				}
 
 				local emote = json.encode(emoteTable)
-				exports.ghmattimysql:execute("UPDATE users SET `emotes` = @emotes WHERE identifier = @identifier", {['emotes'] = emote, ['identifier'] = identifier})
+				exports.ghmattimysql:execute("UPDATE users SET `emotes` = @emotes WHERE identifier = @identifier", {['emotes'] = emote, ['identifier'] = xPlayer.identifier})
 				TriggerClientEvent("emote:setEmotesFromDB", src, emoteTable)
 			end
 		end

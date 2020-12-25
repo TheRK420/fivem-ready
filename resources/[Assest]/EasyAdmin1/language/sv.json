@@ -90,7 +90,7 @@
 	"done":"Klart!",
 	"adminkickedplayer":"**%s** kickad **%s**, Anledning: %s",
 	"adminbannedplayer":"**%s** bannlyste **%s**, Anledning: %s, löper ut: %s",
-	"adminunbannedplayer":"**%s** hävde bannlysning **%s** [ %s ]",
+	"adminunbannedplayer":"**%s** hävde bannlysning **%s**",
 	"adminslappedplayer":"**%s** slog **%s** för **%s HP**",
 	
 	"adminfrozeplayer":"**%s** frös **%s**.",
@@ -125,7 +125,5 @@
 	"alreadyreported":"You already reported this player!",
 	"reportedusageerror":"Error! Usage: /report name reason",
 	"admincalled":"Successfully called an Admin!",
-	"spectatedplayer":"%s tittar %s",
-	"teleportedtoplayer":"**%s** teleporteras till **%s**"
 	}
 ]

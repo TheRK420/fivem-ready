@@ -9,7 +9,7 @@ local changeYourJob = {
 local jobs = {
   {name="Unemployed", id="unemployed"},
   {name="Tow Truck Driver", id="towtruck"},  
-  {name="Taxi Driver", id="taxi"},
+  --{name="Taxi Driver", id="taxi"},
   {name="Garbage Job", id="garbage"},
   {name="Uber Delivery", id="uberdriver"},
   --{name="Lumberjack Job", id="lumberjack"},
