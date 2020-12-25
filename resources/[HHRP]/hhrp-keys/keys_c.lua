@@ -98,10 +98,10 @@ Citizen.CreateThread(function()
             local veh = GetVehiclePedIsTryingToEnter(PlayerPedId())
             local pedd = GetPedInVehicleSeat(veh, -1)
 
-            if DoesEntityExist(pedd) and not IsPedAPlayer(pedd) and not IsEntityDead(pedd) then
+            if DoesEntityExist(pedd) and not IsEntityDead(pedd) then
              SetVehicleDoorsLocked(veh, 2)
-             --SetPedCanBeDraggedOut(pedd, false)
-             TaskVehicleMissionPedTarget(pedd, veh, PlayerPedId(), 8, 50.0, 790564, 300.0, 15.0, 1)
+             SetPedCanBeDraggedOut(pedd, false)
+             --TaskVehicleMissionPedTarget(pedd, veh, PlayerPedId(), 8, 50.0, 790564, 300.0, 15.0, 1)
              disableF = true
              Wait(1500)
              disableF = false
@@ -323,10 +323,11 @@ function ToggleLocks()
  if DoesEntityExist(vehicle) then
   Citizen.CreateThread(function()
    if hasVehicleKey(GetVehicleNumberPlateText(vehicle)) then
-    if not IsPedInAnyVehicle(PlayerPedId(), false) then
+    --if not IsPedInAnyVehicle(PlayerPedId(), false) then
      playLockAnimation()
      if GetVehicleDoorLockStatus(vehicle) == 1 then
       SetVehicleDoorsLocked(vehicle, 2)
+      --SetVehicleDoorsLockedForAllPlayers(vehicle, true)
      TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 8, "lock", 0.4)
      TriggerEvent('DoLongHudText', 'Vehicle Locked', 2)
  
@@ -334,12 +335,13 @@ function ToggleLocks()
      TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 8, "unlock", 0.4)
      TriggerEvent('DoLongHudText', 'Vehicle Unlocked', 1)
       SetVehicleDoorsLocked(vehicle, 1)
+      --SetVehicleDoorsLockedForAllPlayers(vehicle, false)
      end
-     SetVehicleEngineOn(vehicle, true, true, true)
+     --SetVehicleEngineOn(vehicle, true, true, true)
      SetVehicleLights(vehicle, 2) Wait(200) SetVehicleLights(vehicle, 1) Wait(200) SetVehicleLights(vehicle, 2) Wait(200) SetVehicleLights(vehicle, 1)
-     SetVehicleEngineOn(vehicle, false, false, false)
+     --SetVehicleEngineOn(vehicle, false, false, false)
      SetVehicleLights(vehicle, 0)
-    end
+    --end
    end
   end)
  else
