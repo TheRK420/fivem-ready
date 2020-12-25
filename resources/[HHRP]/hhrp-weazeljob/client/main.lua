@@ -222,7 +222,7 @@ function OpenweazelnewsActionsMenu()
 
       if data.current.value == 'cloakroom' then
         menu.close()
-        HHCore.TriggerServerCallback('hhrp_skin:getPlayerSkin', function(skin, jobSkin)
+        HHCore.TriggerServerCallback('hhrp-skin:getPlayerSkin', function(skin, jobSkin)
 
             if skin.sex == 0 then
                 TriggerEvent('skinchanger:loadClothes', skin, jobSkin.skin_male)
@@ -235,7 +235,7 @@ function OpenweazelnewsActionsMenu()
 
       if data.current.value == 'cloakroom2' then
         menu.close()
-        HHCore.TriggerServerCallback('hhrp_skin:getPlayerSkin', function(skin, jobSkin)
+        HHCore.TriggerServerCallback('hhrp-skin:getPlayerSkin', function(skin, jobSkin)
 
             TriggerEvent('skinchanger:loadSkin', skin)
 
