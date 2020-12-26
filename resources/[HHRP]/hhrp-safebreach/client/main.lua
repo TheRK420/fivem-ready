@@ -153,7 +153,11 @@ Citizen.CreateThread(function()
 						HHCore.ShowHelpNotification(displayText)
 
 						if IsControlJustReleased(0, 38) then
-							TryToCrack(closestSafe)
+							if exports['hhrp-inventory']:hasEnoughOfItem('advlockpick', 1) then
+								TryToCrack(closestSafe)
+							else
+								TriggerEvent("DoLongHudText", "Do You Have an Advanced Lockpick?")
+							end
 						end
 					end
 					
