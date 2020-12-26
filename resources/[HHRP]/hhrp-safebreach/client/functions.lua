@@ -31,6 +31,7 @@ TryToCrack = function(safeEntity)
 
 	HHCore.TriggerServerCallback("safebreach:checkIfSafeIsBreachable", function(state)
 		if state then
+			TriggerEvent("inventory:removeItem", "advlockpick", 1)
 			StartCrackingSafe(safeEntity)
 			--TriggerEvent('hhrp-alerts:storerob')
 			TriggerEvent('hhrp-dispatch:storerobbery')
