@@ -99,7 +99,7 @@ Citizen.CreateThread(function()
             local pedd = GetPedInVehicleSeat(veh, -1)
 
             if DoesEntityExist(pedd) and not IsEntityDead(pedd) then
-             SetVehicleDoorsLocked(veh, 2)
+             --SetVehicleDoorsLocked(veh, 2)
              SetPedCanBeDraggedOut(pedd, false)
              --TaskVehicleMissionPedTarget(pedd, veh, PlayerPedId(), 8, 50.0, 790564, 300.0, 15.0, 1)
              disableF = true
