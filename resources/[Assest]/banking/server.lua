@@ -4,7 +4,7 @@ HHCore = nil
 TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
 
 
-AddEventHandler('hhrp:playerLoaded', function(source, user)
+AddEventHandler('es:playerLoaded', function(source, user)
   balances[source] = user.getBank()
     local xPlayer = HHCore.GetPlayerFromId(source)
     local money
@@ -15,17 +15,17 @@ AddEventHandler('hhrp:playerLoaded', function(source, user)
 end)
 
 
-RegisterServerEvent('playerSpawned')
-AddEventHandler('playerSpawned', function()
-  TriggerEvent('es:getPlayerFromId', source, function(user)
-    balances[source] = user.getBank()
-	  money = user.getMoney()
-	  TriggerClientEvent('banking:updateCash', source, money)
-    TriggerClientEvent('banking:updateBalance', source, user.getBank())
-    local xPlayer = HHCore.GetPlayerFromId(source)
-    TriggerClientEvent('isPed:UpdateCash', source, user.getMoney())
-  end)
-end)
+-- RegisterServerEvent('playerSpawned')
+-- AddEventHandler('playerSpawned', function()
+--   TriggerEvent('es:getPlayerFromId', source, function(user)
+--     balances[source] = user.getBank()
+-- 	  money = user.getMoney()
+-- 	  TriggerClientEvent('banking:updateCash', source, money)
+--     TriggerClientEvent('banking:updateBalance', source, user.getBank())
+--     local xPlayer = HHCore.GetPlayerFromId(source)
+--     TriggerClientEvent('isPed:UpdateCash', source, user.getMoney())
+--   end)
+-- end)
 
 
 RegisterServerEvent('bank:getDetails')

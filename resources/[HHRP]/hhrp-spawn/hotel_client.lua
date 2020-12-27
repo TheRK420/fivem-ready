@@ -11,9 +11,14 @@ Citizen.CreateThread(function()
 end)
 
 local myspawnpoints = {}
+local spawn = {}
 local spawning = false
 
 currentselection = 1
+RegisterNetEvent("spn")
+AddEventHandler("spn", function(coords)
+	spawn = coords
+end)
 
 RegisterNetEvent('hotel:createRoom')
 AddEventHandler('hotel:createRoom', function(numMultiplier,roomType,mykeys,illness,isImprisoned,isClothesSpawn)
@@ -22,17 +27,16 @@ AddEventHandler('hotel:createRoom', function(numMultiplier,roomType,mykeys,illne
 	spawning = false
 	TriggerEvent("spawning",true)
 	FreezeEntityPosition(PlayerPedId(),true)
-	SetEntityCoords(PlayerPedId(), 152.09986877441 , -1004.7946166992, -98.999984741211)
 	SetEntityInvincible(PlayerPedId(),true)
 	selectedspawnposition = HHCore.GetPlayerData()["lastPosition"]
-
 	myspawnpoints  = {
-		--[1] =  { ['x'] = selectedspawnposition.x,['y'] =  selectedspawnposition.y,['z'] = selectedspawnposition.z,['h'] = 180.99, ['info'] = ' Last Location', ["typeSpawn"] = 1 },
-		[1] =  { ['x'] = -204.93,['y'] = -1010.13,['z'] = 29.55,['h'] = 180.99, ['info'] = ' Altee Street Train Station', ["typeSpawn"] = 1 },
-		[2] =  { ['x'] = 272.16,['y'] = 185.44,['z'] = 104.67,['h'] = 320.57, ['info'] = ' Vinewood Blvd Taxi Stand', ["typeSpawn"] = 1 },
+
+		[1] =  { ['x'] = spawn.x,['y'] =  spawn.y,['z'] = spawn.z,['h'] = 180.99, ['info'] = ' Last Location', ["typeSpawn"] = 1 },
+		[2] =  { ['x'] = -204.93,['y'] = -1010.13,['z'] = 29.55,['h'] = 180.99, ['info'] = ' Altee Street Train Station', ["typeSpawn"] = 1 },
+		[3] =  { ['x'] = 272.16,['y'] = 185.44,['z'] = 104.67,['h'] = 320.57, ['info'] = ' Vinewood Blvd Taxi Stand', ["typeSpawn"] = 1 },
 		--[3] =  { ['x'] = -1833.96,['y'] = -1223.5,['z'] = 13.02,['h'] = 310.63, ['info'] = ' The Boardwalk', ["typeSpawn"] = 1 },
-		[3] =  { ['x'] = 145.62,['y'] = 6563.19,['z'] = 32.0,['h'] = 42.83, ['info'] = ' Paleto Gas Station', ["typeSpawn"] = 1 },
-		[4] =  { ['x'] = -214.24,['y'] = 6178.87,['z'] = 31.17,['h'] = 40.11, ['info'] = ' Paleto Bus Stop', ["typeSpawn"] = 1 },
+		[4] =  { ['x'] = 145.62,['y'] = 6563.19,['z'] = 32.0,['h'] = 42.83, ['info'] = ' Paleto Gas Station', ["typeSpawn"] = 1 },
+		[5] =  { ['x'] = -214.24,['y'] = 6178.87,['z'] = 31.17,['h'] = 40.11, ['info'] = ' Paleto Bus Stop', ["typeSpawn"] = 1 },
 		-- [6] =  { ['x'] = 1122.11,['y'] = 2667.24,['z'] = 38.04,['h'] = 180.39, ['info'] = ' Harmony Motel', ["typeSpawn"] = 1 },
 		-- [7] =  { ['x'] = 453.29,['y'] = -662.23,['z'] = 28.01,['h'] = 5.73, ['info'] = ' LS Bus Station', ["typeSpawn"] = 1 },
 		-- [8] =  { ['x'] = -1266.53,['y'] = 273.86,['z'] = 64.66,['h'] = 28.52, ['info'] = ' The Richman Hotel', ["typeSpawn"] = 1 },

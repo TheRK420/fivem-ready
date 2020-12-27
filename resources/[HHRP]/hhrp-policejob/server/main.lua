@@ -291,9 +291,9 @@ RegisterServerEvent('police:getAnimData')
 AddEventHandler('police:getAnimData', function()
     local src = source
     local xPlayer = HHCore.GetPlayerFromId(src)
-    --local identifier = xPlayer.identifier
+    local identifier = xPlayer.identifier
 
-	exports.ghmattimysql:execute("SELECT metaData FROM users WHERE identifier = @identifier", {['identifier'] = xPlayer.identifier}, function(result)
+	exports.ghmattimysql:execute("SELECT metaData FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)
 		if (result[1]) then
 			if not result[1].metaData then
 				TriggerClientEvent('checkDNA', src)
@@ -360,9 +360,9 @@ RegisterServerEvent('police:getEmoteData')
 AddEventHandler('police:getEmoteData', function()
 	local src = source
 	local xPlayer = HHCore.GetPlayerFromId(src)
-	--local identifier = xPlayer.identifier
+	local identifier = xPlayer.identifier
 
-	exports.ghmattimysql:execute("SELECT emotes FROM users WHERE identifier = @identifier", {['identifier'] = xPlayer.identifier}, function(result)
+	exports.ghmattimysql:execute("SELECT emotes FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)
 		if(result[1]) then
 			local emotes = json.decode(result[1].emotes)
 			if result[1] ~= nil then
@@ -469,13 +469,21 @@ function string.random(length)
 	end
 	return str;
 end
-
-AddEventHandler('es:playerLoaded', function(source, user)
+--RegisterServerEvent("spnned")
+--AddEventHandler("spnned", function(user)
 -- 	print
-     TriggerEvent("police:getAnimData",user)
-     TriggerEvent("police:getEmoteData",user)
-     TriggerEvent("stocks:retrieveclientstocks",user)
-end)
+     --TriggerEvent("police:getAnimData",user)
+     --TriggerEvent("police:getEmoteData",user)
+     --TriggerEvent("stocks:retrieveclientstocks",user)
+--end)
+
+-- AddEventHandler('hhrp:playerLoaded', function(source)
+-- 	-- 	print
+-- 	TriggerEvent("police:getAnimData",source)
+-- 	TriggerEvent("police:getEmoteData",source)
+-- 	TriggerEvent("stocks:retrieveclientstocks",source)
+-- end)
+	
 
 ----------------COMMAND-----------------
 TriggerEvent('es:addCommand', 'trunkin', function(source, args, user)
