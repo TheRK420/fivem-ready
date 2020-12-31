@@ -58,9 +58,9 @@ AddEventHandler('kashactersC:WelcomePage', function()
     })
 end)
 
--- RegisterCommand("AdminTestOkay", function()
--- 	TriggerEvent("hotel:createRoom")
--- end)
+RegisterCommand("AdminTestOkay", function()
+	TriggerEvent("hotel:createRoom")
+end)
 
 local function disconnect()
     TriggerServerEvent("hhrp-login:disconnectPlayer")
@@ -91,10 +91,12 @@ AddEventHandler('kashactersC:SpawnCharacter', function(spawn, isnew)
 	TriggerServerEvent('es:firstJoinProper')
 	TriggerEvent('es:allowedToSpawn')
 	local pos = spawn
+	local r = math.random(1, 5)
+	local s = math.random(1, 10)
 	Citizen.Wait(0)
 	if isnew then
 		IsChoosing = false
-		SetEntityCoords(GetPlayerPed(-1), pos.x, pos.y, pos.z)
+		SetEntityCoords(GetPlayerPed(-1), pos.x+r, pos.y, pos.z)
 		TriggerEvent('hhrp-identity:showRegisterIdentity')
 		TriggerEvent("hud:voice:transmitting", false)
 		TriggerEvent('hud:voice:talking', false)

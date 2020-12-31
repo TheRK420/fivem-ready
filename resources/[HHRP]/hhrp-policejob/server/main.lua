@@ -290,8 +290,9 @@ end)
 RegisterServerEvent('police:getAnimData')
 AddEventHandler('police:getAnimData', function()
     local src = source
-    local xPlayer = HHCore.GetPlayerFromId(src)
-    local identifier = xPlayer.identifier
+	local xPlayer = HHCore.GetPlayerFromId(src)
+	if not xPlayer then return end
+	local identifier = xPlayer.identifier
 
 	exports.ghmattimysql:execute("SELECT metaData FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)
 		if (result[1]) then
@@ -313,6 +314,7 @@ RegisterServerEvent('Police:getMeta')
 AddEventHandler('Police:getMeta', function()
 	local src = source
 	local xPlayer = HHCore.GetPlayerFromId(src)
+	if not xPlayer then return end
 	local identifier = xPlayer.identifier
 
 	exports.ghmattimysql:execute("SELECT metaData FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)
@@ -360,6 +362,7 @@ RegisterServerEvent('police:getEmoteData')
 AddEventHandler('police:getEmoteData', function()
 	local src = source
 	local xPlayer = HHCore.GetPlayerFromId(src)
+	if not xPlayer then return end
 	local identifier = xPlayer.identifier
 
 	exports.ghmattimysql:execute("SELECT emotes FROM users WHERE identifier = @identifier", {['identifier'] = identifier}, function(result)

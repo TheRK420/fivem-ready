@@ -15,6 +15,7 @@ local spawn = {}
 local spawning = false
 
 currentselection = 1
+
 RegisterNetEvent("spn")
 AddEventHandler("spn", function(coords)
 	spawn = coords
@@ -27,10 +28,11 @@ AddEventHandler('hotel:createRoom', function(numMultiplier,roomType,mykeys,illne
 	spawning = false
 	TriggerEvent("spawning",true)
 	FreezeEntityPosition(PlayerPedId(),true)
+	--SetEntityCoords(PlayerPedId(), 152.09986877441 , -1004.7946166992, -98.999984741211)
 	SetEntityInvincible(PlayerPedId(),true)
 	selectedspawnposition = HHCore.GetPlayerData()["lastPosition"]
-	myspawnpoints  = {
 
+	myspawnpoints  = {
 		[1] =  { ['x'] = spawn.x,['y'] =  spawn.y,['z'] = spawn.z,['h'] = 180.99, ['info'] = ' Last Location', ["typeSpawn"] = 1 },
 		[2] =  { ['x'] = -204.93,['y'] = -1010.13,['z'] = 29.55,['h'] = 180.99, ['info'] = ' Altee Street Train Station', ["typeSpawn"] = 1 },
 		[3] =  { ['x'] = 272.16,['y'] = 185.44,['z'] = 104.67,['h'] = 320.57, ['info'] = ' Vinewood Blvd Taxi Stand', ["typeSpawn"] = 1 },

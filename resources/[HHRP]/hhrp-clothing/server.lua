@@ -115,6 +115,7 @@ RegisterServerEvent("hhrp-clothing:get_character_face")
 AddEventHandler("hhrp-clothing:get_character_face",function(pSrc)
     local src = (not pSrc and source or pSrc)
     local user = HHCore.GetPlayerFromId(src)
+    if not user then return end
     local characterId = user.identifier
 
     if not characterId then return end
@@ -141,6 +142,7 @@ RegisterServerEvent("hhrp-clothing:get_character_current")
 AddEventHandler("hhrp-clothing:get_character_current",function(pSrc)
     local src = (not pSrc and source or pSrc)
     local user = HHCore.GetPlayerFromId(src)
+    if not user then return end
     local characterId = user.identifier
 
     if not characterId then return end
@@ -160,7 +162,8 @@ end)
 RegisterServerEvent("hhrp-clothing:retrieve_tats")
 AddEventHandler("hhrp-clothing:retrieve_tats", function(pSrc)
     local src = (not pSrc and source or pSrc)
-	local user = HHCore.GetPlayerFromId(src)
+    local user = HHCore.GetPlayerFromId(src)
+    if not user then return end
 	MySQL.Async.fetchAll("SELECT * FROM playerstattoos WHERE identifier = @identifier", {['identifier'] = user.identifier}, function(result)
         if(#result == 1) then
 			TriggerClientEvent("hhrp-clothing:settattoos", src, json.decode(result[1].tattoos))

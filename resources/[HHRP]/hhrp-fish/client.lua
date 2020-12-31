@@ -275,6 +275,7 @@ function SellItems()
     local sellfish = math.random(40, 80)
         if exports["hhrp-inventory"]:hasEnoughOfItem("fish",2,false) then 
         TriggerEvent("inventory:removeItem", "fish", 2)
+        TriggerEvent('OpenInv')
         TriggerServerEvent('hhrp-fish:payShit', sellfish)
     else
         TriggerEvent('DoLongHudText', 'You dont have enough fish in your pockets to sell!', 2)

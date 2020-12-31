@@ -69,6 +69,6 @@ AddEventHandler("coke:GiveItem", function()
 	local xPlayer = HHCore.GetPlayerFromId(_source)
 	local br = math.random( 1, 6 )
 	local repay = Config.price  
-	xPlayer.addInventoryItem('cokebrick', br)
+	--xPlayer.addInventoryItem('cokebrick', br)
 	xPlayer.addMoney(repay)
 end)

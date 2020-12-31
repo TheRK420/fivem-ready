@@ -27,6 +27,7 @@ local IdentifierTables = {
     {table = "dopeplants", column = "owner"},
     {table = "phone_contacts", column = "identifier"},
     {table = "player_houses", column = "identifier"},
+    {table = "pw_motels", column = "ident"},
     {table = "phone_messages", column = "id"},
     {table = "hhrp_ammo", column = "owner"},
 }
@@ -70,7 +71,6 @@ AddEventHandler('kashactersS:CharacterChosen', function(charid, ischar, spawnid)
             end
             TriggerClientEvent("kashactersC:SpawnCharacter", src, spawn)
             TriggerClientEvent('updatecid', src, GetPlayerIdentifiers(src)[1])
-            TriggerEvent("spnned", src)
         else --default spawn mode
 
             spawn = { x = 101.0187, y = -1713.761, z = 30.11242 } -- DEFAULT SPAWN POSITION -- EDIT THIS

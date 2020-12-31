@@ -92,12 +92,21 @@ function OpenSellMenu()
       {
           title    = 'HHRP Pawnshop',
           elements = {
-              {label = 'Jewels ($50)', value = 'water'},
+              {label = 'Goldbar ($1500)', value = 'goldbar'},
+              {label = 'Steel ($400)', value = 'steel'},
+              {label = 'Aluminium ($300)', value = 'alu'},
+              {label = 'Copper ($150)', value = 'copper'},
           }
       },
       function(data, menu)
-		      if data.current.value == 'water' then
-              TriggerEvent('hhrp-pawnshop:selljewelscl')
+		      if data.current.value == 'goldbar' then
+              TriggerEvent('hhrp-pawnshop:sellgoldbarscl')
+          elseif data.current.value == 'steel' then
+            TriggerEvent('hhrp-pawnshop:sellsteelscl')
+          elseif data.current.value == 'alu' then
+            TriggerEvent('hhrp-pawnshop:sellaluscl')
+          elseif data.current.value == 'copper' then
+            TriggerEvent('hhrp-pawnshop:sellcoppercl')
           end
       end,
       function(data, menu)
@@ -115,5 +124,57 @@ AddEventHandler('hhrp-pawnshop:selljewelscl', function()
     TriggerEvent('DoLongHudText', 'You sold 1 jewel for $50', 1) 
   else 
     TriggerEvent('DoLongHudText', 'You don\'t enough jewels to sell!', 2) 
+  end
+end)
+
+RegisterNetEvent('hhrp-pawnshop:sellgoldbarcl')
+AddEventHandler('hhrp-pawnshop:sellgoldbarscl', function()
+  if exports['hhrp-inventory']:hasEnoughOfItem('goldbar', 1) then
+    local amt = exports['hhrp-inventory']:getQuantity('goldbar')
+    TriggerServerEvent('hhrp-pawnshop:sellgoldbar', amt)
+    TriggerEvent('OpenInv')
+    TriggerEvent('inventory:removeItem', 'goldbar', amt)
+    TriggerEvent('DoLongHudText', 'You sold '..amt..' goldbar for $'.. 1500*amt, 1) 
+  else 
+    TriggerEvent('DoLongHudText', 'You don\'t enough goldbar to sell!', 2) 
+  end
+end)
+
+RegisterNetEvent('hhrp-pawnshop:sellsteelcl')
+AddEventHandler('hhrp-pawnshop:sellsteelscl', function()
+  if exports['hhrp-inventory']:hasEnoughOfItem('steel', 1) then
+    local amt = exports['hhrp-inventory']:getQuantity('steel')
+    TriggerServerEvent('hhrp-pawnshop:sellsteel', amt)
+    TriggerEvent('OpenInv')
+    TriggerEvent('inventory:removeItem', 'steel', amt)
+    TriggerEvent('DoLongHudText', 'You sold '..amt..' steel for $'.. 400*amt, 1)
+  else 
+    TriggerEvent('DoLongHudText', 'You don\'t enough steel to sell!', 2) 
+  end
+end)
+
+RegisterNetEvent('hhrp-pawnshop:sellalucl')
+AddEventHandler('hhrp-pawnshop:sellaluscl', function()
+  if exports['hhrp-inventory']:hasEnoughOfItem('aluminium', 1) then
+    local amt = exports['hhrp-inventory']:getQuantity('aluminium')
+    TriggerServerEvent('hhrp-pawnshop:sellalu', amt)
+    TriggerEvent('OpenInv')
+    TriggerEvent('inventory:removeItem', 'aluminium', amt)
+    TriggerEvent('DoLongHudText', 'You sold '..amt..' aluminium for $'.. 300*amt, 1) 
+  else 
+    TriggerEvent('DoLongHudText', 'You don\'t enough aluminium to sell!', 2) 
+  end
+end)
+
+RegisterNetEvent('hhrp-pawnshop:sellcoppercl')
+AddEventHandler('hhrp-pawnshop:sellcoppercl', function()
+  if exports['hhrp-inventory']:hasEnoughOfItem('copper', 1) then
+    local amt = exports['hhrp-inventory']:getQuantity('copper')
+    TriggerServerEvent('hhrp-pawnshop:sellcopper', amt)
+    TriggerEvent('OpenInv')
+    TriggerEvent('inventory:removeItem', 'copper', amt)
+    TriggerEvent('DoLongHudText', 'You sold '..amt..' copper for $'.. 150*amt, 1) 
+  else 
+    TriggerEvent('DoLongHudText', 'You don\'t enough copper to sell!', 2) 
   end
 end)

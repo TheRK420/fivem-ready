@@ -17,7 +17,7 @@ settings = {
 }
 
 --Send the message to your discord server
-function sendToDiscord (name,message,color)
+function sendToDiscord3 (name,message,color)
   local DiscordWebHook = Config.webhook
   -- Modify here your discordWebHook username = name, content = message,embeds = embeds
 
@@ -39,13 +39,13 @@ end
 
 
 -- Send the first notification
-sendToDiscord(_U('server'),_U('server_start'),Config.green)
+sendToDiscord3(_U('server'),_U('server_start'),Config.green)
 
 -- Event when a player is writing
 AddEventHandler('chatMessage', function(author, color, message)
   if(settings.LogChatServer)then
       local player = HHCore.GetPlayerFromId(author)
-     sendToDiscord(_U('server_chat'), player.name .." : "..message,Config.grey)
+     sendToDiscord3(_U('server_chat'), player.name .." : "..message,Config.grey)
   end
 end)
 
@@ -56,7 +56,7 @@ AddEventHandler('hhrp:playerconnected', function()
   local xPlayer = HHCore.GetPlayerFromId(source)
   local id = xPlayer.identifier
   if(settings.LogLoginServer)then
-    sendToDiscord(_U('server_connecting'), id .." ".. GetPlayerName(source) .." ".. _('user_connecting'),Config.grey)
+    sendToDiscord3(_U('server_connecting'), id .." ".. GetPlayerName(source) .." ".. _('user_connecting'),Config.grey)
   end
 end)
 
@@ -65,7 +65,7 @@ AddEventHandler('playerDropped', function(reason)
   local xPlayer = HHCore.GetPlayerFromId(source)
   local id = xPlayer.identifier
   if(settings.LogLoginServer)then
-    sendToDiscord(_U('server_disconnecting'),  id .." ".. GetPlayerName(source) .." ".. _('user_disconnecting') .. "("..reason..")",Config.grey)
+    sendToDiscord3(_U('server_disconnecting'),  id .." ".. GetPlayerName(source) .." ".. _('user_disconnecting') .. "("..reason..")",Config.grey)
   end
 end)
 
@@ -85,7 +85,7 @@ end)
 
 RegisterCommand("invi", function(source)
 
-  sendToDiscord("Player Inventory ",GetPlayerName(source) .." ".."("..inventory..")",Config.grey)
+  sendToDiscord3("Player Inventory ",GetPlayerName(source) .." ".."("..inventory..")",Config.grey)
 end)
  ]]
 -- Add event when a player give an item
@@ -93,7 +93,7 @@ end)
 RegisterServerEvent("hhrp:giveitemalert")
 AddEventHandler("hhrp:giveitemalert", function(name,nametarget,itemname,amount)
    if(settings.LogItemTransfer)then
-    sendToDiscord(_U('server_item_transfer'),name.._('user_gives_to')..nametarget.." "..amount .." "..itemname,Config.orange)
+    sendToDiscord3(_U('server_item_transfer'),name.._('user_gives_to')..nametarget.." "..amount .." "..itemname,Config.orange)
    end
   if itemName == 'money' then
     local playerName = GetPlayerName(name)
@@ -110,7 +110,7 @@ end)
 RegisterServerEvent("hhrp:givemoneyalert")
 AddEventHandler("hhrp:givemoneyalert", function(name,nametarget,amount)
   if(settings.LogMoneyTransfer)then
-    sendToDiscord(_U('server_money_transfer'),name.." ".._('user_gives_to').." "..nametarget.." "..amount .." dollars",Config.orange)
+    sendToDiscord3(_U('server_money_transfer'),name.." ".._('user_gives_to').." "..nametarget.." "..amount .." dollars",Config.orange)
   end
   local playerName = GetPlayerName(name)
   local playerNametarget = GetPlayerName(nametarget)
@@ -122,7 +122,7 @@ end)
 RegisterServerEvent("hhrp:giveblackmoneyalert")
 AddEventHandler("hhrp:giveblackmoneyalert", function(name,nametarget,amount)
   if(settings.LogMoneyTransfer)then
-    sendToDiscord(_U('server_money_transfer'),name.." ".._('user_gives_to').." "..nametarget.." "..amount .." dollars",Config.orange)
+    sendToDiscord3(_U('server_money_transfer'),name.." ".._('user_gives_to').." "..nametarget.." "..amount .." dollars",Config.orange)
   end
   local playerName = GetPlayerName(name)
   local playerNametarget = GetPlayerName(nametarget)
@@ -137,7 +137,7 @@ end)
 RegisterServerEvent("hhrp:givemoneybankalert")
 AddEventHandler("hhrp:givemoneybankalert", function(name,nametarget,amount)
   if(settings.LogMoneyBankTransfert)then
-   sendToDiscord(_U('server_moneybank_transfer'),name.." ".. _('user_gives_to') .." "..nametarget.." "..amount .." dollars",Config.orange)
+   sendToDiscord3(_U('server_moneybank_transfer'),name.." ".. _('user_gives_to') .." "..nametarget.." "..amount .." dollars",Config.orange)
   end
 
 end)
@@ -148,7 +148,7 @@ end)
 RegisterServerEvent("hhrp:giveweaponalert")
 AddEventHandler("hhrp:giveweaponalert", function(name,nametarget,weaponlabel)
   if(settings.LogWeaponTransfer)then
-    sendToDiscord(_U('server_weapon_transfer'),name.." ".._('user_gives_to').." "..nametarget.." "..weaponlabel,Config.orange)
+    sendToDiscord3(_U('server_weapon_transfer'),name.." ".._('user_gives_to').." "..nametarget.." "..weaponlabel,Config.orange)
   end
 
 end)
@@ -157,7 +157,7 @@ end)
 --  TriggerEvent("hhrp:washingmoneyalert",xPlayer.name,amount) -> HHCore_society
 RegisterServerEvent("hhrp:washingmoneyalert")
 AddEventHandler("hhrp:washingmoneyalert", function(name,amount)
-  sendToDiscord(_U('server_washingmoney'),name.." ".._('user_washingmoney').." ".. amount .." dollars",Config.orange)
+  sendToDiscord3(_U('server_washingmoney'),name.." ".._('user_washingmoney').." ".. amount .." dollars",Config.orange)
 
 end)
 
@@ -165,7 +165,7 @@ end)
 RegisterServerEvent("hhrp:enterblacklistedcar")
 AddEventHandler("hhrp:enterblacklistedcar", function(model)
    local xPlayer = HHCore.GetPlayerFromId(source)
-   sendToDiscord(_U('server_blacklistedvehicle'),xPlayer.name.." ".._('user_entered_in').." ".. model ,Config.red)
+   sendToDiscord3(_U('server_blacklistedvehicle'),xPlayer.name.." ".._('user_entered_in').." ".. model ,Config.red)
 
 end)
 
@@ -174,7 +174,7 @@ end)
 RegisterServerEvent("hhrp:enterpolicecar")
 AddEventHandler("hhrp:enterpolicecar", function(model)
  	 local xPlayer = HHCore.GetPlayerFromId(source)
- 	 sendToDiscord(_U('server_policecar'),xPlayer.name.." ".._('user_entered_in').." ".. model , Config.blue)
+ 	 sendToDiscord3(_U('server_policecar'),xPlayer.name.." ".._('user_entered_in').." ".. model , Config.blue)
 
 end)
 
@@ -183,7 +183,7 @@ end)
 RegisterServerEvent("hhrp:jackingcar")
 AddEventHandler("hhrp:jackingcar", function(model)
    local xPlayer = HHCore.GetPlayerFromId(source)
-   sendToDiscord(_U('server_carjacking'),xPlayer.name.." ".._('user_carjacking').." ".. model,Config.purple)
+   sendToDiscord3(_U('server_carjacking'),xPlayer.name.." ".._('user_carjacking').." ".. model,Config.purple)
 
 end)
 
@@ -292,19 +292,19 @@ AddEventHandler('hhrp:killerlog', function(t,killer, kilerT) -- t : 0 = NPC, 1 =
        if(kilerT.killerinveh) then
          local model = kilerT.killervehname
 
-            sendToDiscord(_U('server_kill'), xPlayer.name .." ".._('user_kill').." "..xPlayerKiller.name.." ".._('with').." "..model,Config.red)
+            sendToDiscord3(_U('server_kill'), xPlayer.name .." ".._('user_kill').." "..xPlayerKiller.name.." ".._('with').." "..model,Config.red)
 
 
 
        else
-            sendToDiscord(_U('server_kill'), xPlayer.name .." ".._('user_kill').." "..xPlayerKiller.name,Config.red)
+            sendToDiscord3(_U('server_kill'), xPlayer.name .." ".._('user_kill').." "..xPlayerKiller.name,Config.red)
 
 
 
        end
     end
   else
-     sendToDiscord(_U('server_kill'), xPlayer.name .." ".. _('user_kill_environnement'),Config.red)
+     sendToDiscord3(_U('server_kill'), xPlayer.name .." ".. _('user_kill_environnement'),Config.red)
   end
 
 end)

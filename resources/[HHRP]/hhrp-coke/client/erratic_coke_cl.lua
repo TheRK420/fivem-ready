@@ -457,7 +457,7 @@ function final()
 							exports['hhrp-taskbar']:taskBar(2000, _U'leaving_key')
 						end
 						Citizen.Wait(2000)
-						--TriggerServerEvent('coke:GiveItem')
+						TriggerServerEvent('coke:GiveItem')
 						local br = math.random(2, 4)
 						TriggerEvent('player:receiveItem', "coke50g", br)
 						exports['mythic_notify']:DoHudText('success', 'Here is your Security deposit $1000')
@@ -527,6 +527,7 @@ function processing()
 	if exports['hhrp-inventory']:hasEnoughOfItem('coke50g', 1) then
 		TriggerEvent("inventory:removeItem","coke50g", 1)
 		TriggerEvent('player:receiveItem', "coke5g", pick)
+		TriggerEvent('OpenInv')
 	else
 		exports['mythic_notify']:DoHudText('error', 'Not Enough Bricks')
 	--TriggerServerEvent('coke:processed')

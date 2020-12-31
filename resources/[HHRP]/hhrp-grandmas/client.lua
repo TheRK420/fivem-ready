@@ -45,8 +45,8 @@ Citizen.CreateThread(function()
 			        Draw3DText(hospitalCheckin.x, hospitalCheckin.y, hospitalCheckin.z + 0.5, '[E] - Check in for $1,000')
                     if IsControlJustReleased(0, 54) then
                         if (GetEntityHealth(PlayerPedId()) <= 200) then
-                            loadAnimDict('missheistdockssetup1clipboard@base')
-                            TaskPlayAnim( PlayerPedId(), "missheistdockssetup1clipboard@base", "base", 3.0, 1.0, -1, 49, 0, 0, 0, 0 ) 
+                            --loadAnimDict('missheistdockssetup1clipboard@base')
+                            --TaskPlayAnim( PlayerPedId(), "missheistdockssetup1clipboard@base", "base", 3.0, 1.0, -1, 49, 0, 0, 0, 0 ) 
                             exports["hhrp-taskbar"]:taskBar(10500, "Checking In")
                                 exports["hhrp-taskbar"]:taskBar(60000, "Treating, Do not move")
                                     TriggerEvent('hhrp-ambulancejob:revive')

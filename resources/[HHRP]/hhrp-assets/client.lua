@@ -33,6 +33,75 @@ Citizen.CreateThread(function()
     end
 end)
 
+-- Blacklisted vehicle models
+carblacklist = {
+	"RHINO",
+	"APC",
+	"POLICEB",
+    "POLICE3",
+    "POLICE4",
+	"POLICE2",
+	"POLICE"
+}
+
+-- CODE --
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(1)
+
+		playerPed = GetPlayerPed(-1)
+		if playerPed then
+			checkCar(GetVehiclePedIsIn(playerPed, false))
+
+			x, y, z = table.unpack(GetEntityCoords(playerPed, true))
+			for _, blacklistedCar in pairs(carblacklist) do
+				checkCar(GetClosestVehicle(x, y, z, 100.0, GetHashKey(blacklistedCar), 70))
+			end
+		end
+	end
+end)
+
+function checkCar(car)
+	if car then
+		carModel = GetEntityModel(car)
+		carName = GetDisplayNameFromVehicleModel(carModel)
+
+		if isCarBlacklisted(carModel) then
+			DeleteEntity(car)
+			--sendForbiddenMessage("This vehicle is blacklisted!")
+		end
+	end
+end
+
+function isCarBlacklisted(model)
+	for _, blacklistedCar in pairs(carblacklist) do
+		if model == GetHashKey(blacklistedCar) then
+			return true
+		end
+	end
+
+	return false
+end
+------------------ disable gun rewards--------------------------
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(10)
+		DisablePlayerVehicleRewards(PlayerId())
+	end
+end)
+---------------------------disable WeaponDrop-----------------------
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(1)
+
+		RemoveAllPickupsOfType(GetHashKey('PICKUP_WEAPON_CARBINERIFLE'))
+		RemoveAllPickupsOfType(GetHashKey('PICKUP_WEAPON_PISTOL'))
+		RemoveAllPickupsOfType(GetHashKey('PICKUP_WEAPON_PUMPSHOTGUN'))
+	end
+end)
+------
+
 local reti = false
 
 local HUD_ELEMENTS = {

@@ -301,7 +301,7 @@ end
 function rewarduber()
 	if ispedhomechance == 1 then
 		chanceofcivstick = math.random(1,6)
-		price = math.random(80,100)
+		price = math.random(150,500)
 		TriggerServerEvent('hhrp-uberkdshfksksdhfskdjjob:pay', price)
 		TriggerEvent('DoLongHudText', 'Package Delivered', 1)
 		TriggerEvent('DoLongHudText', 'Recieved Tip', 2)
@@ -312,7 +312,7 @@ function rewarduber()
 		deliv = nil
 		enditall()
 		elseif ispedhomechance ~= 1 then
-		price = math.random(60,80)
+		price = math.random(150,350)
 		TriggerServerEvent('hhrp-uberkdshfksksdhfskdjjob:pay', price)
 		TriggerEvent('DoLongHudText', 'Package Delivered', 1)
 		removeblips()
