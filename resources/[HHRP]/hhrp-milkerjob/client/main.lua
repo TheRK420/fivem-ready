@@ -78,11 +78,21 @@ end
 end
 end)
 
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(60000)
+		if wait then
+			wait = false
+		end
+	end
+end)
+
 function TakeMilk()
 	if wait then
 		TaskStartScenarioInPlace(PlayerPedId(), "PROP_HUMAN_BUM_BIN", 0, true)
 		time = Config.TimeToEnd * 1000
 		exports['hhrp-taskbar']:taskBar(time,Config.TakingLabel)
+		TriggerEvent('player:receiveItem',"milkcan", 1)
 	else
 		TriggerEvent('DoLongHudText', 'You Need To Wait ' .. Config.WaitTime .. ' Seconds Before Take ' .. Config.PrizeLabel .. ' Again', 2)
 	end
@@ -148,5 +158,5 @@ end)
 function SellMilk()
 	exports['hhrp-taskbar']:taskBar(3000,'Selling ' .. Config.PrizeLabel .. '')
 	TriggerServerEvent('hhrp_milkerjob:sellitem')
-	TriggerEvent('inventory:removeItem', 'milk_can', 1)
+	TriggerEvent('inventory:removeItem', 'milkcan', 1)
 end
