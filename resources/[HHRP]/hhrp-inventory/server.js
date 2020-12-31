@@ -461,7 +461,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
 {
     var targetinvname = targetName;
     var shopArray = HardwareStore();
-    var shopAmount = 11;
+    var shopAmount = 12;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }
     else if(secondInventory == "5")
@@ -1369,6 +1369,7 @@ function HardwareStore() {
         //{ item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 12, amount: 10},
         //{ item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 13, amount: 10},
         { item_id: "pickaxe", id: 0, name: "Shop", information: "{}", slot: 11, amount: 1},
+        { item_id: "fertilizer", id: 0, name: "Shop", information: "{}", slot: 12, amount: 10},
      
     ];
     return JSON.stringify(shopItems);

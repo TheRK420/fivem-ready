@@ -32,14 +32,9 @@ end)
 RegisterNetEvent('hhrp_milkerjob:sellitem')
 AddEventHandler('hhrp_milkerjob:sellitem', function()
 	local xPlayer  = HHCore.GetPlayerFromId(source)
-	--local milk = xPlayer.getInventoryItem(Config.PrizeItem).count
+	local milk = 1
 	local totalprice = Config.ItemPrice
-
-	if milk > 0 then
-	xPlayer.removeInventoryItem(Config.PrizeItem, milk)
+	--xPlayer.removeInventoryItem(Config.PrizeItem, milk)
 	xPlayer.addMoney(totalprice)
 	TriggerClientEvent('DoLongHudText', source, 'You Sold ' .. milk .. 'x ' .. Config.PrizeLabel .. ' For $' .. totalprice .. '', 1)
-	else
-		TriggerClientEvent('DoLongHudText', source, 'You Dont Have A ' .. Config.PrizeLabel, 2)
-	end
 end)
