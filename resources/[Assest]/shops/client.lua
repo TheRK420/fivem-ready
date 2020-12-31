@@ -551,8 +551,20 @@ Citizen.CreateThread(function()
 					--TriggerEvent("openSubMenu","burgershot")
 			    end
             end
-        end
-
+		end
+		
+		if(Vdist(-1586.84,-431.87, 37.94, pos.x, pos.y, pos.z) < 20.0)then
+			found = true
+			DrawMarker(27, -1586.84,-431.87, 37.94 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
+			if(Vdist(-1586.84,-431.87, 37.94, pos.x, pos.y, pos.z) < 3.0)then
+				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open Drug Crafting.")
+				if IsControlJustPressed(1, 38) then	
+					TriggerEvent("server-inventory-open", "107", "Craft");	
+					Wait(1000)
+					--TriggerEvent("openSubMenu","shop")
+			    end
+			end
+		end
 
 		if(Vdist(-632.64, 235.25, 81.89, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
