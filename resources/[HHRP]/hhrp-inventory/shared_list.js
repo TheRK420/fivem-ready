@@ -269,7 +269,7 @@ itemList["torta"] = {fullyDegrades: false,  decayrate: 0.0, displayname: "Torta"
 
 
 
-itemList["coffee"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Coffee", craft: [{itemid: "foodingredient", amount: 1 } ], price: 10, weight: 12, nonStack: false, model: "", image: "np_coffee.png", information: "Wow, its strong." , deg: false}
+itemList["coffee"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Coffee", craft: [{itemid: "foodingredient", amount: 1 }, {itemid: "milkcan", amount: 0.2 } ], price: 10, weight: 12, nonStack: false, model: "", image: "np_coffee.png", information: "Wow, its strong." , deg: false}
 
 itemList["cola"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Cola", price: 5, weight: 1, nonStack: false, model: "", image: "np_coke.png", information: "Sates Thirst" , deg: false}
 
@@ -297,7 +297,7 @@ itemList["water"]	    = {fullyDegrades: false, decayrate: 0.00, displayname: "Wa
 
 itemList["hotdog"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Hot Dog", craft: [{itemid: "foodingredient", amount: 1 } ], price: 10, weight: 12, nonStack: false, model:  "", image: "np_hotdog.png", information: "Dont ask what is in it" , deg: false}
 
-itemList["icecream"]	= {fullyDegrades: true, decayrate: 0.01, displayname: "Ice Cream", craft: [{itemid: "foodingredient", amount: 1 } ], price: 10, weight: 12, nonStack: false, model: "", image: "np_icecream.png", information: "Made from real human titty milk.", deg: false}
+itemList["icecream"]	= {fullyDegrades: true, decayrate: 0.01, displayname: "Ice Cream", craft: [{itemid: "foodingredient", amount: 2 },  {itemid: "milkcan", amount: 0.2 } ], price: 10, weight: 12, nonStack: false, model: "", image: "np_icecream.png", information: "Made from real human titty milk.", deg: false}
 
 itemList["jailfood"]	= {fullyDegrades: true, decayrate: 0.001, displayname: "Jail Food", price: 0, weight: 50, nonStack: false, model: "", image: "np_jailfood.png", information: "+5 fat <br> Looks as bad as the Sheriff's aim." , deg: false}
 
@@ -319,7 +319,7 @@ itemList["moneyshot"]	= {fullyDegrades: true, decayrate: 0.01, displayname: "Mon
 
 itemList["meatfree"]	= {fullyDegrades: true, decayrate: 0.01, displayname: "Meat Free", price: 50,      weight: 1,   nonStack: false, model: "", image: "np_meat-free.png", information: "Sates Hunger and reduces stress." , deg: false}
 
-itemList["mshake"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Milkshake", craft: [{itemid: "foodingredient", amount: 1 } ], price: 10, weight: 12, nonStack: false, model:  "", image: "np_milkshake.png", information: "Hand-scooped for you" , deg: false}
+itemList["mshake"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Milkshake", craft: [{itemid: "foodingredient", amount: 1 }, {itemid: "milkcan", amount: 0.2 } ], price: 10, weight: 12, nonStack: false, model:  "", image: "np_milkshake.png", information: "Hand-scooped for you" , deg: false}
 itemList["taco"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Taco", craft: [{itemid: "foodingredient", amount: 1 } ], price: 10, weight: 12, nonStack: false, model: "", image: "np_taco.png", information: "This aint free taco.", deg: false}
 
 itemList["freshmeat"]	    = {fullyDegrades: true, decayrate: 0.01, displayname: "Fresh Meat", craft: [{itemid: "foodingredient", amount: 1 } ], price: 10, weight: 12, nonStack: false, model: "", image: "np_rawmeat.png", information: "Meat, Wow..", deg: false}

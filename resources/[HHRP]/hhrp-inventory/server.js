@@ -502,7 +502,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
     else if(secondInventory == "12")
 {
     var targetinvname = targetName;
-    var shopArray = BurgieStore();
+    var shopArray = CoffeeShop();
     var shopAmount = 5;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }    
@@ -1388,7 +1388,7 @@ function GunStore() {
     return JSON.stringify(shopItems);
 };
 
-function BurgieStore() {
+function CoffeeShop() {
     var shopItems = [
         { item_id: "coffee", id: 0, name: "Craft", information: "{}", slot: 1, amount: 5 },
         //{ item_id: "heartstopper", id: 0, name: "Shop", information: "{}", slot: 2, amount: 5 },
