@@ -492,14 +492,14 @@ Citizen.CreateThread(function()
             	end
 			end
 			
-		if(Vdist(-343.6864, -140.0516, 39.00968, pos.x, pos.y, pos.z) < 10.0)then
+		if(Vdist(-242.279,-1338.35, 30.9028, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			local job = HHCore.GetPlayerData().job.name
 			if job == "mechanic" then
-			DrawMarker(27, -343.6864, -140.0516, 39.2 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
-			if(Vdist(-343.6864, -140.0516, 39.00968, pos.x, pos.y, pos.z) < 2.0)then
+			DrawMarker(27,-242.279,-1338.35, 30.9028 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
+			if(Vdist(-242.279,-1338.35, 30.9028, pos.x, pos.y, pos.z) < 2.0)then
 				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Mechanic Crafting")
-				if IsControlJustPressed(1, 38) and (Vdist(-343.6864, -140.0516, 39.00968, pos.x, pos.y, pos.z) < 2.0) then
+				if IsControlJustPressed(1, 38) and (Vdist(-242.279,-1338.35, 30.9028, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "55", "Craft");  
 						Wait(1000)
 			    	end
@@ -507,15 +507,15 @@ Citizen.CreateThread(function()
         	end   
 		end
 
-		if(Vdist(-345.0014, -109.2862, 39.2, pos.x, pos.y, pos.z) < 10.0)then
+		if(Vdist(-218.80, -1331.529, 23.14, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			local job = HHCore.GetPlayerData().job.name
 			if job == "mechanic" then
-			DrawMarker(27, -345.0014, -109.2862, 39.2 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
-			if(Vdist(-345.0014, -109.2862, 39.2, pos.x, pos.y, pos.z) < 2.0)then
+			DrawMarker(27, -218.80, -1331.529, 23.14 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
+			if(Vdist(-218.80, -1331.529, 23.14, pos.x, pos.y, pos.z) < 2.0)then
 				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Mechanic Stash")
-				if IsControlJustPressed(1, 38) and (Vdist(-345.0014, -109.2862, 39.2, pos.x, pos.y, pos.z) < 2.0) then
-						TriggerEvent("server-inventory-open", "1", "LSC Stash") 
+				if IsControlJustPressed(1, 38) and (Vdist(-218.80, -1331.529, 23.14, pos.x, pos.y, pos.z) < 2.0) then
+						TriggerEvent("server-inventory-open", "1", "Mechanic Stash") 
 						Wait(1000)
 			    	end
             	end
@@ -570,7 +570,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, -632.64, 235.25, 81.89 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(-632.64, 235.25, 81.89, pos.x, pos.y, pos.z) < 1.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to purchase Hipster")
+				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to Make Delicious Stuff")
 				if IsControlJustPressed(1, 38) then
 					TriggerEvent("server-inventory-open", "12", "Craft");
 					Wait(1000)
