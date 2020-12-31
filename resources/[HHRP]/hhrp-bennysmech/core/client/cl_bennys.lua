@@ -21,7 +21,7 @@ local plyFirstJoin = false
 
 
 local nearDefault = false
-local bennyLocationLSC1 = vector3(-336.0139, -126.824, 38.65579)
+local bennyLocationLSC1 = vector3(-226.1885, -1314.604, 18.46)
 
 
 
