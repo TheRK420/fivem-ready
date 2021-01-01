@@ -61,12 +61,13 @@ Citizen.CreateThread(function()
 				SendNUIMessage({action = "toggleCar", show = true})
 				DisplayRadar(true)
 			end
+			
+			local fu = GetFuel(playerVeh)
+			SendNUIMessage({action = "updateGas", key = "gas", value = fu})
 
-			SendNUIMessage({action = "updateGas", key = "gas", value = Fuel})
-
-			if Fuel < 15 then
+			if fu < 15 then
 				if not IsThisModelABike(GetEntityModel(veh)) then
-					TriggerEvent("CarFuelAlarm")
+					TriggerEvent("CarfuelAlarm")
 				end
 			end
 
