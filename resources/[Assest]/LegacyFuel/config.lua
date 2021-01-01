@@ -1,7 +1,7 @@
 Config = {}
 
--- Are you using ESX? Turn this to true if you would like fuel & jerry cans to cost something.
-Config.UseESX = true
+-- Are you using hhrp? Turn this to true if you would like fuel & jerry cans to cost something.
+Config.UseHHCore = true
 
 -- What should the price of jerry cans be?
 Config.JerryCanCost = 1500
@@ -39,7 +39,7 @@ Config.Strings = {
 	TotalCost = "Cost",
 }
 
-if not Config.UseESX then
+if not Config.UseHHCore then
 	Config.Strings.PurchaseJerryCan = "Press ~g~E ~w~to grab a jerry can"
 	Config.Strings.RefillJerryCan = "Press ~g~E ~w~ to refill the jerry can"
 end

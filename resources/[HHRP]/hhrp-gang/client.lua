@@ -32,7 +32,7 @@ AddEventHandler('hhrp:playerLoaded', function(xPlayer)
 			Citizen.Wait(500)
 			displayClubMarkers(PlayerClub)
 			playerZones()
-			ClubGarages()
+			--ClubGarages()
 			addClubBlips(PlayerClub)
 		else
 			zones = {}
@@ -61,7 +61,7 @@ AddEventHandler('sody_clubs:forceSync', function(xPlayer)
 			Citizen.Wait(500)
 			displayClubMarkers(PlayerClub)
 			playerZones()
-			ClubGarages()
+			--ClubGarages()
 			addClubBlips(PlayerClub)
 		else
 			zones = {}
@@ -107,7 +107,7 @@ AddEventHandler('sody_clubs:clubAdded', function(club, clubrank, clubrankname)
 		Citizen.Wait(500)
 		displayClubMarkers(PlayerClub)
 		playerZones()
-		ClubGarages()
+		--ClubGarages()
 		addClubBlips(PlayerClub)
 	else
 		zones = {}
@@ -1167,46 +1167,46 @@ function OpenPutStocksMenuPriv()
 	end)
 end
 
-function ClubGarages()
-	Citizen.CreateThread(function()
-		while hasClub do
-			Citizen.Wait(0)
+-- function ClubGarages()
+-- 	Citizen.CreateThread(function()
+-- 		while hasClub do
+-- 			Citizen.Wait(0)
 
-			local letSleep = true
-			local coords = GetEntityCoords(PlayerPedId())
-			local distance = GetDistanceBetweenCoords(coords, garage.x, garage.y, garage.z, true)
+-- 			local letSleep = true
+-- 			local coords = GetEntityCoords(PlayerPedId())
+-- 			local distance = GetDistanceBetweenCoords(coords, garage.x, garage.y, garage.z, true)
 
-			if distance < Config.DrawDistance then
-				DrawMarker(1, garage.x, garage.y, garage.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 0, 171, 255, 100, false, true, 2, false, nil, nil, false)
-				letSleep = false
-			end
+-- 			if distance < Config.DrawDistance then
+-- 				DrawMarker(1, garage.x, garage.y, garage.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 1.0, 0, 171, 255, 100, false, true, 2, false, nil, nil, false)
+-- 				letSleep = false
+-- 			end
 
-			if not isInMarker2 and distance < 2.0 then
-				CurrentGarage = garage
-				if IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) then
-					hintToDisplay = _U('delete')
-					hintIsShowed = true
-					TriggerEvent('sody_clubs:action', 'delete')
-				else
-					hintToDisplay = _U('spawn')
-					hintIsShowed = true
-					TriggerEvent('sody_clubs:action', 'spawn')
-				end
-				isInMarker2 = true
-			end
+-- 			if not isInMarker2 and distance < 2.0 then
+-- 				CurrentGarage = garage
+-- 				if IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) then
+-- 					hintToDisplay = _U('delete')
+-- 					hintIsShowed = true
+-- 					TriggerEvent('sody_clubs:action', 'delete')
+-- 				else
+-- 					hintToDisplay = _U('spawn')
+-- 					hintIsShowed = true
+-- 					TriggerEvent('sody_clubs:action', 'spawn')
+-- 				end
+-- 				isInMarker2 = true
+-- 			end
 
-			if isInMarker2 and distance > 2.0 then
-				TriggerEvent('sody_clubs:hasExitedMarker')
-				isInMarker2 = false
-				CurrentGarage = false
-			end
+-- 			if isInMarker2 and distance > 2.0 then
+-- 				TriggerEvent('sody_clubs:hasExitedMarker')
+-- 				isInMarker2 = false
+-- 				CurrentGarage = false
+-- 			end
 
-			if letSleep then
-				Citizen.Wait(1000)
-			end
-		end
-	end)
-end
+-- 			if letSleep then
+-- 				Citizen.Wait(1000)
+-- 			end
+-- 		end
+-- 	end)
+-- end
 
 function OpenChangingRoomMenu()
 	HHCore.TriggerServerCallback('hhrp-housing:server:getSavedOutfits', function(dressing)
