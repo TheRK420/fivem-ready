@@ -461,7 +461,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
 {
     var targetinvname = targetName;
     var shopArray = HardwareStore();
-    var shopAmount = 11;
+    var shopAmount = 12;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }
     else if(secondInventory == "5")
@@ -502,7 +502,7 @@ onNet("server-inventory-open", async ( coords, player, secondInventory, targetNa
     else if(secondInventory == "12")
 {
     var targetinvname = targetName;
-    var shopArray = BurgieStore();
+    var shopArray = CoffeeShop();
     var shopAmount = 5;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }    
@@ -653,6 +653,14 @@ else if(secondInventory == "105")
 {
     var targetinvname = targetName;
     var shopArray = IllgealCraft();
+    var shopAmount = 5;
+    emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
+}
+
+else if(secondInventory == "107")
+{
+    var targetinvname = targetName;
+    var shopArray = illegalstore();
     var shopAmount = 5;
     emitNet("inventory-open-target", src, [invArray,arrayCount,playerinvname,shopArray,shopAmount,targetinvname,500,false]);
 }  
@@ -1309,11 +1317,13 @@ function Mechanic() {
     return JSON.stringify(shopItems);
 }
 
-function weed() {
+function illegalstore() {
     var shopItems = [
-       { item_id: "highgradefert", id: 0, name: "Shop", information: "{}", slot: 1, amount: 1},  
-       { item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 2, amount: 1},
-       { item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 3, amount: 1},
+       { item_id: "highgradefert", id: 0, name: "craft", information: "{}", slot: 1, amount: 1},  
+       { item_id: "purifiedwater", id: 0, name: "craft", information: "{}", slot: 2, amount: 1},
+       { item_id: "plantpot", id: 0, name: "craft", information: "{}", slot: 3, amount: 1},
+       { item_id: "bakingsoda", id: 0, name: "Shop", information: "{}", slot: 4, amount: 50 },
+       { item_id: "glucose", id: 0, name: "Shop", information: "{}", slot: 5, amount: 50 },
  
     ];
     return JSON.stringify(shopItems);
@@ -1359,6 +1369,7 @@ function HardwareStore() {
         //{ item_id: "purifiedwater", id: 0, name: "Shop", information: "{}", slot: 12, amount: 10},
         //{ item_id: "plantpot", id: 0, name: "Shop", information: "{}", slot: 13, amount: 10},
         { item_id: "pickaxe", id: 0, name: "Shop", information: "{}", slot: 11, amount: 1},
+        { item_id: "fertilizer", id: 0, name: "Shop", information: "{}", slot: 12, amount: 10},
      
     ];
     return JSON.stringify(shopItems);
@@ -1378,7 +1389,7 @@ function GunStore() {
     return JSON.stringify(shopItems);
 };
 
-function BurgieStore() {
+function CoffeeShop() {
     var shopItems = [
         { item_id: "coffee", id: 0, name: "Craft", information: "{}", slot: 1, amount: 5 },
         //{ item_id: "heartstopper", id: 0, name: "Shop", information: "{}", slot: 2, amount: 5 },

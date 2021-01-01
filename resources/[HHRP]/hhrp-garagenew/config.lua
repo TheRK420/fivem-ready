@@ -223,28 +223,28 @@ Config.Garages = {
             ["rotationY"] = 0.0, 
             ["rotationZ"] = -120.73228356242 
         }
-    },
-    ["X"] = {
-        ["positions"] = {
-            ["menu"] = {
-                ["position"] = vector3(-323.81,-131.42,38.96),
-                ["text"] = "[ ~o~E~s~ ] Garage",
-            },
-             ["vehicle"] = {
-                ["position"] = vector3(-327.02,-138.24,39.01), 
-                ["heading"] = 75.02,
-                ["text"] = "[ ~o~E~s~ ] Store Vehicle",
-            }
-        },
-       -- ["camera"] = {  -- camera is not needed just if you want cool effects.
-         --   ["x"] = 227.534, 
-         --   ["y"] = -791.370, 
-         --   ["z"] = 33.560, 
-          --  ["rotationX"] = -31.401574149728, 
-         --   ["rotationY"] = 0.0, 
-         --   ["rotationZ"] = -160.40157422423 
-     --   }
     }
+    -- ["X"] = {
+    --     ["positions"] = {
+    --         ["menu"] = {
+    --             ["position"] = vector3(-323.81,-131.42,38.96),
+    --             ["text"] = "[ ~o~E~s~ ] Garage",
+    --         },
+    --          ["vehicle"] = {
+    --             ["position"] = vector3(-327.02,-138.24,39.01), 
+    --             ["heading"] = 75.02,
+    --             ["text"] = "[ ~o~E~s~ ] Store Vehicle",
+    --         }
+    --     },
+    --    -- ["camera"] = {  -- camera is not needed just if you want cool effects.
+    --      --   ["x"] = 227.534, 
+    --      --   ["y"] = -791.370, 
+    --      --   ["z"] = 33.560, 
+    --       --  ["rotationX"] = -31.401574149728, 
+    --      --   ["rotationY"] = 0.0, 
+    --      --   ["rotationZ"] = -160.40157422423 
+    --  --   }
+    -- }
 }
 
 
