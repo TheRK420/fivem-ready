@@ -118,4 +118,3 @@ AddEventHandler('scaryLoop2', function()
     msgCount2 = 0
 end)
 
---gf
