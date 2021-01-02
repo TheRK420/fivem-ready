@@ -22,9 +22,9 @@ Config.ClubBlips = { -- Only shown to club members
 
 Config.Clubs = {
 	lmc = { -- Must match Database name
-		Garage = { -- Vehicle Garage
-			x = 967.06, y = -121.28, z = 73.35, h = 136.05
-		},
+		-- Garage = { -- Vehicle Garage
+		-- 	x = 967.06, y = -121.28, z = 73.35, h = 136.05
+		-- },
 
 		Perms = {
 			StorageRankMin = 1,
@@ -33,16 +33,16 @@ Config.Clubs = {
 
 		Zones = {
 
-			ChangingRoom = {
-				Pos   = {x =  981.05, y = -97.98, z = 73.85},
-				Size  = {x = 0.7, y = 0.7, z = 0.5},
-				Color = {r = 20, g = 250, b = 20},
-				Marker= 25,
-				Blip  = false,
-				Name  = _U('lockertitle'),
-				Type  = "changingroom",
-				Hint  = _U('changing_room'),
-			},
+			-- ChangingRoom = {
+			-- 	Pos   = {x =  981.05, y = -97.98, z = 73.85},
+			-- 	Size  = {x = 0.7, y = 0.7, z = 0.5},
+			-- 	Color = {r = 20, g = 250, b = 20},
+			-- 	Marker= 25,
+			-- 	Blip  = false,
+			-- 	Name  = _U('lockertitle'),
+			-- 	Type  = "changingroom",
+			-- 	Hint  = _U('changing_room'),
+			-- },
 
 			Storage1 = {
 				Pos   = {x = 972.25, y = -98.99, z = 73.85},
