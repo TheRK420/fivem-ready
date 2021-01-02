@@ -1,10 +1,7 @@
 Config = {}
 
--- Are you using hhrp? Turn this to true if you would like fuel & jerry cans to cost something.
-Config.UseHHCore = true
-
 -- What should the price of jerry cans be?
-Config.JerryCanCost = 1500
+Config.JerryCanCost = 100
 Config.RefillCost = 50 -- If it is missing half of it capacity, this amount will be divided in half, and so on.
 
 -- Fuel decor - No need to change this, just leave it.
@@ -39,10 +36,8 @@ Config.Strings = {
 	TotalCost = "Cost",
 }
 
-if not Config.UseHHCore then
-	Config.Strings.PurchaseJerryCan = "Press ~g~E ~w~to grab a jerry can"
-	Config.Strings.RefillJerryCan = "Press ~g~E ~w~ to refill the jerry can"
-end
+Config.Strings.PurchaseJerryCan = "Press ~g~E ~w~to grab a jerry can"
+Config.Strings.RefillJerryCan = "Press ~g~E ~w~ to refill the jerry can"
 
 Config.PumpModels = {
 	[-2007231801] = true,
@@ -91,14 +86,14 @@ Config.Classes = {
 
 -- The left part is at percentage RPM, and the right is how much fuel (divided by 10) you want to remove from the tank every second
 Config.FuelUsage = {
-	[1.0] = 1.4,
-	[0.9] = 1.2,
-	[0.8] = 1.0,
-	[0.7] = 0.9,
-	[0.6] = 0.8,
-	[0.5] = 0.7,
-	[0.4] = 0.5,
-	[0.3] = 0.4,
+	[1.0] = 0.6,
+	[0.9] = 0.5,
+	[0.8] = 0.4,
+	[0.7] = 0.45,
+	[0.6] = 0.40,
+	[0.5] = 0.35,
+	[0.4] = 0.3,
+	[0.3] = 0.25,
 	[0.2] = 0.2,
 	[0.1] = 0.1,
 	[0.0] = 0.0,
