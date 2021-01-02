@@ -8,7 +8,7 @@ Config.BlipSprite   = 431
 Config.Locale       = 'en'
 
 Config.WASH = {
-    { ['x'] =  1272.52,  ['y'] = -1711.52,  ['z'] = 54.77},
+    { ['x'] =  1136.28,  ['y'] = -992.18,  ['z'] = 46.11},
 }
 Config.Map = {
   {name="Money Wash",  		color=6, scale=0.8, id=500, x = 1273.213, y = -1711.655, z = 54.771}
