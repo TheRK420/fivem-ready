@@ -11,7 +11,7 @@
   font-variant: small-caps;
   text-transform: none;
   
-  text-shadow: 1px 1px 1px #010101;
+  text-shadow: 1px 1px 1px rgba(1,1,1,1);
 }
 
 .carStats{

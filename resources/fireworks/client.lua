@@ -8,7 +8,8 @@ function msg(string)
 end
 
 RegisterCommand("sf", function()
-	TriggerServerEvent('fireworks')
+	TriggerEvent('frobski-fireworks:start')
+	--TriggerServerEvent('fireworks')
 end)
 
 RegisterNetEvent('bz-noperms')
@@ -26,9 +27,23 @@ AddEventHandler('frobski-fireworks:start', function()
 		   Citizen.Wait(10)
     end
         
+	if not HasNamedPtfxAssetLoaded("proj_indep_firework_v2") then
+		RequestNamedPtfxAsset("proj_indep_firework_v2")
+		while not HasNamedPtfxAssetLoaded("proj_indep_firework_v2") do
+		   Wait(10)
+		end
+	end
+
 	if not HasNamedPtfxAssetLoaded("scr_indep_fireworks") then
 		RequestNamedPtfxAsset("scr_indep_fireworks")
 		while not HasNamedPtfxAssetLoaded("scr_indep_fireworks") do
+		   Wait(10)
+		end
+	end
+
+	if not HasNamedPtfxAssetLoaded("proj_xmas_firework") then
+		RequestNamedPtfxAsset("proj_xmas_firework")
+		while not HasNamedPtfxAssetLoaded("proj_xmas_firework") do
 		   Wait(10)
 		end
 	end
@@ -48,8 +63,13 @@ AddEventHandler('frobski-fireworks:start', function()
 
 	Citizen.Wait(10000)
 	repeat
+	UseParticleFxAssetNextCall("proj_indep_firework_v2")
+	local part1 = StartNetworkedParticleFxNonLoopedAtCoord("scr_firework_indep_ring_burst_rwb", firecoords.x, firecoords.y, firecoords.z+22, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
 	UseParticleFxAssetNextCall("scr_indep_fireworks")
-	local part1 = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_trailburst", firecoords, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+	local part2 = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_trailburst", firecoords.x, firecoords.y, firecoords.z+22, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+	UseParticleFxAssetNextCall("proj_xmas_firework")
+	local part3 = StartNetworkedParticleFxNonLoopedAtCoord("scr_firework_xmas_spiral_burst_rgw", firecoords.x, firecoords.y, firecoords.z+22, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+
 	times = times - 1
 	Citizen.Wait(2000)
 	until(times == 0)

@@ -61,31 +61,28 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local coords = GetEntityCoords(GetPlayerPed(-1))
 		for _,v in pairs(Config.Cows) do
-			if (GetDistanceBetweenCoords(coords, v[1],v[2],v[3], true) < 2.0)  then
+		if (GetDistanceBetweenCoords(coords, v[1],v[2],v[3], true) < 2.0)  then
 
-				if IsControlJustReleased(0, 46) then
-					TakeMilk()
-				end
+			if IsControlJustReleased(0, 46) then
+				--if Config.NeedJob then
+				--if HHCore.GetPlayerData().job.name == Config.Job then
+				--else
+				--TriggerEvent('DoLongHudText', 'You are not a milkerman', 2)
+				--end
+				--else
+				TakeMilk()
+				--end
 			end
-		end
 	end
+end
+end
 end)
-
--- Citizen.CreateThread(function()
--- 	while true do
--- 		Citizen.Wait(60000)
--- 		if wait then
--- 			wait = false
--- 		end
--- 	end
--- end)
 
 function TakeMilk()
 	if wait then
 		TaskStartScenarioInPlace(PlayerPedId(), "PROP_HUMAN_BUM_BIN", 0, true)
 		time = Config.TimeToEnd * 1000
 		exports['hhrp-taskbar']:taskBar(time,Config.TakingLabel)
-		TriggerEvent('player:receiveItem',"milkcan", 1)
 	else
 		TriggerEvent('DoLongHudText', 'You Need To Wait ' .. Config.WaitTime .. ' Seconds Before Take ' .. Config.PrizeLabel .. ' Again', 2)
 	end
@@ -129,24 +126,27 @@ Citizen.CreateThread(function()
 
 		Citizen.Wait(0)
 		local coords = GetEntityCoords(GetPlayerPed(-1))
-		if Config.Text3d then
-			if (GetDistanceBetweenCoords(coords, -635.33, 233.84, 81.88, true) < 2.0)  then
-				DrawText3D(-635.33, 233.84, 81.88, '~y~[E] ~w~Sell Milk')	
-				if IsControlJustReleased(0, 46) then
-					if exports['hhrp-inventory']:hasEnoughOfItem("milkcan", 1, false) then
-						SellMilk()
-					else
-						TriggerEvent('DoLongHudText', 'Not Enough Milk Cans')
-					end
-				end
+if Config.Text3d then
+		if (GetDistanceBetweenCoords(coords, 51.29, -1317.92, 29.29, true) < 2.0)  then
+		DrawText3D(51.29, -1317.92, 29.29, '~y~[E] ~w~Sell Milk')	
+		if IsControlJustReleased(0, 46) then
+			if Config.NeedJob then
+			if HHCore.GetPlayerData().job.name == Config.Job then
+				SellMilk()
+			else
+				TriggerEvent('DoLongHudText', 'You Are Not A Milker Man', 2)
+			end
+		else
+			SellMilk()
 			end
 		end
 	end
+	end
+end
 end)
 
 function SellMilk()
 	exports['hhrp-taskbar']:taskBar(3000,'Selling ' .. Config.PrizeLabel .. '')
 	TriggerServerEvent('hhrp_milkerjob:sellitem')
-	TriggerEvent('inventory:removeItem', 'milkcan', 1)
-    TriggerEvent('OpenInv')
+	TriggerEvent('inventory:removeItem', 'milk_can', 1)
 end

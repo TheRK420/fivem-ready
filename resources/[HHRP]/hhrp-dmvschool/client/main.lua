@@ -74,7 +74,7 @@ function StartDriveTest(type)
 		TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 		local plate = GetVehicleNumberPlateText(vehicle)
 		TriggerServerEvent('garage:addKeys', plate)
-		exports["LegacyFuel"]:SetFuel(vehicle, 100)
+		exports["Fuel"]:SetFuel(vehicle, 100)
 	end)
 
 	TriggerServerEvent('hhrp-dmvschool:pay', Config.Prices[type])
