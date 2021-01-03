@@ -153,3 +153,102 @@ AddEventHandler('paycheck:collectPayStack3', function()
 		end
 	end
 end) 
+
+RegisterServerEvent('paycheck:collectPayStack4')
+AddEventHandler('paycheck:collectPayStack3', function()
+	local source = source
+	local xPlayer = HHCore.GetPlayerFromId(source)
+	local job     = xPlayer.job.grade_name
+	local salary  = xPlayer.job.grade_salary * 4
+
+	if salary > 0 then
+		if job == 'unemployed' then -- unemployed
+			xPlayer.addMoney( salary)
+		elseif Config.EnableSocietyPayouts then -- possibly a society
+			TriggerEvent('hhrp-society:getSociety', xPlayer.job.name, function (society)
+				if society ~= nil then -- verified society
+					TriggerEvent('hhrp-addonaccount:getSharedAccount', society.account, function (account)
+						if account.money >= salary then -- does the society money to pay its employees?
+							xPlayer.addMoney( salary)
+							account.removeMoney(salary)
+							--TriggerClientEvent("banking:updateCash", source, (xPlayer.getMoney()))
+
+						else
+							TriggerClientEvent('hhrp:showAdvancedNotification', source, _U('bank'), '', _U('company_nomoney'), 'CHAR_BANK_MAZE', 1)
+						end
+					end)
+				else -- not a society
+					xPlayer.addMoney( salary)
+				end
+			end)
+		else -- generic job
+			xPlayer.addMoney( salary)
+		end
+	end
+end) 
+
+RegisterServerEvent('paycheck:collectPayStack5')
+AddEventHandler('paycheck:collectPayStack3', function()
+	local source = source
+	local xPlayer = HHCore.GetPlayerFromId(source)
+	local job     = xPlayer.job.grade_name
+	local salary  = xPlayer.job.grade_salary * 5
+
+	if salary > 0 then
+		if job == 'unemployed' then -- unemployed
+			xPlayer.addMoney( salary)
+		elseif Config.EnableSocietyPayouts then -- possibly a society
+			TriggerEvent('hhrp-society:getSociety', xPlayer.job.name, function (society)
+				if society ~= nil then -- verified society
+					TriggerEvent('hhrp-addonaccount:getSharedAccount', society.account, function (account)
+						if account.money >= salary then -- does the society money to pay its employees?
+							xPlayer.addMoney( salary)
+							account.removeMoney(salary)
+							--TriggerClientEvent("banking:updateCash", source, (xPlayer.getMoney()))
+
+						else
+							TriggerClientEvent('hhrp:showAdvancedNotification', source, _U('bank'), '', _U('company_nomoney'), 'CHAR_BANK_MAZE', 1)
+						end
+					end)
+				else -- not a society
+					xPlayer.addMoney( salary)
+				end
+			end)
+		else -- generic job
+			xPlayer.addMoney( salary)
+		end
+	end
+end) 
+
+RegisterServerEvent('paycheck:collectPayStack6')
+AddEventHandler('paycheck:collectPayStack3', function()
+	local source = source
+	local xPlayer = HHCore.GetPlayerFromId(source)
+	local job     = xPlayer.job.grade_name
+	local salary  = xPlayer.job.grade_salary * 6
+
+	if salary > 0 then
+		if job == 'unemployed' then -- unemployed
+			xPlayer.addMoney( salary)
+		elseif Config.EnableSocietyPayouts then -- possibly a society
+			TriggerEvent('hhrp-society:getSociety', xPlayer.job.name, function (society)
+				if society ~= nil then -- verified society
+					TriggerEvent('hhrp-addonaccount:getSharedAccount', society.account, function (account)
+						if account.money >= salary then -- does the society money to pay its employees?
+							xPlayer.addMoney( salary)
+							account.removeMoney(salary)
+							--TriggerClientEvent("banking:updateCash", source, (xPlayer.getMoney()))
+
+						else
+							TriggerClientEvent('hhrp:showAdvancedNotification', source, _U('bank'), '', _U('company_nomoney'), 'CHAR_BANK_MAZE', 1)
+						end
+					end)
+				else -- not a society
+					xPlayer.addMoney( salary)
+				end
+			end)
+		else -- generic job
+			xPlayer.addMoney( salary)
+		end
+	end
+end) 
