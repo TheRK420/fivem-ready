@@ -855,3 +855,10 @@ itemList["playersafe"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "pl
 
 // Milkman Job
 itemList["milkcan"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Milk Can", price: 0, weight: 2, nonStack: true, model: "", image:"milk_can.png", information: "Fresh Cow Titty Milk" , deg: false}
+
+// Mechanic Job
+itemList["electric_scrap"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Electric Scrap", price: 0, weight: 1, nonStack: false, model: "", image:"electricscrap.png", information: "stuff" , deg: false}
+itemList["car_door"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Car door", price: 0, weight: 1, nonStack: true, model: "", image:"car_door.png", information: "stuff" , deg: false}
+itemList["car_hood"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Car hood", price: 0, weight: 1, nonStack: true, model: "", image:"car_hood.png", information: "stuff" , deg: false}
+itemList["car_trunk"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Car trunk", price: 0, weight: 1, nonStack: true, model: "", image:"car_trunk.png", information: "stuff" , deg: false}
+itemList["car_wheel"]	= {fullyDegrades: false, decayrate: 0.5, displayname: "Car wheel", price: 0, weight: 1, nonStack: true, model: "", image:"car_wheel.png", information: "stuff" , deg: false}
