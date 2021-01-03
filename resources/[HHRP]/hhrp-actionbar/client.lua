@@ -9,6 +9,8 @@ Citizen.CreateThread(function()
 
 end)
 
+--gg
+
 RegisterNetEvent('hhrp:playerLoaded')
 AddEventHandler('hhrp:playerLoaded', function(xPlayer)
   PlayerData = xPlayer
