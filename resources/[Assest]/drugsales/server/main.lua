@@ -1,11 +1,11 @@
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj)
-    HHCore = obj
+TriggerEvent('rk:getSharedObject', function(obj)
+    RKCore = obj
 end)
 
-HHCore.RegisterServerCallback("disc-drugsales:sellDrug", function(source, cb)
-    local player = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback("disc-drugsales:sellDrug", function(source, cb)
+    local player = RKCore.GetPlayerFromId(source)
 
     if player then
         math.randomseed(os.time())
@@ -20,8 +20,8 @@ HHCore.RegisterServerCallback("disc-drugsales:sellDrug", function(source, cb)
         cb(false)
     end
 end)
-HHCore.RegisterServerCallback("disc-drugsales:sellDrugcoke", function(source, cb)
-    local player = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback("disc-drugsales:sellDrugcoke", function(source, cb)
+    local player = RKCore.GetPlayerFromId(source)
 
     if player then
         math.randomseed(os.time())
@@ -35,8 +35,8 @@ HHCore.RegisterServerCallback("disc-drugsales:sellDrugcoke", function(source, cb
         cb(false)
     end
 end)
-HHCore.RegisterServerCallback("disc-drugsales:sellDrugmarijuana", function(source, cb)
-    local player = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback("disc-drugsales:sellDrugmarijuana", function(source, cb)
+    local player = RKCore.GetPlayerFromId(source)
 
     if player then
         math.randomseed(os.time())
@@ -51,8 +51,8 @@ HHCore.RegisterServerCallback("disc-drugsales:sellDrugmarijuana", function(sourc
         cb(false)
     end
 end)
-HHCore.RegisterServerCallback("disc-drugsales:sellDrugoxy", function(source, cb)
-    local player = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback("disc-drugsales:sellDrugoxy", function(source, cb)
+    local player = RKCore.GetPlayerFromId(source)
 
     if player then
         math.randomseed(os.time())
@@ -131,35 +131,35 @@ end)
 --     return item, item ~= false
 -- end
 
--- HHCore.RegisterServerCallback('disc-drugsales:hasDrugs', function(source, cb)
---     local player = HHCore.GetPlayerFromId(source)
+-- RKCore.RegisterServerCallback('disc-drugsales:hasDrugs', function(source, cb)
+--     local player = RKCore.GetPlayerFromId(source)
 --     local item, hasItem = DoPlayerHaveItems(player)
 --     cb(hasItem)
 -- end)
--- HHCore.RegisterServerCallback('disc-drugsales:hasDrugscoke', function(source, cb)
---     local player = HHCore.GetPlayerFromId(source)
+-- RKCore.RegisterServerCallback('disc-drugsales:hasDrugscoke', function(source, cb)
+--     local player = RKCore.GetPlayerFromId(source)
 --     local item, hasItem = DoPlayerHaveItemscoke(player)
 --     cb(hasItem)
 -- end)
--- HHCore.RegisterServerCallback('disc-drugsales:hasDrugsmarijuana', function(source, cb)
---     local player = HHCore.GetPlayerFromId(source)
+-- RKCore.RegisterServerCallback('disc-drugsales:hasDrugsmarijuana', function(source, cb)
+--     local player = RKCore.GetPlayerFromId(source)
 --     local item, hasItem = DoPlayerHaveItemsmarijuana(player)
 --     cb(hasItem)
 -- end)
--- HHCore.RegisterServerCallback('disc-drugsales:hasDrugsoxy', function(source, cb)
---     local player = HHCore.GetPlayerFromId(source)
+-- RKCore.RegisterServerCallback('disc-drugsales:hasDrugsoxy', function(source, cb)
+--     local player = RKCore.GetPlayerFromId(source)
 --     local item, hasItem = DoPlayerHaveItemsmarijuana(player)
 --     cb(hasItem)
 -- end)
 
-HHCore.RegisterServerCallback('disc-drugsales:getOnlinePolice', function(source, cb)
+RKCore.RegisterServerCallback('disc-drugsales:getOnlinePolice', function(source, cb)
     local _source = source
-    local xPlayers = HHCore.GetPlayers()
+    local xPlayers = RKCore.GetPlayers()
     local cops = 0
 
     for i = 1, #xPlayers, 1 do
 
-        local xPlayer = HHCore.GetPlayerFromId(xPlayers[i])
+        local xPlayer = RKCore.GetPlayerFromId(xPlayers[i])
         if xPlayer.job.name == 'police' then
             cops = cops + 1
         end

@@ -1,15 +1,15 @@
 --================================================================================================
 --==                                VARIABLES - DO NOT EDIT                                     ==
 --================================================================================================
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 RegisterServerEvent('bank:deposit')
 AddEventHandler('bank:deposit', function(amount)
 	local _source = source
 	
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
 	if amount == nil or amount <= 0 or amount > xPlayer.getMoney() then
 		TriggerClientEvent('mythic_notify:client:SendAlert', _source, { type = 'error', text = "Invalid amount." })
 	else
@@ -23,7 +23,7 @@ end)
 
 AddEventHandler('es:playerLoaded', function(source, user)
     balances[source] = source.getBank()
-    local xPlayer = HHCore.GetPlayerFromId(source)
+    local xPlayer = RKCore.GetPlayerFromId(source)
     local money
     money = xPlayer.getMoney()
 	  TriggerClientEvent('banking:updateCash', source, money)
@@ -39,7 +39,7 @@ end)
 -- 	  money = xPlayer.getMoney()
 -- 	  TriggerClientEvent('banking:updateCash', source, money)
 --     TriggerClientEvent('banking:updateBalance', source, user.getBank())
---     local xPlayer = HHCore.GetPlayerFromId(source)
+--     local xPlayer = RKCore.GetPlayerFromId(source)
 --     TriggerClientEvent('isPed:UpdateCash', source, user.getMoney())
 --   end)
 -- end)
@@ -48,7 +48,7 @@ end)
 RegisterServerEvent('bank:withdraw')
 AddEventHandler('bank:withdraw', function(amount)
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
 	local base = 0
 	amount = tonumber(amount)
 	base = xPlayer.getAccount('bank').money
@@ -65,7 +65,7 @@ end)
 RegisterServerEvent('bank:balance')
 AddEventHandler('bank:balance', function()
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
 	balance = xPlayer.getAccount('bank').money
 	TriggerClientEvent('banking:updateBalance', _source, balance, true)
 	TriggerEvent('banking:viewBalance')
@@ -76,8 +76,8 @@ end)
 RegisterServerEvent('bank:transfer')
 AddEventHandler('bank:transfer', function(to, amountt)
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
-	local zPlayer = HHCore.GetPlayerFromId(to)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
+	local zPlayer = RKCore.GetPlayerFromId(to)
 	if xPlayer == nil then return end
 	if zPlayer ~= nil then
 	local balance = 0
@@ -110,15 +110,15 @@ end)
 
 RegisterServerEvent('bank:givecash')
 AddEventHandler('bank:givecash', function(toPlayer, amount)
-		local xPlayer = HHCore.GetPlayerFromId(source)
-		local Target = HHCore.GetPlayerFromId(toPlayer)
+		local xPlayer = RKCore.GetPlayerFromId(source)
+		local Target = RKCore.GetPlayerFromId(toPlayer)
 
 		if (tonumber(xPlayer.getMoney()) >= tonumber(amount)) then
 			xPlayer.removeMoney(amount)
 			Target.addMoney(amount)
 			local balance = Target.getAccount('money').money
 			TriggerClientEvent('banking:updateBalance', Target, balance, true)
-			TriggerEvent("hhrp:givemoneyalert", source, toPlayer, addMoney)
+			TriggerEvent("rk:givemoneyalert", source, toPlayer, addMoney)
 		else
 			--if (tonumber(user.money) < tonumber(amount)) then
 				TriggerClientEvent('mythic_notify:client:SendAlert', _source, { type = 'error', text = "Not Enough Money." })
@@ -129,15 +129,15 @@ end)
 
 RegisterServerEvent('dirtyMoney:givedm')
 AddEventHandler('dirtyMoney:givedm', function(toPlayer, amount)
-		local xPlayer = HHCore.GetPlayerFromId(source)
-		local Target = HHCore.GetPlayerFromId(toPlayer)
+		local xPlayer = RKCore.GetPlayerFromId(source)
+		local Target = RKCore.GetPlayerFromId(toPlayer)
 		local account = xPlayer.getAccount('black_money')
 
 		if (tonumber(account.money) >= tonumber(amount)) then
 			xPlayer.removeAccountMoney('black_money', amount)
 			Target.addAccountMoney('black_money', amount)
-			TriggerClientEvent('hhrp:showNotification', Target, 'You Recieved '..amount..'Dirty Money !')
-			TriggerEvent("hhrp:giveblackmoneyalert", source, toPlayer, amount)
+			TriggerClientEvent('rk:showNotification', Target, 'You Recieved '..amount..'Dirty Money !')
+			TriggerEvent("rk:giveblackmoneyalert", source, toPlayer, amount)
 		else
 			--if (tonumber(user.money) < tonumber(amount)) then
 				TriggerClientEvent('mythic_notify:client:SendAlert', _source, { type = 'error', text = "Not Enough Black Money." })
@@ -147,21 +147,21 @@ AddEventHandler('dirtyMoney:givedm', function(toPlayer, amount)
 end)
 RegisterCommand('cash', function(source, args, rawCommand)
     local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
     cash = xPlayer.getMoney()
     TriggerClientEvent('banking:updateCash', source, cash)
 end)
 
 RegisterCommand('bank', function(source, args, rawCommand)
     local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
     bank = xPlayer.getAccount('bank').money
     TriggerClientEvent('banking:updateBalance', source, bank)
 end)
 
---[[ HHCore.RegisterCommand('givecash', 'user', function(source, args)
-	local _source = HHCore.GetPlayerFromId(source)
-	local to = HHCore.GetPlayerFromId(args[1])
+--[[ RKCore.RegisterCommand('givecash', 'user', function(source, args)
+	local _source = RKCore.GetPlayerFromId(source)
+	local to = RKCore.GetPlayerFromId(args[1])
 	local amt = tonumber(args[2])
 	if to ~= nil  then
 		if to == tonumber(source) then
@@ -175,9 +175,9 @@ end)
 end) ]]
 
 RegisterCommand("givecash", function(source, args)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local TargetId = tonumber(args[1])
-	local Target = HHCore.GetPlayerFromId(TargetId)
+	local Target = RKCore.GetPlayerFromId(TargetId)
 	local amount = tonumber(args[2])
 	if Target ~= nil then
 	  if amount ~= nil then
@@ -206,10 +206,10 @@ RegisterCommand("givecash", function(source, args)
 	end    
 end)
 RegisterCommand("givedirty", function(source, args)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local dm = xPlayer.getAccount('black_money')
 	local TargetId = tonumber(args[1])
-	local Target = HHCore.GetPlayerFromId(TargetId)
+	local Target = RKCore.GetPlayerFromId(TargetId)
 	local amount = tonumber(args[2])
 	if Target ~= nil then
 	  if amount ~= nil then

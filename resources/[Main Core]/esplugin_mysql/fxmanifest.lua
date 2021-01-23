@@ -12,6 +12,6 @@ server_scripts {
 }
 
 dependencies {
-	'hhrp-base',
+	'rk-base',
 	'mysql-async'
 }

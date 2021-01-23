@@ -6,24 +6,24 @@ Citizen.CreateThread( function()
 end )
 
 
-HHCore = nil
+RKCore = nil
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
 
-	while HHCore.GetPlayerData().job == nil do
+	while RKCore.GetPlayerData().job == nil do
 		Citizen.Wait(10)
 	end
 
-	PlayerData = HHCore.GetPlayerData()
+	PlayerData = RKCore.GetPlayerData()
 end)
 
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(60000)
-		PlayerData = HHCore.GetPlayerData()
+		PlayerData = RKCore.GetPlayerData()
 	end
 end)
 

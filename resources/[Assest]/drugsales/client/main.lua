@@ -1,4 +1,4 @@
-HHCore = nil
+RKCore = nil
 
 local hasDrugs = false
 
@@ -13,18 +13,18 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-    while HHCore == nil do
-        TriggerEvent('hhrp:getSharedObject', function(obj)
-            HHCore = obj
+    while RKCore == nil do
+        TriggerEvent('rk:getSharedObject', function(obj)
+            RKCore = obj
         end)
         Citizen.Wait(0)
     end
 
-    while HHCore.GetPlayerData().job == nil do
+    while RKCore.GetPlayerData().job == nil do
         Citizen.Wait(10)
     end
 
-    PlayerData = HHCore.GetPlayerData()
+    PlayerData = RKCore.GetPlayerData()
 end)
 
 function canSell(pedId)
@@ -72,11 +72,11 @@ Citizen.CreateThread(function()
 
 
             if cs and cst then
-                HHCore.ShowHelpNotification("~INPUT_CONTEXT~ to Sell Drugs")
+                RKCore.ShowHelpNotification("~INPUT_CONTEXT~ to Sell Drugs")
             end
 
             if IsControlJustReleased(0, 38) and cs and cst then
-                HHCore.TriggerServerCallback('disc-drugsales:getOnlinePolice',
+                RKCore.TriggerServerCallback('disc-drugsales:getOnlinePolice',
                         function(online)
                                 if not cachedPeds[closestPed] then
                                     if zone == pedselzone then

@@ -1,0 +1,6 @@
+RegisterServerEvent('rk-pizza:cash')
+AddEventHandler('rk-pizza:cash',function(cash)
+    TriggerEvent('es:getPlayerFromId',source, function(user)
+        user.addMoney(cash)
+    end)
+end)

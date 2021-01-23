@@ -1,8 +1,8 @@
 local logEnabled = false
 
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 RegisterServerEvent('3dme:shareDisplay')
 AddEventHandler('3dme:shareDisplay', function(text)

@@ -1,5 +1,5 @@
 -- Settings
-HHCore	= nil
+RKCore	= nil
 local depositAtATM = false -- Allows the player to deposit at an ATM rather than only in banks (Default: false)
 local giveCashAnywhere = false -- Allows the player to give CASH to another player, no matter how far away they are. (Default: false)
 local withdrawAnywhere = false -- Allows the player to withdraw cash from bank account anywhere (Default: false)
@@ -66,8 +66,8 @@ local ClosedBanks = {}
 
 
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
 end)
@@ -158,7 +158,7 @@ function bankanimation()
               ClearPedTasks(PlayerPedId())
               TaskPlayAnim( player, "amb@prop_human_atm@male@exit", "exit", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
               atmuse = false
-              local finished = exports["hhrp-taskbar"]:taskBar(3000,"Retrieving Card")
+              local finished = exports["rk-taskbar"]:taskBar(3000,"Retrieving Card")
               ClearPedTasks(PlayerPedId())
           else
               atmuse = true
@@ -174,7 +174,7 @@ function bankanimation()
                 ClearPedTasks(PlayerPedId())
                 TaskPlayAnim( player, "mp_common", "givetake1_a", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
                 atmuse = false
-                local finished = exports["hhrp-taskbar"]:taskBar(1000,"Retrieving Card")
+                local finished = exports["rk-taskbar"]:taskBar(1000,"Retrieving Card")
                 ClearPedTasks(PlayerPedId())
             else
                 atmuse = true
@@ -560,7 +560,7 @@ RegisterCommand("bank", function(src, args, raw)
 end)
 
 AddEventHandler('bank:givecash', function(sender, target, amount)
-  local closestPlayer, closestDistance = HHCore.Game.GetClosestPlayer()
+  local closestPlayer, closestDistance = RKCore.Game.GetClosestPlayer()
   if closestPlayer == -1 or closestDistance > 3.0 then
      
     TriggerEvent("DoLongHudText", "You are not near this player", 2)

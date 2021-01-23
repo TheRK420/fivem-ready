@@ -2,14 +2,14 @@
 ------- Created by T1GER#9080 -------
 ------------------------------------- 
 
-HHCore              	= nil
+RKCore              	= nil
 Jobs 			= {}	-- jobs table
 vehicles 		= {}	-- all vehicles
 display 		= {}	-- display vehicles
 categories 	= {}	-- all categories
 PlyPlayTime 	= {}	-- table storing player game time
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 -- Fetch Jobs
 MySQL.ready(function()
@@ -28,11 +28,11 @@ MySQL.ready(function()
 end)
 
 -- Get Online Car Dealers:
-HHCore.RegisterServerCallback('carealeredm:GetDealerCount', function(source, cb, option)
-	local Players = HHCore.GetPlayers()
+RKCore.RegisterServerCallback('carealeredm:GetDealerCount', function(source, cb, option)
+	local Players = RKCore.GetPlayers()
 	local dealers = 0
 	for i = 1, #Players do
-		local xPlayer = HHCore.GetPlayerFromId(Players[i])
+		local xPlayer = RKCore.GetPlayerFromId(Players[i])
 		if xPlayer["job"]["name"] == Config.CarDealerJobLabel then
 			dealers = dealers + 1
 		end
@@ -72,7 +72,7 @@ end)
 -- Event to check finance status on player login:
 RegisterNetEvent('carealeredm:CheckFinanceStatus')
 AddEventHandler('carealeredm:CheckFinanceStatus', function()
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 
 	local foundOwedVeh = false
 	MySQL.Async.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = xPlayer.identifier}, function(results) 
@@ -86,7 +86,7 @@ AddEventHandler('carealeredm:CheckFinanceStatus', function()
 		if foundOwedVeh then
 			-- Editing found vehicle:
 			local warnTime = Config.WarningTime
-			TriggerClientEvent("carealeredm:ShowNotifyHHCore",xPlayer.source,_U('veh_repossessed_warning',warnTime))
+			TriggerClientEvent("carealeredm:ShowNotifyRKCore",xPlayer.source,_U('veh_repossessed_warning',warnTime))
 			Citizen.Wait(warnTime * 60000)
 			MySQL.Async.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = xPlayer.identifier}, function(vehData) 
 				-- loop through vehicles again and delete:
@@ -105,8 +105,8 @@ AddEventHandler('carealeredm:CheckFinanceStatus', function()
 end)
 
 -- ACCOUNT MENU:
-HHCore.RegisterServerCallback('carealeredm:GetAccountMoney', function(source, cb)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:GetAccountMoney', function(source, cb)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local moneyOnPlayer = xPlayer.getMoney()
 	local account = MySQL.Sync.fetchAll('SELECT * FROM addon_account_data WHERE account_name=@account_name', {['@account_name'] = 'society_cardealer'})	
 	if not account[1] then
@@ -116,8 +116,8 @@ HHCore.RegisterServerCallback('carealeredm:GetAccountMoney', function(source, cb
 end)
 
 -- Callback to Withdraw Money:
-HHCore.RegisterServerCallback('carealeredm:AccountsWithdraw', function(source, cb, amount)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:AccountsWithdraw', function(source, cb, amount)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local account = MySQL.Sync.fetchAll('SELECT * FROM addon_account_data WHERE account_name=@account_name', {['@account_name'] = 'society_cardealer'})	
 	local approved = false
 	if account[1].money >= amount then
@@ -134,8 +134,8 @@ HHCore.RegisterServerCallback('carealeredm:AccountsWithdraw', function(source, c
 	cb(approved)
 end)
 -- Callback to Deposit Money:
-HHCore.RegisterServerCallback('carealeredm:AccountsDeposit', function(source, cb, amount)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:AccountsDeposit', function(source, cb, amount)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local approved = false
 	if Config.UseCashMoney then
 		if xPlayer.getMoney() >= amount then
@@ -160,7 +160,7 @@ HHCore.RegisterServerCallback('carealeredm:AccountsDeposit', function(source, cb
 end)
 
 -- EMPLOYEE MENU:
-HHCore.RegisterServerCallback('carealeredm:getEmployees', function(source, cb, society)		
+RKCore.RegisterServerCallback('carealeredm:getEmployees', function(source, cb, society)		
 	-- Fetch employees:
 	MySQL.Async.fetchAll('SELECT firstname, lastname, identifier, job, job_grade FROM users WHERE job = @job ORDER BY job_grade DESC', {
 		['@job'] = society
@@ -185,18 +185,18 @@ HHCore.RegisterServerCallback('carealeredm:getEmployees', function(source, cb, s
 	end)
 end)
 -- Set Job:
-HHCore.RegisterServerCallback('carealeredm:setJob', function(source, cb, identifier, job, grade, type)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:setJob', function(source, cb, identifier, job, grade, type)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	if xPlayer.job.grade_name == 'boss' then
-		local xTarget = HHCore.GetPlayerFromIdentifier(identifier)
+		local xTarget = RKCore.GetPlayerFromIdentifier(identifier)
 		if xTarget then
 			xTarget.setJob(job, grade)
 			if type == 'hire' then
-				TriggerClientEvent('carealeredm:ShowNotifyHHCore', xTarget.source, _U('you_have_been_hired', job))
+				TriggerClientEvent('carealeredm:ShowNotifyRKCore', xTarget.source, _U('you_have_been_hired', job))
 			elseif type == 'promote' then
-				TriggerClientEvent('carealeredm:ShowNotifyHHCore', xTarget.source, _U('you_have_been_promoted'))
+				TriggerClientEvent('carealeredm:ShowNotifyRKCore', xTarget.source, _U('you_have_been_promoted'))
 			elseif type == 'fire' then
-				TriggerClientEvent('carealeredm:ShowNotifyHHCore', xTarget.source, _U('you_have_been_fired', xTarget.getJob().label))
+				TriggerClientEvent('carealeredm:ShowNotifyRKCore', xTarget.source, _U('you_have_been_fired', xTarget.getJob().label))
 			end
 			cb()
 		else
@@ -213,11 +213,11 @@ HHCore.RegisterServerCallback('carealeredm:setJob', function(source, cb, identif
 	end
 end)
 -- Callback to Get online players:
-HHCore.RegisterServerCallback('carealeredm:getOnlinePlayers', function(source, cb)
-	local xPlayers = HHCore.GetPlayers()
+RKCore.RegisterServerCallback('carealeredm:getOnlinePlayers', function(source, cb)
+	local xPlayers = RKCore.GetPlayers()
 	local players  = {}
 	for i=1, #xPlayers, 1 do
-		local xPlayer = HHCore.GetPlayerFromId(xPlayers[i])
+		local xPlayer = RKCore.GetPlayerFromId(xPlayers[i])
 		table.insert(players, {
 			source     = xPlayer.source,
 			identifier = xPlayer.identifier,
@@ -228,7 +228,7 @@ HHCore.RegisterServerCallback('carealeredm:getOnlinePlayers', function(source, c
 	cb(players)
 end)
 -- Callback to get player job:
-HHCore.RegisterServerCallback('carealeredm:getJob', function(source, cb, society)
+RKCore.RegisterServerCallback('carealeredm:getJob', function(source, cb, society)
 	local job    = json.decode(json.encode(Jobs[society]))
 	local grades = {}
 	for k,v in pairs(job.grades) do
@@ -242,8 +242,8 @@ HHCore.RegisterServerCallback('carealeredm:getJob', function(source, cb, society
 end)
 
 -- Callback to get downpayment when financing:
-HHCore.RegisterServerCallback('carealeredm:GetFinancingMoney', function(source, cb, dPayment, model, stock)	
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:GetFinancingMoney', function(source, cb, dPayment, model, stock)	
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	
 	local carPrice = 0
 	local commission = 0
@@ -307,8 +307,8 @@ HHCore.RegisterServerCallback('carealeredm:GetFinancingMoney', function(source, 
 end)
 
 -- Callback to sell owned vehicle and update dealer stock
-HHCore.RegisterServerCallback('carealeredm:SellOwnedVehicle', function(source, cb, plate, price, model)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:SellOwnedVehicle', function(source, cb, plate, price, model)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local sellPrice = (price * (1-(Config.SellPercent/100)))
 	
 	-- Add Money to Player:
@@ -336,8 +336,8 @@ HHCore.RegisterServerCallback('carealeredm:SellOwnedVehicle', function(source, c
 end)
 
 -- Callback to get player money upon purchasing vehicle from shop menu:
-HHCore.RegisterServerCallback('carealeredm:ShopGetPlyMoney', function(source, cb, model, price)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:ShopGetPlyMoney', function(source, cb, model, price)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	
 	-- Check Player Money & commission:
 	local gotMoney = false
@@ -376,7 +376,7 @@ end)
 -- Callback to add vehicle to DB purchased through shop menu:
 RegisterNetEvent('carealeredm:ShopBuyAddCarToDB')
 AddEventHandler('carealeredm:ShopBuyAddCarToDB', function(vehProps, price, payment, vehModel)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 		
 	-- get player money/bank balance:
 	local PaymenType = payment
@@ -403,8 +403,8 @@ AddEventHandler('carealeredm:ShopBuyAddCarToDB', function(vehProps, price, payme
 	})
 end)
 
-HHCore.RegisterServerCallback('carealeredm:GetPlayerMoney', function(source, cb, model, price, stock)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:GetPlayerMoney', function(source, cb, model, price, stock)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local mo = xPlayer.getMoney()
 	local commission = 0
 	local carPrice = 0
@@ -470,7 +470,7 @@ end)
 
 RegisterNetEvent('carealeredm:AddFinancedVehToDB')
 AddEventHandler('carealeredm:AddFinancedVehToDB', function(vehProps, downPayment, carPrice, commission, payment, currentModel)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	
 	-- Get Current Car Dealer Account Money:
 	local accMoney = MySQL.Sync.fetchAll("SELECT * FROM addon_account_data WHERE account_name=@account_name",{['@account_name'] = 'society_cardealer'})	
@@ -529,9 +529,9 @@ AddEventHandler('carealeredm:AddFinancedVehToDB', function(vehProps, downPayment
 	})
 end)
 
-HHCore.RegisterServerCallback('cardealeredm:ticketcheck',function(source, cb)
+RKCore.RegisterServerCallback('cardealeredm:ticketcheck',function(source, cb)
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
 	MySQL.Async.fetchAll('SELECT identifier, supporter FROM `users` WHERE `identifier` = @identifier', {
 		['@identifier'] = xPlayer.identifier
 	}, function(result)
@@ -554,7 +554,7 @@ end)
 
 RegisterNetEvent('carealeredm:AddVehToDatabase')
 AddEventHandler('carealeredm:AddVehToDatabase', function(vehProps, carPrice, commission, price, payment, currentModel)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	-- Get Current Car Dealer Account Money:
 	local accMoney = MySQL.Sync.fetchAll("SELECT * FROM addon_account_data WHERE account_name=@account_name",{['@account_name'] = 'society_cardealer'})	
 	local accBal = accMoney[1].money
@@ -594,8 +594,8 @@ AddEventHandler('carealeredm:AddVehToDatabase', function(vehProps, carPrice, com
 	})
 end)
 
-HHCore.RegisterServerCallback('carealeredm:GetOwnedVehByPlate',function(source, cb, plate)	
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:GetOwnedVehByPlate',function(source, cb, plate)	
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime = nil, 0, nil, 0, 0
 	
 	MySQL.Async.fetchAll("SELECT * FROM owned_vehicles WHERE owner=@identifier",{['@identifier'] = xPlayer.identifier}, function(vehData) 
@@ -612,7 +612,7 @@ HHCore.RegisterServerCallback('carealeredm:GetOwnedVehByPlate',function(source, 
 			end
 		end
 		if not vehFound then
-			TriggerClientEvent('carealeredm:ShowNotifyHHCore', xPlayer.source, _U('not_own_that_plate'))
+			TriggerClientEvent('carealeredm:ShowNotifyRKCore', xPlayer.source, _U('not_own_that_plate'))
 		end
 		
 		if vehFound then
@@ -622,8 +622,8 @@ HHCore.RegisterServerCallback('carealeredm:GetOwnedVehByPlate',function(source, 
 	
 end)
 
-HHCore.RegisterServerCallback('carealeredm:RepayAmount', function(source, cb, plate, amount)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:RepayAmount', function(source, cb, plate, amount)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 
 	local paid
 	if Config.PayWithBankMoney then
@@ -659,8 +659,8 @@ end)
 -- Give Registration Paper
 RegisterServerEvent('carealeredm:GiveRegistrationPaper')
 AddEventHandler('carealeredm:GiveRegistrationPaper', function(player, target, plate)
-	local xPlayer = HHCore.GetPlayerFromId(player)
-	local tPlayer = HHCore.GetPlayerFromId(target)
+	local xPlayer = RKCore.GetPlayerFromId(player)
+	local tPlayer = RKCore.GetPlayerFromId(target)
 	local vehFound   = false
 	
 	local regOwner
@@ -696,10 +696,10 @@ AddEventHandler('carealeredm:GiveRegistrationPaper', function(player, target, pl
 				['@repaytime'] 	= regRepaytime,
 				['@model'] 		= regModel
 			})
-			TriggerClientEvent('carealeredm:ShowNotifyHHCore', xPlayer.source, _U('veh_owner_change'))
-			TriggerClientEvent('carealeredm:ShowNotifyHHCore', tPlayer.source, _U('veh_owner_change2'))
+			TriggerClientEvent('carealeredm:ShowNotifyRKCore', xPlayer.source, _U('veh_owner_change'))
+			TriggerClientEvent('carealeredm:ShowNotifyRKCore', tPlayer.source, _U('veh_owner_change2'))
 		else
-			TriggerClientEvent('carealeredm:ShowNotifyHHCore', xPlayer.source, _U('plate_not_exists'))
+			TriggerClientEvent('carealeredm:ShowNotifyRKCore', xPlayer.source, _U('plate_not_exists'))
 		end
 	end)
 end)
@@ -715,7 +715,7 @@ end)
 
 
 -- Fetch Car Dealer Core Data:
-HHCore.RegisterServerCallback("carealeredm:FetchData", function(source, cb)
+RKCore.RegisterServerCallback("carealeredm:FetchData", function(source, cb)
 	vehicles = {}
 	display = {}
 	categories = {}
@@ -751,8 +751,8 @@ HHCore.RegisterServerCallback("carealeredm:FetchData", function(source, cb)
 end)
 
 -- Callback to get all owned vehicles, with options:
-HHCore.RegisterServerCallback('carealeredm:GetAllOwnedVehicles', function(source, cb, option)
-    local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:GetAllOwnedVehicles', function(source, cb, option)
+    local xPlayer = RKCore.GetPlayerFromId(source)
     local plyVehicles = {}
 
     local foundVehicles = false
@@ -784,8 +784,8 @@ end)
 
 
 -- Callback to update vehicle stock upon repossession:
-HHCore.RegisterServerCallback('carealeredm:UpdateDealerStock', function(source, cb, VehModel)
-    local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterServerCallback('carealeredm:UpdateDealerStock', function(source, cb, VehModel)
+    local xPlayer = RKCore.GetPlayerFromId(source)
     -- Get Stock_
     local GetVehDB = MySQL.Sync.fetchAll("SELECT * FROM vehiclesedm WHERE model=@model",{['@model'] = VehModel})
     local StockAmount = GetVehDB[1].stock
@@ -801,7 +801,7 @@ end)
 
 
 -- Callback to get new generated plate:
-HHCore.RegisterServerCallback('carealeredm:PlateInUse', function (source, cb, plate)
+RKCore.RegisterServerCallback('carealeredm:PlateInUse', function (source, cb, plate)
     MySQL.Async.fetchAll('SELECT 1 FROM owned_vehicles WHERE plate = @plate', {
         ['@plate'] = plate
     }, function (result)
@@ -810,7 +810,7 @@ HHCore.RegisterServerCallback('carealeredm:PlateInUse', function (source, cb, pl
 end)
 RegisterServerEvent('carealeredm:financepaid')
 AddEventHandler('carealeredm:financepaid', function(plate)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local date = os.date('%Y-%m-%d')
 	MySQL.Sync.execute('UPDATE owned_vehicles SET lastpaid=@date WHERE plate=@plate', {['@date'] = date, ['@plate'] = plate} )
 
@@ -819,8 +819,8 @@ end)
 -- Open Registration Paper
 RegisterServerEvent('carealeredm:openRegSV')
 AddEventHandler('carealeredm:openRegSV', function(player, target, plate)
-    local xPlayer = HHCore.GetPlayerFromId(player)
-    local tPlayer    = HHCore.GetPlayerFromId(target).source
+    local xPlayer = RKCore.GetPlayerFromId(player)
+    local tPlayer    = RKCore.GetPlayerFromId(target).source
     local vehFound   = false
 
     MySQL.Async.fetchAll('SELECT firstname, lastname, dateofbirth, sex, height FROM users WHERE identifier = @identifier', {['@identifier'] = xPlayer.identifier}, function (user)
@@ -855,7 +855,7 @@ AddEventHandler('carealeredm:openRegSV', function(player, target, plate)
                     }
                     TriggerClientEvent('carealeredm:openRegCL', tPlayer, info, regPlate)
                 else
-                    TriggerClientEvent('carealeredm:ShowNotifyHHCore', xPlayer.source, _U('plate_not_exists'))
+                    TriggerClientEvent('carealeredm:ShowNotifyRKCore', xPlayer.source, _U('plate_not_exists'))
                 end
             end)
         end

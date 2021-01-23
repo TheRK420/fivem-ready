@@ -12,7 +12,7 @@ author 'T1GER#9080'
 ui_page 'html/index.html'
 
 server_scripts {
-	'@hhrp-core/locale.lua',
+	'@rk-core/locale.lua',
 	'locales/en.lua',
 	'@mysql-async/lib/MySQL.lua',
 	'config.lua',
@@ -20,7 +20,7 @@ server_scripts {
 }
 
 client_scripts {
-	'@hhrp-core/locale.lua',
+	'@rk-core/locale.lua',
 	'locales/en.lua',
 	'config.lua',
 	'client/client.lua',

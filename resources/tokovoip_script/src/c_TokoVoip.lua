@@ -136,7 +136,7 @@ function TokoVoip.initialize(self)
                     self.mode = 1;
                 end
                 setPlayerData(self.serverId, "voip:mode", self.mode, true);
-                TriggerEvent('hhrp-hud:toggleTokoVOIP', self.mode)
+                TriggerEvent('rk-hud:toggleTokoVOIP', self.mode)
                 self:updateTokoVoipInfo();
             end
 

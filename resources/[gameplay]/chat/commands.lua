@@ -1,16 +1,16 @@
-HHCore = nil
+RKCore = nil
 local PlayerData              = {}
 Citizen.CreateThread(function()
 
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
 
 end)
 
-RegisterNetEvent('hhrp:playerLoaded')
-AddEventHandler('hhrp:playerLoaded', function(xPlayer)
+RegisterNetEvent('rk:playerLoaded')
+AddEventHandler('rk:playerLoaded', function(xPlayer)
   PlayerData = xPlayer
 end)
 
@@ -38,21 +38,21 @@ end, false)
 
 RegisterNetEvent('chat:EmergencySend911r')
 AddEventHandler('chat:EmergencySend911r', function(fal, caller, msg)
-    if HHCore.GetPlayerData().job.name == 'police' or HHCore.GetPlayerData().job.name == 'ambulance' then
+    if RKCore.GetPlayerData().job.name == 'police' or RKCore.GetPlayerData().job.name == 'ambulance' then
         TriggerEvent('chatMessagess', '911 RESPONSE: '.. caller, 1, 'Sent to: '.. fal .. ' : '.. msg )
     end
 end)
 
 RegisterNetEvent('chat:EmergencySend311r')
 AddEventHandler('chat:EmergencySend311r', function(fal, caller, msg)
-    if HHCore.GetPlayerData().job.name == 'police' or HHCore.GetPlayerData().job.name == 'ambulance' then
+    if RKCore.GetPlayerData().job.name == 'police' or RKCore.GetPlayerData().job.name == 'ambulance' then
         TriggerEvent('chatMessagess', '311 RESPONSE: '.. caller, 4, 'Sent to: '.. fal .. ' : '.. msg )
     end
 end)
 
 RegisterNetEvent('chat:EmergencySend911')
 AddEventHandler('chat:EmergencySend911', function(fal, caller, msg)
-    if HHCore.GetPlayerData().job.name == 'police' or HHCore.GetPlayerData().job.name == 'ambulance' then
+    if RKCore.GetPlayerData().job.name == 'police' or RKCore.GetPlayerData().job.name == 'ambulance' then
         TriggerEvent('chatMessagess', '[911] ', 1, '( Caller ID: '.. caller .. ' | ' .. fal ..' ) '.. msg )
         PlaySoundFrontend(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0)
     end
@@ -60,14 +60,14 @@ end)
 
 RegisterNetEvent('chat:EmergencySend311')
 AddEventHandler('chat:EmergencySend311', function(fal, caller, msg)
-    if HHCore.GetPlayerData().job.name == 'police' or HHCore.GetPlayerData().job.name == 'ambulance' then
+    if RKCore.GetPlayerData().job.name == 'police' or RKCore.GetPlayerData().job.name == 'ambulance' then
         TriggerEvent('chatMessagess', '[311] ', 4, '( Caller ID: '.. caller .. ' | ' .. fal ..' ) '.. msg )
         PlaySoundFrontend(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0)
     end
 end)
 
 RegisterCommand('911r', function(target, args, rawCommand)
-    if HHCore.GetPlayerData().job.name == 'police' or HHCore.GetPlayerData().job.name == 'ambulance' then
+    if RKCore.GetPlayerData().job.name == 'police' or RKCore.GetPlayerData().job.name == 'ambulance' then
         local source = GetPlayerServerId(PlayerId())
         local target = tonumber(args[1])
         local msg = rawCommand:sub(8)
@@ -78,7 +78,7 @@ RegisterCommand('911r', function(target, args, rawCommand)
 end, false)
 
 RegisterCommand('311r', function(target, args, rawCommand)
-    if HHCore.GetPlayerData().job.name == 'police' or HHCore.GetPlayerData().job.name == 'ambulance' then 
+    if RKCore.GetPlayerData().job.name == 'police' or RKCore.GetPlayerData().job.name == 'ambulance' then 
         local source = GetPlayerServerId(PlayerId())
         local target = tonumber(args[1])
         local msg = rawCommand:sub(8)

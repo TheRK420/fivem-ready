@@ -65,7 +65,7 @@ RegisterNUICallback("setPlayerTalking", function(data, cb)
 		setPlayerData(voip.serverId, "voip:talking", 1, true);
 		if (GetConvar("gametype") == "gta5") then
 			PlayFacialAnim(GetPlayerPed(PlayerId()), "mic_chatter", "mp_facial");
-			TriggerEvent('hhrp-hud:setTalkingState', true)
+			TriggerEvent('rk-hud:setTalkingState', true)
 		elseif (GetConvar("gametype") == "rdr3") then
 			PlayRedMFacialAnimation(GetPlayerPed(PlayerId()), "face_human@gen_male@base", "mood_talking_normal");
 		end
@@ -73,7 +73,7 @@ RegisterNUICallback("setPlayerTalking", function(data, cb)
 		setPlayerData(voip.serverId, "voip:talking", 0, true);
 		if (GetConvar("gametype") == "gta5") then
 			PlayFacialAnim(PlayerPedId(), "mood_normal_1", "facials@gen_male@base");
-			TriggerEvent('hhrp-hud:setTalkingState', false)
+			TriggerEvent('rk-hud:setTalkingState', false)
 		elseif (GetConvar("gametype") == "rdr3") then
 			PlayRedMFacialAnimation(PlayerPedId(), "face_human@gen_male@base", "mood_normal");
 		end

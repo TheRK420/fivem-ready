@@ -1,8 +1,8 @@
 TriggerEvent("es:addGroup", "mod", "user", function(group) end)
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj)
-    HHCore = obj
+TriggerEvent('rk:getSharedObject', function(obj)
+    RKCore = obj
 end)
 -- Modify if you want, btw the _admin_ needs to be able to target the group and it will work
 local groupsRequired = {
@@ -238,7 +238,7 @@ AddEventHandler('es_admin:set', function(t, USER, GROUP)
 end)
 
 TriggerEvent('es:addGroupCommand', 'adminmenu', 'superadmin', function(source, args, user)
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local grp = xPlayer.getGroup()
 	--print(grp)
 	if grp == 'superadmin' then

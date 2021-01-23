@@ -11,4 +11,4 @@ files {
 	'ui/style.css'
 }
 
-dependency 'hhrp-base'
+dependency 'rk-base'

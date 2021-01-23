@@ -15,7 +15,7 @@ local Keys = {
 RegisterNetEvent("hud:enabledebug")
 AddEventHandler("hud:enabledebug",function()
 	dickheaddebug = not dickheaddebug
-    TriggerEvent("hhrp-admin:currentDebug", dickheaddebug)
+    TriggerEvent("rk-admin:currentDebug", dickheaddebug)
     if dickheaddebug then
         print("Debug: Enabled")
     else

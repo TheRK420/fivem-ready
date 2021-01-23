@@ -7,7 +7,7 @@ This mod adds the following:
 Drug sales has a percentage chance of failing and notifying the cops
 
 # Installation
-Add to resource folder `[HHCore]` or `[disc]`
+Add to resource folder `[RKCore]` or `[disc]`
 
 Start using `start disc-drugsales`
 
@@ -46,4 +46,4 @@ Config.DiscussTime = 5000 --Time(ms) Civilian is standing still while selling
 
 - [Disc-Base](https://github.com/DiscworldZA/gta-resources/tree/master/disc-base)
 - [Disc-GcPhone](https://github.com/DiscworldZA/gta-resources/tree/master/disc-gcphone)
-- [HHCore Police Job](https://github.com/hhrp-Org/hhrp_policejob)
+- [RKCore Police Job](https://github.com/rk-Org/rk_policejob)

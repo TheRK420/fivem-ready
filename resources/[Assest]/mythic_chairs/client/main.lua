@@ -16,11 +16,11 @@ local pos = nil
 local lastPos = nil
 local currentSitObj = nil
 local currentScenario = nil
-HHCore = nil
+RKCore = nil
 
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
 end)
@@ -42,7 +42,7 @@ AddEventHandler('mythic_chairs:client:StartSit', function()
         if sitting then
             Standup()
         else
-            local object, distance = HHCore.Game.GetClosestObject(Config.Props)
+            local object, distance = RKCore.Game.GetClosestObject(Config.Props)
 
             if distance < 1.5 then
 
@@ -87,7 +87,7 @@ end
 function sit(object, modelName, data)
 	pos = GetEntityCoords(object)
 	local id = pos.x .. pos.y .. pos.z
-    HHCore.TriggerServerCallback('mythic_chairs:server:GetChair', function(occupied)
+    RKCore.TriggerServerCallback('mythic_chairs:server:GetChair', function(occupied)
 
         if occupied then
             TriggerEvent('DoLongHudText', 'Chair Is Occupied!', 2)

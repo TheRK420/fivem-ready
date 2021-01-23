@@ -2,16 +2,16 @@
 ------- Created by T1GER#9080 -------
 ------------------------------------- 
 
--- [[ HHCore SHOW NOTIFICATION ]] --
-RegisterNetEvent('cardealer:ShowNotifyHHCore')
-AddEventHandler('cardealer:ShowNotifyHHCore', function(msg)
-	ShowNotifyHHCore(msg)
+-- [[ RKCore SHOW NOTIFICATION ]] --
+RegisterNetEvent('cardealer:ShowNotifyRKCore')
+AddEventHandler('cardealer:ShowNotifyRKCore', function(msg)
+	ShowNotifyRKCore(msg)
 end)
 
-function ShowNotifyHHCore(msg)
-	--HHCore.ShowNotification(msg)
+function ShowNotifyRKCore(msg)
+	--RKCore.ShowNotification(msg)
 	exports['mythic_notify']:DoHudText('inform', msg)
-	-- If you want to switch HHCore.ShowNotification with something else:
+	-- If you want to switch RKCore.ShowNotification with something else:
 	-- 1) Comment out the function
 	-- 2) add your own
 end
@@ -38,7 +38,7 @@ function ProduceNumberPlate()
 		end
 		
 		-- Checks if plate already exists:
-		HHCore.TriggerServerCallback('cardealer:PlateInUse', function (PlateInUse)
+		RKCore.TriggerServerCallback('cardealer:PlateInUse', function (PlateInUse)
 			if not PlateInUse then
 				breakFunction = true
 			end
@@ -95,10 +95,10 @@ RegisterCommand('finance', function(source, args)
 	if option == "repay" then
 		if plate ~= nil or not plate == '' then
 			if amount ~= nil or amount >= 1 then
-				HHCore.TriggerServerCallback('cardealer:GetOwnedVehByPlate', function(vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime)
+				RKCore.TriggerServerCallback('cardealer:GetOwnedVehByPlate', function(vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime)
 					local vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime = vehPlate, vehPrice, vehHash, vehFinance
 					if vehFinance < 1 then
-						ShowNotifyHHCore("This vehicle is already completely paid")
+						ShowNotifyRKCore("This vehicle is already completely paid")
 					else
 						local diffFP = (vehFinance / vehPrice)
 						local repayMoney = ((vehPrice * diffFP) / Config.AmountOfRepayments)				
@@ -109,14 +109,14 @@ RegisterCommand('finance', function(source, args)
 							difference = repayMoney
 						end
 						if amount < difference then 
-							ShowNotifyHHCore("Current repayment is at least: $"..math.floor(difference).."")
+							ShowNotifyRKCore("Current repayment is at least: $"..math.floor(difference).."")
 							return 
 						else
-							HHCore.TriggerServerCallback('cardealer:RepayAmount', function(hasPaid) 
+							RKCore.TriggerServerCallback('cardealer:RepayAmount', function(hasPaid) 
 								if hasPaid then 
-									ShowNotifyHHCore("You paid $"..math.floor(amount).." to the financing")
+									ShowNotifyRKCore("You paid $"..math.floor(amount).." to the financing")
 								else 
-									ShowNotifyHHCore(_U('not_enough_money'))
+									ShowNotifyRKCore(_U('not_enough_money'))
 								end
 							end, vehPlate, amount)
 						end
@@ -124,26 +124,26 @@ RegisterCommand('finance', function(source, args)
 				end, plate)
 				
 			else
-				ShowNotifyHHCore(_U('invalid_amount'))
+				ShowNotifyRKCore(_U('invalid_amount'))
 			end
 		else
-			ShowNotifyHHCore(_U('plate_nil'))
+			ShowNotifyRKCore(_U('plate_nil'))
 		end
 		
 	elseif option == "check" then
 		if plate ~= nil or not plate == '' then
-			HHCore.TriggerServerCallback('cardealer:GetOwnedVehByPlate', function(vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime)
+			RKCore.TriggerServerCallback('cardealer:GetOwnedVehByPlate', function(vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime)
 				local vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime = vehPlate, vehPrice, vehHash, vehFinance, vehRepaytime
 				
 				if vehFinance < 1 then
-					ShowNotifyHHCore("This vehicle is already completely paid")
+					ShowNotifyRKCore("This vehicle is already completely paid")
 				else
-					ShowNotifyHHCore("Amount Owed: $"..vehFinance..". Pay Next Repayment Before: "..math.floor(vehRepaytime/60).." Hours")
+					ShowNotifyRKCore("Amount Owed: $"..vehFinance..". Pay Next Repayment Before: "..math.floor(vehRepaytime/60).." Hours")
 				end
 				
 			end, plate)
 		else
-			ShowNotifyHHCore(_U('plate_nil'))
+			ShowNotifyRKCore(_U('plate_nil'))
 		end
 	end
 	
@@ -160,20 +160,20 @@ RegisterCommand('registration', function(source, args)
 	
 	-- Show Registration Paper:
 	elseif option == "show" then
-		local player, distance = HHCore.Game.GetClosestPlayer()
+		local player, distance = RKCore.Game.GetClosestPlayer()
 		if distance ~= -1 and distance <= 2.0 then
 			TriggerServerEvent('cardealer:openRegSV', GetPlayerServerId(PlayerId()), GetPlayerServerId(player), plate)
 		else
-			ShowNotifyHHCore(_U('nobody_near'))
+			ShowNotifyRKCore(_U('nobody_near'))
 		end
 	
 	-- Give Registration Paper:
 	elseif option == "give" then
-		local player, distance = HHCore.Game.GetClosestPlayer()
+		local player, distance = RKCore.Game.GetClosestPlayer()
 		if distance ~= -1 and distance <= 2.0 then
 			TriggerServerEvent('cardealer:GiveRegistrationPaper', GetPlayerServerId(PlayerId()), GetPlayerServerId(player), plate)
 		else
-			ShowNotifyHHCore(_U('nobody_near'))
+			ShowNotifyRKCore(_U('nobody_near'))
 		end
 	
 	end

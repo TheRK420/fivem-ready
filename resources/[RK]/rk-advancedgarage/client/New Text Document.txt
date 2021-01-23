@@ -1,0 +1,64 @@
+-- Spawn Vehicles
+function SpawnVehicle(vehicle, plate)
+	RKCore.Game.SpawnVehicle(vehicle.model, {
+		x = this_Garage.SpawnPoint.x,
+		y = this_Garage.SpawnPoint.y,
+		z = this_Garage.SpawnPoint.z + 1
+	}, this_Garage.SpawnPoint.h, function(callback_vehicle)
+		RKCore.Game.SetVehicleProperties(callback_vehicle, vehicle)
+		SetVehRadioStation(callback_vehicle, "OFF")
+		--SetVehicleFixed(callback_vehicle)
+		--SetVehicleDeformationFixed(callback_vehicle, bod)
+		SetVehicleDirtLevel(callback_vehicle, drt)
+		SetVehicleDamage(callback_vehicle, 0.0, 0.0, 0.33, 200.0, 100.0, true)
+		FixVehicleWindow(callback_vehicle, win)
+		--SetVehicleUndriveable(callback_vehicle, false)
+		SetVehicleEngineOn(callback_vehicle, true, true)
+		--SetVehicleEngineHealth(callback_vehicle, 1000) -- Might not be needed
+		--SetVehicleBodyHealth(callback_vehicle, 1000) -- Might not be needed
+		--	TaskWarpPedIntoVehicle(GetPlayerPed(-1), callback_vehicle, -1)
+	end)
+
+	TriggerServerEvent('rk_advancedgarage:setVehicleState', plate, false)
+end
+--------------------
+function DamageVehicle(vehicle, plate)
+local vehProps  = RKCore.Game.GetVehicleProperties(vehicle, plate)
+local damages	= {
+	eng = GetVehicleEngineHealth(vehicle),
+	bod = GetVehicleBodyHealth(vehicle),
+	tnk = GetVehiclePetrolTankHealth(vehicle),
+	drt = GetVehicleDirtLevel(vehicle),
+	oil = GetVehicleOilLevel(vehicle),
+	drvlyt = GetIsLeftVehicleHeadlightDamaged(vehicle),
+	paslyt = GetIsRightVehicleHeadlightDamaged(vehicle),
+	dor = {},
+	win = {},
+	tyr = {}
+}
+local vehPos    = GetEntityCoords(vehicle)
+local vehHead   = GetEntityHeading(vehicle)
+for i = 0,5 do
+	table.insert(damages.dor, i)
+	damages.dor[i] = false
+	if not DoesVehicleHaveDoor(vehicle, i) then
+		damages.dor[i] = true
+	end
+end
+for i = 0,13 do
+	table.insert(damages.win, i)
+	damages.win[i] = false
+	if not IsVehicleWindowIntact(vehicle, i) then
+		damages.win[i] = true
+	end
+end
+for i = 0,7 do
+	table.insert(damages.tyr, i)
+	damages.tyr[i] = false
+	if IsVehicleTyreBurst(vehicle, i, false) then
+		damages.tyr[i] = 'popped'
+	elseif IsVehicleTyreBurst(vehicle, i, true) then
+		damages.tyr[i] = 'gone'
+	end
+end
+end

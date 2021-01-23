@@ -1,11 +1,11 @@
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj)
-    HHCore = obj
+TriggerEvent('rk:getSharedObject', function(obj)
+    RKCore = obj
 end)
 
 RegisterCommand('id', function(source, args, raw)
-    local player = HHCore.GetPlayerFromId(source)
+    local player = RKCore.GetPlayerFromId(source)
     if Config.AdminOnly then
         if player.getGroup() == 'user' then
             return

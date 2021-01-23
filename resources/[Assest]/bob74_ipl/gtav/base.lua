@@ -65,7 +65,7 @@ Citizen.CreateThread(function()
     RequestIpl("lr_cs6_08_grave_closed")
     
     -- Lost's trailer park: 49.49379000, 3744.47200000, 46.38629000
-    RequestIpl("methtrailer_hhrp1")
+    RequestIpl("methtrailer_rk1")
         
     -- Lost safehouse: 984.1552, -95.3662, 74.50
     RequestIpl("bkr_bi_hw1_13_int")
@@ -81,8 +81,8 @@ Citizen.CreateThread(function()
     RequestIpl("hei_sm_16_interior_v_bahama_milo_")
         
     -- Zancudo River (need streamed content): 86.815, 3191.649, 30.463
-    RequestIpl("cs3_05_water_hhrp1")
-    RequestIpl("cs3_05_water_hhrp1_lod")
+    RequestIpl("cs3_05_water_rk1")
+    RequestIpl("cs3_05_water_rk1_lod")
     RequestIpl("trv1_trail_start")
     
     -- Cassidy Creek (need streamed content): -425.677, 4433.404, 27.3253

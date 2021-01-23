@@ -1,7 +1,7 @@
 local SeatsTaken = {}
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 -- SEATS
 RegisterServerEvent('mythic_chairs:server:TakeChair')
@@ -20,7 +20,7 @@ AddEventHandler('mythic_chairs:server:LeaveChair', function(object)
 	SeatsTaken = _SeatsTaken
 end)
 
-HHCore.RegisterServerCallback('mythic_chairs:server:GetChair', function(source, cb, id)
+RKCore.RegisterServerCallback('mythic_chairs:server:GetChair', function(source, cb, id)
 	local found = false
 
 	for i=1, #SeatsTaken, 1 do

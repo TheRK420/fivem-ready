@@ -2,7 +2,7 @@
 ------- Created by T1GER#9080 -------
 ------------------------------------- 
 
-HHCore = nil
+RKCore = nil
 
 -- data from server:
 vehicles = {}
@@ -14,25 +14,25 @@ DisplayCars = {}
 PlayerData = {}
 
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
-	while HHCore.GetPlayerData() == nil do
+	while RKCore.GetPlayerData() == nil do
 		Citizen.Wait(10)
 	end
-	PlayerData = HHCore.GetPlayerData()
+	PlayerData = RKCore.GetPlayerData()
 end)
 
-RegisterNetEvent('hhrp:playerLoaded')
-AddEventHandler('hhrp:playerLoaded', function(xPlayer)
+RegisterNetEvent('rk:playerLoaded')
+AddEventHandler('rk:playerLoaded', function(xPlayer)
     PlayerData = xPlayer
 	Citizen.Wait(20000)
 	TriggerServerEvent("cardealer:CheckFinanceStatus")
 end)
 
-RegisterNetEvent('hhrp:setJob')
-AddEventHandler('hhrp:setJob', function(job)
+RegisterNetEvent('rk:setJob')
+AddEventHandler('rk:setJob', function(job)
     PlayerData.job = job
 end)
 
@@ -93,7 +93,7 @@ Citizen.CreateThread(function()
 								if not IsPedInAnyVehicle(player, true) and not BuyInProgress then
 									-- Complete Purchase:	
 									if (IsControlJustPressed(0, Config.KeyToConfirmBuyVeh) or IsDisabledControlJustPressed(0, Config.KeyToConfirmBuyVeh)) then
-										HHCore.TriggerServerCallback('cardealer:GetPlayerMoney', function(hasMoney, carPrice, carCommission, price, payment)
+										RKCore.TriggerServerCallback('cardealer:GetPlayerMoney', function(hasMoney, carPrice, carCommission, price, payment)
 											BuyInProgress = true
 											if hasMoney then
 												local VehCoords = nil
@@ -112,7 +112,7 @@ Citizen.CreateThread(function()
 												SpawnPurchasedVehicle(currentModel, VehCoords, Heading, player, carPrice, carCommission, price, payment)
 												SetVehicleDirtLevel(currentModel, 0)							
 											else
-												ShowNotifyHHCore(_U("veh_not_enough_money"))
+												ShowNotifyRKCore(_U("veh_not_enough_money"))
 												Citizen.Wait(250)
 												BuyInProgress = false
 											end
@@ -121,7 +121,7 @@ Citizen.CreateThread(function()
 									-- Cancel Purchase:	
 									elseif (IsControlJustPressed(0, Config.KeyToCancelBuyVeh) or IsDisabledControlJustPressed(0, Config.KeyToCancelBuyVeh)) then
 										Citizen.Wait(500)
-										ShowNotifyHHCore(_U('veh_purchase_cancel'))
+										ShowNotifyRKCore(_U('veh_purchase_cancel'))
 										BuyInProgress = false
 										Confirmed = true
 									end
@@ -131,7 +131,7 @@ Citizen.CreateThread(function()
 							end
 						end
 					else
-						ShowNotifyHHCore(_U("veh_not_in_stock"))
+						ShowNotifyRKCore(_U("veh_not_in_stock"))
 					end
 								
 				-- SWAP VEHICLE MENU:
@@ -168,11 +168,11 @@ Citizen.CreateThread(function()
 							if currentCommission > (Config.MinCommission) then
 								print("Changing Commission -1")
 								TriggerServerEvent('cardealer:DealerDiscountSV', currentModel, -1, currentID)
-								exports['hhrp-taskbar']:taskBar(500, "APPLYING CHANGES")
+								exports['rk-taskbar']:taskBar(500, "APPLYING CHANGES")
 								Citizen.Wait(500)
 							else
 								ChangingValues = false
-								ShowNotifyHHCore(_U("min_commission_limit"))
+								ShowNotifyRKCore(_U("min_commission_limit"))
 							end
 						end
 					end
@@ -184,11 +184,11 @@ Citizen.CreateThread(function()
 							if currentCommission < (Config.MaxCommission) then
 								print("Changing Commission +1")
 								TriggerServerEvent('cardealer:DealerDiscountSV', currentModel, 1, currentID)
-								exports['hhrp-taskbar']:taskBar(500, "APPLYING CHANGES")
+								exports['rk-taskbar']:taskBar(500, "APPLYING CHANGES")
 								Citizen.Wait(500)
 							else
 								ChangingValues = false
-								ShowNotifyHHCore(_U("max_commission_limit"))
+								ShowNotifyRKCore(_U("max_commission_limit"))
 							end
 						end
 					end
@@ -210,7 +210,7 @@ Citizen.CreateThread(function()
 								if not IsPedInAnyVehicle(player, true) and not FinanceInProgress then
 									-- Complete Purchase:	
 									if (IsControlJustPressed(0, Config.KeyToFinanceVeh) or IsDisabledControlJustPressed(0, Config.KeyToFinanceVeh)) then
-										HHCore.TriggerServerCallback('cardealer:GetFinancingMoney', function(hasUpfront, downPayment, carPrice, commission, payment)
+										RKCore.TriggerServerCallback('cardealer:GetFinancingMoney', function(hasUpfront, downPayment, carPrice, commission, payment)
 											FinanceInProgress = true
 											if hasUpfront then
 												local VehCoords = nil
@@ -229,7 +229,7 @@ Citizen.CreateThread(function()
 												SpawnFinancedVehicle(currentModel, VehCoords, Heading, player, downPayment, carPrice, commission, payment)
 												SetVehicleDirtLevel(currentModel, 0)
 											else
-												ShowNotifyHHCore(_U("veh_not_enough_money"))
+												ShowNotifyRKCore(_U("veh_not_enough_money"))
 												Citizen.Wait(250)
 												FinanceInProgress = false
 											end
@@ -238,7 +238,7 @@ Citizen.CreateThread(function()
 									-- Cancel Purchase:	
 									elseif (IsControlJustPressed(0, Config.KeyToCancelFinance) or IsDisabledControlJustPressed(0, Config.KeyToCancelFinance)) then
 										Citizen.Wait(500)
-										ShowNotifyHHCore(_U('veh_purchase_cancel'))
+										ShowNotifyRKCore(_U('veh_purchase_cancel'))
 										FinanceInProgress = false
 										Financed = true
 									end
@@ -248,7 +248,7 @@ Citizen.CreateThread(function()
 							end
 						end
 					else
-						ShowNotifyHHCore(_U("veh_not_in_stock"))
+						ShowNotifyRKCore(_U("veh_not_in_stock"))
 					end
 					
 				-- CHANGE DOWNPAYMENT PERCENTS:
@@ -260,11 +260,11 @@ Citizen.CreateThread(function()
 							if currentDownpayment < (Config.MaxDownpayment) then
 								print("Changing DownPayment +1")
 								TriggerServerEvent('cardealer:DealerDownpaymentSV', currentModel, 1, currentID)
-								exports['hhrp-taskbar']:taskBar(500, "APPLYING CHANGES")
+								exports['rk-taskbar']:taskBar(500, "APPLYING CHANGES")
 								Citizen.Wait(500)
 							else
 								ChangingValues = false
-								ShowNotifyHHCore(_U("max_downpayment_limit"))
+								ShowNotifyRKCore(_U("max_downpayment_limit"))
 							end
 						end
 					end
@@ -276,11 +276,11 @@ Citizen.CreateThread(function()
 							if currentDownpayment > (Config.MinDownpayment) then
 								print("Changing DownPayment -1")
 								TriggerServerEvent('cardealer:DealerDownpaymentSV', currentModel, -1, currentID)
-								exports['hhrp-taskbar']:taskBar(500, "APPLYING CHANGES")
+								exports['rk-taskbar']:taskBar(500, "APPLYING CHANGES")
 								Citizen.Wait(500)
 							else
 								ChangingValues = false
-								ShowNotifyHHCore(_U("min_downpayment_limit"))
+								ShowNotifyRKCore(_U("min_downpayment_limit"))
 							end
 						end
 					end
@@ -349,7 +349,7 @@ TestID = 0
 function TestDriveVehicleFunction(currentModel, currentID)
 	if TestVehicle == nil and not TestDriving then
 		local player = GetPlayerPed(-1)
-		ShowNotifyHHCore(_U("test_veh_spawned"))
+		ShowNotifyRKCore(_U("test_veh_spawned"))
 		TestDriving = true
 		local VehCoords = nil
 		local Heading = 0
@@ -368,7 +368,7 @@ function TestDriveVehicleFunction(currentModel, currentID)
 		SpawnTestDriveVeh(currentModel, VehCoords, Heading, plateText)
 		SetVehicleDirtLevel(currentModel, 0)
 	else
-		ShowNotifyHHCore(_U("already_test_driving"))
+		ShowNotifyRKCore(_U("already_test_driving"))
 	end
 end
 
@@ -409,9 +409,9 @@ Citizen.CreateThread(function()
 								SetVehicleDoorsLockedForAllPlayers(TestVehicle, true)
 							end
 							FreezeEntityPosition(TestVehicle, true)
-							ShowNotifyHHCore(_U("test_veh_returned"))
+							ShowNotifyRKCore(_U("test_veh_returned"))
 							Citizen.Wait(1500)
-							HHCore.Game.DeleteVehicle(TestVehicle)
+							RKCore.Game.DeleteVehicle(TestVehicle)
 							TestDriving = false
 							TestVehicle = nil
 							TestID = 0
@@ -454,7 +454,7 @@ function OpenReplaceMainMenu(currentID)
 			end
 		end
 	end
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_replace_menu",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_replace_menu",
 		{
 			title    = "PDM Replace Menu",
 			align    = "top-left",
@@ -465,7 +465,7 @@ function OpenReplaceMainMenu(currentID)
 		OpenCategoryMenu(data.current, currentID)
 	end, function(data, menu)
 		menu.close()
-		HHCore.UI.Menu.CloseAll()
+		RKCore.UI.Menu.CloseAll()
 		menuOpen = false
 	end)
 end
@@ -478,7 +478,7 @@ function OpenCategoryMenu(selectedCategory, currentID)
 			table.insert(elements,{label = v.name..": [$"..v.price.."]", model = v.model, name = v.name, price = v.price, category = v.category, stock = v.stock})
 		end
 	end
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_category_menu",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_category_menu",
 		{
 			title    = "PDM: "..selectedCategory.label,
 			align    = "top-left",
@@ -487,12 +487,12 @@ function OpenCategoryMenu(selectedCategory, currentID)
 	function(data, menu)
 		menu.close()
 		menuOpen = false
-		HHCore.UI.Menu.CloseAll()
+		RKCore.UI.Menu.CloseAll()
 		TriggerServerEvent('cardealer:ReplaceVehSV', data.current.model, data.current.name, currentID)
 	end, function(data, menu)
 		menu.close()
 		menuOpen = false
-		HHCore.UI.Menu.CloseAll()
+		RKCore.UI.Menu.CloseAll()
 	end)
 end
 
@@ -501,7 +501,7 @@ function OpenShopMainMenu()
 	menuOpen = true
 	--FreezeEntityPosition(GetPlayerPed(-1), true)		
 	
-	HHCore.TriggerServerCallback('cardealer:GetDealerCount', function(DealerOnline)
+	RKCore.TriggerServerCallback('cardealer:GetDealerCount', function(DealerOnline)
 		local DealerCount = DealerOnline
 		
 		local elements = {
@@ -519,7 +519,7 @@ function OpenShopMainMenu()
 			table.insert(elements,{label = _U('veh_insurance_btn'), value = "open_insurance_menu"})
 		end
 				
-		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_menu",
+		RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_menu",
 			{
 				title    = _U('shop_menu_title'),
 				align    = "top-left",
@@ -539,7 +539,7 @@ function OpenShopMainMenu()
 			menu.close()
 		end, function(data, menu)
 			menu.close()
-			HHCore.UI.Menu.CloseAll()
+			RKCore.UI.Menu.CloseAll()
 			menuOpen = false
 			--FreezeEntityPosition(GetPlayerPed(-1), false)
 		end)
@@ -548,17 +548,17 @@ function OpenShopMainMenu()
 end
 
 function OpenVehicleSaleMenu()
-	HHCore.TriggerServerCallback('cardealer:GetAllOwnedVehicles', function(results)
+	RKCore.TriggerServerCallback('cardealer:GetAllOwnedVehicles', function(results)
 	
 		local elements = {}
 		for k,v in pairs(results) do
 			table.insert(elements,{label = v.plate, plate = v.plate, vehicle = vehicle, date = v.date, price = v.price, finance = v.finance, repaytime = v.repaytime, model = v.model})
 		end
 		
-		exports['hhrp-taskbar']:taskBar(1000, _U('progbar_retrieve_veh'))
+		exports['rk-taskbar']:taskBar(1000, _U('progbar_retrieve_veh'))
 		Citizen.Wait(1000)
 				
-		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_sell_owned_vehicles",
+		RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_sell_owned_vehicles",
 			{
 				title    = _U('shop_sell_title'),
 				align    = "top-left",
@@ -569,7 +569,7 @@ function OpenVehicleSaleMenu()
 			local SellVeh = data.current
 			
 			-- Confirm Menu:
-			HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_veh_sale_confirm",
+			RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_veh_sale_confirm",
 				{
 					title    = _U('shop_sell_confirm'),
 					align    = "top-left",
@@ -583,23 +583,23 @@ function OpenVehicleSaleMenu()
 					local vehPlate = SellVeh.plate
 					local vehModel = SellVeh.model
 					local vehPrice = SellVeh.price
-					HHCore.TriggerServerCallback('cardealer:SellOwnedVehicle', function(sold, sellPrice, plate, model)
+					RKCore.TriggerServerCallback('cardealer:SellOwnedVehicle', function(sold, sellPrice, plate, model)
 						if sold then
-							ShowNotifyHHCore(_U('shop_sell_msg', math.floor(sellPrice)))
+							ShowNotifyRKCore(_U('shop_sell_msg', math.floor(sellPrice)))
 							local coords = GetEntityCoords(GetPlayerPed(-1))
 							local DelVeh = GetClosestVehicle(coords.x, coords.y, coords.z, 100.0, model, 70)
 							local DelVehPlate = GetVehicleNumberPlateText(DelVeh)
 							if DelVehPlate == plate then
 								GetVehicleDoorLockStatus(DelVeh,2)
 								DeleteVehicle(DelVeh)
-								ShowNotifyHHCore(_U('shop_sell_veh_taken'))
+								ShowNotifyRKCore(_U('shop_sell_veh_taken'))
 							end
 						end
 					end, vehPlate, vehPrice, vehModel)
 					---
 					GetCarDealerData()
 					menu.close()
-					HHCore.UI.Menu.CloseAll()
+					RKCore.UI.Menu.CloseAll()
 					menuOpen = false
 					--FreezeEntityPosition(GetPlayerPed(-1), false)
 				elseif data.current.value == "no" then
@@ -621,17 +621,17 @@ function OpenVehicleSaleMenu()
 end
 
 function OpenShopBillingMenu()
-	HHCore.TriggerServerCallback('cardealer:GetAllOwnedVehicles', function(results)
+	RKCore.TriggerServerCallback('cardealer:GetAllOwnedVehicles', function(results)
 	
 		local elements = {}
 		for k,v in pairs(results) do
 			table.insert(elements,{label = v.plate, plate = v.plate, vehicle = vehicle, date = v.date, price = v.price, finance = v.finance, repaytime = v.repaytime, model = v.model})
 		end
 		
-		exports['hhrp-taskbar']:taskBar(1000, _U('progbar_retrieve_bills'))
+		exports['rk-taskbar']:taskBar(1000, _U('progbar_retrieve_bills'))
 		Citizen.Wait(1000)
 		
-		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_financing_bills",
+		RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_financing_bills",
 			{
 				title    = _U('shop_finance_title'),
 				align    = "top-left",
@@ -661,7 +661,7 @@ function PayFinancialBill(plate,price,model,finance,repaytime)
 		difference = repayMoney
 	end
 	local titleLabel = _U('repay_dialog_title', comma_value(math.floor(difference)))
-	HHCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'shop_repayment_amount', {
+	RKCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'shop_repayment_amount', {
 		title = "Repay Amount [Min: $"..comma_value(math.floor(difference)).."]"
 	},
 	function(data, menu)
@@ -669,19 +669,19 @@ function PayFinancialBill(plate,price,model,finance,repaytime)
 		local amount = tonumber(data.value)
 		
 		if amount < difference then
-			ShowNotifyHHCore(_U('min_repayment', math.floor(difference)))
+			ShowNotifyRKCore(_U('min_repayment', math.floor(difference)))
 			PayFinancialBill(plate,price,model,finance,repaytime)
 		else
-			HHCore.TriggerServerCallback('cardealer:RepayAmount', function(hasPaid) 
+			RKCore.TriggerServerCallback('cardealer:RepayAmount', function(hasPaid) 
 				if hasPaid then 
-					ShowNotifyHHCore(_U('paid_fin_bill', math.floor(amount)))
+					ShowNotifyRKCore(_U('paid_fin_bill', math.floor(amount)))
 					TriggerServerEvent('carealer:financepaid', vehPlate)
 				else 
-					ShowNotifyHHCore(_U('not_enough_money'))
+					ShowNotifyRKCore(_U('not_enough_money'))
 				end
 			end, vehPlate, amount)
 			
-			HHCore.UI.Menu.CloseAll()
+			RKCore.UI.Menu.CloseAll()
 			menuOpen = false
 			--FreezeEntityPosition(GetPlayerPed(-1), false)
 		end
@@ -698,7 +698,7 @@ function OpenShopCatalogMenu()
 	for k,v in pairs(categories) do
 		table.insert(elements,{ label = v.label, name = v.name})
 	end
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_categories",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_categories",
 		{
 			title    = _U('shop_catalog'),
 			align    = "top-left",
@@ -720,7 +720,7 @@ function OpenShopCategoryMenu(category)
 			table.insert(elements,{label = v.name..": [$"..v.price.."]", model = v.model, name = v.name, price = v.price, category = v.category, stock = v.stock})
 		end
 	end
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_vehicle_list",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_vehicle_list",
 		{
 			title    = _U('shop_veh_list', category.label),
 			align    = "top-left",
@@ -730,7 +730,7 @@ function OpenShopCategoryMenu(category)
 		if data.current.stock > 0 then
 			BuyShopMenuCar(data.current, data.current.category, category)
 		else
-			ShowNotifyHHCore(_U('veh_not_in_stock'))
+			ShowNotifyRKCore(_U('veh_not_in_stock'))
 		end
 		menu.close()
 	end, function(data, menu)
@@ -740,7 +740,7 @@ function OpenShopCategoryMenu(category)
 end
 
 function BuyShopMenuCar(buyVeh, vehGroup, category)
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_confirm",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_shop_confirm",
 		{
 			title    = _U('shop_veh_confirm'),
 			align    = "top-left",
@@ -754,7 +754,7 @@ function BuyShopMenuCar(buyVeh, vehGroup, category)
 			local veh = buyVeh
 			local vehModel = veh.model
 			local vehPrice = veh.price
-			HHCore.TriggerServerCallback('cardealer:ShopGetPlyMoney', function(gotMoney, price, payment)
+			RKCore.TriggerServerCallback('cardealer:ShopGetPlyMoney', function(gotMoney, price, payment)
 				if gotMoney then
 					local VehCoords = nil
 					local Heading = 0
@@ -769,7 +769,7 @@ function BuyShopMenuCar(buyVeh, vehGroup, category)
 						end
 					end
 					Citizen.Wait(250)
-					HHCore.Game.SpawnVehicle(vehModel,VehCoords,Heading, function(purchCar)
+					RKCore.Game.SpawnVehicle(vehModel,VehCoords,Heading, function(purchCar)
 						Citizen.Wait(10)
 						SetEntityCoords(purchCar, VehCoords.x,VehCoords.y,VehCoords.z, 0.0, 0.0, 0.0, true)
 						SetEntityHeading(purchCar, Heading)
@@ -780,7 +780,7 @@ function BuyShopMenuCar(buyVeh, vehGroup, category)
 						end
 						-- Generate Plate:
 						local numberPlate = ProduceNumberPlate()
-						local vehProps = HHCore.Game.GetVehicleProperties(purchCar)
+						local vehProps = RKCore.Game.GetVehicleProperties(purchCar)
 						vehProps.plate = numberPlate
 						SetVehicleNumberPlateText(purchCar, numberPlate)
 						--local plate = GetVehicleNumberPlateText(purchCar)
@@ -793,15 +793,15 @@ function BuyShopMenuCar(buyVeh, vehGroup, category)
 						-- end
 						TriggerServerEvent('cardealer:ShopBuyAddCarToDB', vehProps, price, payment, vehModel)
 						GetCarDealerData()
-						ShowNotifyHHCore(_U('veh_purchased'))
+						ShowNotifyRKCore(_U('veh_purchased'))
 					end)										
 				else
-					ShowNotifyHHCore(_U("veh_not_enough_money"))
+					ShowNotifyRKCore(_U("veh_not_enough_money"))
 				end
 			end, vehModel, vehPrice)
 			---
 			menu.close()
-			HHCore.UI.Menu.CloseAll()
+			RKCore.UI.Menu.CloseAll()
 			menuOpen = false
 			--FreezeEntityPosition(GetPlayerPed(-1), false)
 		elseif data.current.value == "no" then
@@ -824,7 +824,7 @@ function OpenBossMenu()
 		{ label = _U('accounts_menu'), value = "open_accounts_menu" },
 	}
 	
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_boss_menu",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_boss_menu",
 		{
 			title    = _U('boss_menu_title'),
 			align    = "top-left",
@@ -839,7 +839,7 @@ function OpenBossMenu()
 		menu.close()
 	end, function(data, menu)
 		menu.close()
-		HHCore.UI.Menu.CloseAll()
+		RKCore.UI.Menu.CloseAll()
 		menuOpen = false
 		--FreezeEntityPosition(GetPlayerPed(-1), false)
 	end)
@@ -852,7 +852,7 @@ function OpenEmployeesMenu(jobNameDB)
 		{ label = _U('btn_employee_list'), value = "open_employee_list" },
 		{ label = _U('btn_employee_reqruit'), value = "open_reqruit_menu" },
 	}
-	HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_employee_menu",
+	RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_employee_menu",
 		{
 			title    = _U('employee_menu_title'),
 			align    = "top-left",
@@ -862,7 +862,7 @@ function OpenEmployeesMenu(jobNameDB)
 		menu.close()
 		-- EMPLOYEE MENU:
 		if data.current.value == "open_employee_list" then
-			HHCore.TriggerServerCallback('cardealer:getEmployees', function(employees)
+			RKCore.TriggerServerCallback('cardealer:getEmployees', function(employees)
 				local elements = {
 					head = {_U('employee'), _U('grade'), _U('actions')},
 					rows = {}
@@ -879,12 +879,12 @@ function OpenEmployeesMenu(jobNameDB)
 						}
 					})
 				end
-				HHCore.UI.Menu.Open('list', GetCurrentResourceName(), 'cardealer_employee_list_' .. jobNameDB, elements, function(data2, menu2)
+				RKCore.UI.Menu.Open('list', GetCurrentResourceName(), 'cardealer_employee_list_' .. jobNameDB, elements, function(data2, menu2)
 					local employee = data2.data
 					-- PROMOTE MENU:
 					if data2.value == 'promote' then
 						menu2.close()
-						HHCore.TriggerServerCallback('cardealer:getJob', function(job)
+						RKCore.TriggerServerCallback('cardealer:getJob', function(job)
 							local elements = {}
 							for i=1, #job.grades, 1 do
 								local gradeLabel = (job.grades[i].label == '' and job.label or job.grades[i].label)
@@ -894,15 +894,15 @@ function OpenEmployeesMenu(jobNameDB)
 									selected = (employee.job.grade == job.grades[i].grade)
 								})
 							end
-							HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'cardealer_promote_employee_' .. jobNameDB, {
+							RKCore.UI.Menu.Open('default', GetCurrentResourceName(), 'cardealer_promote_employee_' .. jobNameDB, {
 								title    = _U('promote_employee', employee.name),
 								align    = 'center',
 								elements = elements
 							}, function(data3, menu3)
 								menu3.close()
-								ShowNotifyHHCore(_U('you_have_promoted', employee.name, data3.current.label))
+								ShowNotifyRKCore(_U('you_have_promoted', employee.name, data3.current.label))
 
-								HHCore.TriggerServerCallback('cardealer:setJob', function()
+								RKCore.TriggerServerCallback('cardealer:setJob', function()
 									OpenEmployeesMenu(jobNameDB)
 								end, employee.identifier, jobNameDB, data3.current.value, 'promote')
 							end, function(data3, menu3)
@@ -912,9 +912,9 @@ function OpenEmployeesMenu(jobNameDB)
 						end, jobNameDB)
 					-- FIRE MENU:
 					elseif data2.value == 'fire' then
-						ShowNotifyHHCore(_U('you_have_fired', employee.name))
+						ShowNotifyRKCore(_U('you_have_fired', employee.name))
 
-						HHCore.TriggerServerCallback('cardealer:setJob', function()
+						RKCore.TriggerServerCallback('cardealer:setJob', function()
 							OpenEmployeesMenu(jobNameDB)
 						end, employee.identifier, 'unemployed', 0, 'fire')
 						menu2.close()
@@ -928,7 +928,7 @@ function OpenEmployeesMenu(jobNameDB)
 		
 		-- RECRUIT MENU:
 		elseif data.current.value == "open_reqruit_menu" then
-			HHCore.TriggerServerCallback('cardealer:getOnlinePlayers', function(players)
+			RKCore.TriggerServerCallback('cardealer:getOnlinePlayers', function(players)
 				local elements = {}
 				for i=1, #players, 1 do
 					if players[i].job.name ~= jobNameDB then
@@ -940,13 +940,13 @@ function OpenEmployeesMenu(jobNameDB)
 						})
 					end
 				end
-				HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'cardealer_recruit_' .. jobNameDB, {
+				RKCore.UI.Menu.Open('default', GetCurrentResourceName(), 'cardealer_recruit_' .. jobNameDB, {
 					title    = _U('recruiting'),
 					align    = 'center',
 					elements = elements
 				}, function(data2, menu2)
 					-- YES / NO OPTION:
-					HHCore.UI.Menu.Open('default', GetCurrentResourceName(), 'cardealer_recruit_confirm_' .. jobNameDB, {
+					RKCore.UI.Menu.Open('default', GetCurrentResourceName(), 'cardealer_recruit_confirm_' .. jobNameDB, {
 						title    = _U('recruit_player', data2.current.name),
 						align    = 'center',
 						elements = {
@@ -956,9 +956,9 @@ function OpenEmployeesMenu(jobNameDB)
 					}, function(data3, menu3)
 						menu2.close()
 						if data3.current.value == 'yes' then
-							ShowNotifyHHCore(_U('you_have_hired', data2.current.name))
+							ShowNotifyRKCore(_U('you_have_hired', data2.current.name))
 
-							HHCore.TriggerServerCallback('cardealer:setJob', function()
+							RKCore.TriggerServerCallback('cardealer:setJob', function()
 								OpenEmployeesMenu(jobNameDB)
 							end, data2.current.identifier, jobNameDB, 0, 'hire')
 							menu2.close()
@@ -986,9 +986,9 @@ function OpenAccountsMenu()
 		{ label = _U('btn_withdraw'), value = 1, title = _U('amount_withdraw') },
 		{ label = _U('btn_deposit'), value = 2, title = _U('amount_deposit') },
 	}
-	HHCore.TriggerServerCallback('cardealer:GetAccountMoney', function(accountMoney,moneyOnPlayer)
+	RKCore.TriggerServerCallback('cardealer:GetAccountMoney', function(accountMoney,moneyOnPlayer)
 		
-		HHCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_accounts_menu",
+		RKCore.UI.Menu.Open('default', GetCurrentResourceName(), "cardealer_accounts_menu",
 			{
 				title    = _U('accounts_menu_title', accountMoney),
 				align    = "top-left",
@@ -1013,13 +1013,13 @@ function OpenAccountsDialog(option, label, accountMoney, moneyOnPlayer)
 	elseif option == 2 then
 		text = label.." [Max: "..moneyOnPlayer.."]"
 	end
-	HHCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'cardealer_accounts_dialog', {
+	RKCore.UI.Menu.Open('dialog', GetCurrentResourceName(), 'cardealer_accounts_dialog', {
 		title    = text
 	}, function(data, menu)
 		local amount = tonumber(data.value)
 		local callback, msg, progbar = '', '', ''
 		if amount == nil or amount == '' then
-			ShowNotifyHHCore(_U('invalid_amount'))
+			ShowNotifyRKCore(_U('invalid_amount'))
 		else
 			if option == 1 then
 				callback = 'Withdraw'
@@ -1030,16 +1030,16 @@ function OpenAccountsDialog(option, label, accountMoney, moneyOnPlayer)
 				msg = _U('deposited_amount', amount)
 				progbar = _U('progbar_depositing')
 			end
-			HHCore.TriggerServerCallback('cardealer:Accounts'..callback..'', function(approved)
+			RKCore.TriggerServerCallback('cardealer:Accounts'..callback..'', function(approved)
 				if approved then
 					menu.close()
-					exports['hhrp-taskbar']:taskBar(2000, progbar)
+					exports['rk-taskbar']:taskBar(2000, progbar)
 					Citizen.Wait(2000)
-					ShowNotifyHHCore(msg)
+					ShowNotifyRKCore(msg)
 					OpenAccountsMenu()
 				else
 					menu.close()
-					ShowNotifyHHCore(_U('not_enough_money'))
+					ShowNotifyRKCore(_U('not_enough_money'))
 					OpenAccountsMenu()
 				end
 			end, amount)
@@ -1104,10 +1104,10 @@ end)
     -- Server called event to get car dealer data:
     RegisterNetEvent('cardealer:UpdateCarDealerStockCL')
     AddEventHandler('cardealer:UpdateCarDealerStockCL', function(vehModel,vehPlate)
-        ShowNotifyHHCore(_U('veh_repossessed',vehPlate))
+        ShowNotifyRKCore(_U('veh_repossessed',vehPlate))
         local VehHash = vehModel
         local VehName = string.lower(GetDisplayNameFromVehicleModel(VehHash))
-        HHCore.TriggerServerCallback('cardealer:UpdateDealerStock', function(stockUpdated)
+        RKCore.TriggerServerCallback('cardealer:UpdateDealerStock', function(stockUpdated)
             if stockUpdated then
                 GetCarDealerData()
             end
@@ -1116,7 +1116,7 @@ end)
 
     -- Dealer Data:
     function GetCarDealerData()
-        HHCore.TriggerServerCallback("cardealer:FetchData", function(data1, data2, data3)
+        RKCore.TriggerServerCallback("cardealer:FetchData", function(data1, data2, data3)
             vehicles = data1
             display = data2
             categories = data3
@@ -1143,7 +1143,7 @@ end)
                 RequestModel(hash)
             end
 
-            HHCore.Game.SpawnLocalVehicle(hash, syncPos, v.Heading, function(carDisplay)
+            RKCore.Game.SpawnLocalVehicle(hash, syncPos, v.Heading, function(carDisplay)
                 Citizen.Wait(50)
                 SetEntityCoords(carDisplay, v.Pos[1], v.Pos[2], v.Pos[3]-0.97, 0.0, 0.0, 0.0, true)
                 SetEntityHeading(carDisplay, v.Heading)
@@ -1168,7 +1168,7 @@ end)
         local coords = GetEntityCoords(player)
         local vehSpawn = Config.DisplayCars[currentID]
         local hash = GetHashKey(car)
-        HHCore.Game.DeleteVehicle(DisplayCars[currentID])
+        RKCore.Game.DeleteVehicle(DisplayCars[currentID])
 
         while not HasModelLoaded(hash) do
             Citizen.Wait(10)
@@ -1178,7 +1178,7 @@ end)
         local VehCoords = {x = vehSpawn.Pos[1], y = vehSpawn.Pos[2], z = vehSpawn.Pos[3]}
         local VehHeading = vehSpawn.Heading
 
-        HHCore.Game.SpawnLocalVehicle(hash, VehCoords, VehHeading, function(newCar)
+        RKCore.Game.SpawnLocalVehicle(hash, VehCoords, VehHeading, function(newCar)
             Citizen.Wait(50)
             SetEntityCoords(newCar, VehCoords.x, VehCoords.y, VehCoords.z, 0.0, 0.0, 0.0, true)
             SetEntityHeading(newCar, VehHeading)
@@ -1197,7 +1197,7 @@ end)
 
     -- Spawns purchased vehicle:
     function SpawnPurchasedVehicle(currentModel, VehCoords, Heading, player, carPrice, carCommission, price, payment)
-        HHCore.Game.SpawnVehicle(currentModel,VehCoords,Heading, function(boughtCar)
+        RKCore.Game.SpawnVehicle(currentModel,VehCoords,Heading, function(boughtCar)
             Citizen.Wait(10)
             SetEntityCoords(boughtCar, VehCoords.x,VehCoords.y,VehCoords.z, 0.0, 0.0, 0.0, true)
             SetEntityHeading(boughtCar, Heading)
@@ -1208,7 +1208,7 @@ end)
             end
             -- Generate Plate:
             local numberPlate = ProduceNumberPlate()
-            local vehProps = HHCore.Game.GetVehicleProperties(boughtCar)
+            local vehProps = RKCore.Game.GetVehicleProperties(boughtCar)
             vehProps.plate = numberPlate
 			SetVehicleNumberPlateText(boughtCar, numberPlate)
 			local plate = GetVehicleNumberPlateText(boughtCar)
@@ -1222,14 +1222,14 @@ end)
             -- end
             GetCarDealerData()
             TriggerServerEvent('cardealer:AddVehToDatabase', vehProps, carPrice, carCommission, price, payment, currentModel)
-            ShowNotifyHHCore(_U('veh_purchased'))
+            ShowNotifyRKCore(_U('veh_purchased'))
             BuyInProgress = false
         end)
     end
 
     -- Spawns Financed Vehicle:
     function SpawnFinancedVehicle(currentModel, VehCoords, Heading, player, downPayment, carPrice, commission, payment)
-        HHCore.Game.SpawnVehicle(currentModel,VehCoords,Heading, function(financedCar)
+        RKCore.Game.SpawnVehicle(currentModel,VehCoords,Heading, function(financedCar)
             Citizen.Wait(10)
             SetEntityCoords(financedCar, VehCoords.x,VehCoords.y,VehCoords.z, 0.0, 0.0, 0.0, true)
             SetEntityHeading(financedCar, Heading)
@@ -1240,7 +1240,7 @@ end)
             end
             -- Generate Plate:
             local numberPlate = ProduceNumberPlate()
-            local vehProps = HHCore.Game.GetVehicleProperties(financedCar)
+            local vehProps = RKCore.Game.GetVehicleProperties(financedCar)
             vehProps.plate = numberPlate
 			SetVehicleNumberPlateText(financedCar, numberPlate)
 			local plate = GetVehicleNumberPlateText(financedCar)
@@ -1254,14 +1254,14 @@ end)
             -- end
             GetCarDealerData()
             TriggerServerEvent('cardealer:AddFinancedVehToDB', vehProps, downPayment, carPrice, commission, payment, currentModel)
-            ShowNotifyHHCore(_U('veh_purchased'))
+            ShowNotifyRKCore(_U('veh_purchased'))
             FinanceInProgress = false
         end)
     end
 
     -- Spawns Test Drive Vehicle:
     function SpawnTestDriveVeh(currentModel, VehCoords, Heading, plateText)
-        HHCore.Game.SpawnVehicle(currentModel, VehCoords, Heading, function(testVeh)
+        RKCore.Game.SpawnVehicle(currentModel, VehCoords, Heading, function(testVeh)
             Citizen.Wait(50)
             SetEntityCoords(testVeh, VehCoords.x, VehCoords.y, VehCoords.z, 0.0, 0.0, 0.0, true)
             SetEntityHeading(testVeh, Heading)

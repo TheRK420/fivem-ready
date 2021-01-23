@@ -1,8 +1,8 @@
-HHCore          = nil
+RKCore          = nil
 
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
 end)
@@ -164,10 +164,10 @@ function setShopBlip()
 	end	
 
 end
--- function HHCore.ShowHelpNotification(str)
+-- function RKCore.ShowHelpNotification(str)
 -- 	SetTextComponentFormat("STRING")
 -- 	AddTextComponentString(str)
--- 	HHCore.ShowHelpNotificationFromStringLabel(0, 0, 1, -1)
+-- 	RKCore.ShowHelpNotificationFromStringLabel(0, 0, 1, -1)
 -- end
 
 
@@ -190,9 +190,9 @@ Citizen.CreateThread(function()
 			if dstscan < 2.5 then
 				DrawMarker(27,b.pos.entering[1],b.pos.entering[2],b.pos.entering[3],0,0,0,0,0,0,1.001,1.0001,0.5001,0,155,255,50,0,0,0,0)
 				if IsPedInAnyVehicle(PlayerPedId(), true) == false and dstscan < 0.25 then
-					HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+					RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 					if IsControlJustPressed(1, 38) then	
-						HHCore.TriggerServerCallback('hhrp-license:checkLicense', function(hasWeaponLicense)
+						RKCore.TriggerServerCallback('rk-license:checkLicense', function(hasWeaponLicense)
 							if hasWeaponLicense then
 								TriggerEvent("server-inventory-open", "5", "Shop");	
 							else
@@ -211,7 +211,7 @@ Citizen.CreateThread(function()
 		-- 	-- TODO: At a later date move location
 		-- 	-- DrawMarker(27,  977.81, -101.04, 74.85 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 		-- 	if(Vdist( 1000.94, -115.18, 74.19, pos.x, pos.y, pos.z) < 2.0)then
-		-- 		-- HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the craft bench.")
+		-- 		-- RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the craft bench.")
 		-- 		if IsControlJustPressed(1, 38) and exports["isPed"]:GroupRank("parts_shop") > 3 then	
 		-- 			TriggerEvent("server-inventory-open", "16", "Craft");
 		-- 			Wait(1000)	
@@ -224,9 +224,9 @@ Citizen.CreateThread(function()
 		-- 	found = true
 		-- 	DrawMarker(27,  1108.45, -2007.2, 30.95 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 		-- 	if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 2.0)then
-		-- 		HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the smelter.")
+		-- 		RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the smelter.")
 		-- 		if IsControlJustPressed(1, 38) then	
-		-- 			local finished = exports["hhrp-taskbar"]:taskBar(60000,"Readying Smelter")
+		-- 			local finished = exports["rk-taskbar"]:taskBar(60000,"Readying Smelter")
       	-- 			if (finished == 100) then
       	-- 				pos = GetEntityCoords(PlayerPedId(), false)
       	-- 				if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 2.0)then
@@ -247,8 +247,8 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27,  306.49, -601.31, 43.29 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist( 306.49, -601.31, 43.29, pos.x, pos.y, pos.z) < 2.0)then
-				local job = HHCore.GetPlayerData().job.name
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+				local job = RKCore.GetPlayerData().job.name
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 				if IsControlJustPressed(1, 38) then	
 					if (job == "ambulance") then
 						TriggerEvent("server-inventory-open", "15", "Shop");	
@@ -271,7 +271,7 @@ Citizen.CreateThread(function()
 		-- 	DrawMarker(27, 467.69613647461,-992.7451171875,24.920822143555 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 		-- 	if(Vdist(467.69613647461,-992.7451171875,24.920822143555, pos.x, pos.y, pos.z) < 2.0)then
 		-- 		local job = exports["isPed"]:isPed("myjob")
-		-- 		HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+		-- 		RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 		-- 		if IsControlJustPressed(1, 38) and job == "police" then	
 		-- 			TriggerEvent("server-inventory-open", "10", "Shop");	
 		-- 			Wait(1000)
@@ -282,11 +282,11 @@ Citizen.CreateThread(function()
 
 		if(Vdist(452.4139, -980.1369, 30.68969, pos.x, pos.y, pos.z) < 20.0)then
 			found = true
-			local job = HHCore.GetPlayerData().job.name
+			local job = RKCore.GetPlayerData().job.name
 			if job == "police" then
 			DrawMarker(27, 452.4139, -980.1369, 30.68969 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(452.4139, -980.1369, 30.68969, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 				if IsControlJustPressed(1, 38) then	
 					TriggerEvent("server-inventory-open", "10", "Shop");	
 					Wait(1000)
@@ -301,7 +301,7 @@ Citizen.CreateThread(function()
 		-- 	DrawMarker(461.72647094727,-982.73687744141,30.689556121826 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 		-- 	if(Vdist(461.72647094727,-982.73687744141,30.689556121826, pos.x, pos.y, pos.z) < 2.0)then
 		-- 		local job = exports["isPed"]:isPed("myjob")
-		-- 		HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+		-- 		RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 		-- 		if IsControlJustPressed(1, 38)  then	
 		-- 			TriggerEvent("server-inventory-open", "29", "Shop");	
 		-- 			Wait(1000)
@@ -315,7 +315,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, 256.18,-368.91,-44.13 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(256.18,-368.91,-44.13, pos.x, pos.y, pos.z) < 3.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 				if IsControlJustPressed(1, 38) then	
 					TriggerEvent("server-inventory-open", "14", "Shop");	
 					Wait(1000)
@@ -329,7 +329,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, 105.2,3600.14, 40.73 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(105.2,3600.14, 40.73, pos.x, pos.y, pos.z) < 3.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to  Craft.")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to  Craft.")
 				if IsControlJustPressed(1, 38) then	
   					pos = GetEntityCoords(PlayerPedId(), false)
   					if(Vdist(105.2,3600.14, 40.73, pos.x, pos.y, pos.z) < 3.0)then
@@ -345,7 +345,7 @@ Citizen.CreateThread(function()
 		-- 	found = true
 		-- 	DrawMarker(27, 885.61,-3199.84,-98.19 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 		-- 	if(Vdist(885.61,-3199.84,-98.19, pos.x, pos.y, pos.z) < 3.0)then
-		-- 		HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to  CRAFT.")
+		-- 		RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to  CRAFT.")
 		-- 		if IsControlJustPressed(1, 38) then	
 
   		-- 			pos = GetEntityCoords(PlayerPedId(), false)
@@ -367,9 +367,9 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27,  1108.45, -2007.2, 30.95 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 1.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the smelter.")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the smelter.")
 				if IsControlJustPressed(1, 38) then	
-					local finished = exports["hhrp-taskbar"]:taskBar(60000,"Readying Smelter")
+					local finished = exports["rk-taskbar"]:taskBar(60000,"Readying Smelter")
       				if (finished == 100) then
       					pos = GetEntityCoords(PlayerPedId(), false)
       					if(Vdist( 1108.45, -2007.2, 30.95, pos.x, pos.y, pos.z) < 2.0)then
@@ -390,7 +390,7 @@ Citizen.CreateThread(function()
 				found = true
 				DrawMarker(27, v.x, v.y, v.z - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 				if(Vdist(v.x, v.y, v.z, pos.x, pos.y, pos.z) < 1.0)then
-					HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
+					RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the shop.")
 					if IsControlJustPressed(1, 38) then	
 						TriggerEvent("server-inventory-open", "2", "Shop");	
 						Wait(1000)
@@ -404,7 +404,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, 1783.16, 2557.02, 45.68 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(1783.16, 2557.02, 45.68, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to look at food")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to look at food")
 				if IsControlJustPressed(1, 38) then
 					TriggerEvent("server-inventory-open", "22", "Shop");
 					Wait(1000)
@@ -417,7 +417,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, 1775.8272705078,2587.4946289063,45.712657928467 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(1775.8272705078,2587.4946289063,45.712657928467, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to look at food")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to look at food")
 				if IsControlJustPressed(1, 38) then
 					TriggerEvent("server-inventory-open", "22", "Shop");
 					Wait(1000)
@@ -429,9 +429,9 @@ Citizen.CreateThread(function()
     	if(Vdist(methlocation["x"],methlocation["y"],methlocation["z"], pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			if(Vdist(methlocation["x"],methlocation["y"],methlocation["z"], pos.x, pos.y, pos.z) < 5.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) then
-					local finished = exports["hhrp-taskbar"]:taskBar(60000,"Searching...")
+					local finished = exports["rk-taskbar"]:taskBar(60000,"Searching...")
       				if (finished == 100) and Vdist(methlocation["x"],methlocation["y"],methlocation["z"], pos.x, pos.y, pos.z) < 2.0 then
 						TriggerEvent("server-inventory-open", "25", "Shop");
 						Wait(1000)
@@ -443,9 +443,9 @@ Citizen.CreateThread(function()
     	if(Vdist(1663.36, 2512.99, 46.87, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			if(Vdist(1663.36, 2512.99, 46.87, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) and (Vdist(1663.36, 2512.99, 46.87, pos.x, pos.y, pos.z) < 2.0) then
-					local finished = exports["hhrp-taskbar"]:taskBar(60000,"Searching...")
+					local finished = exports["rk-taskbar"]:taskBar(60000,"Searching...")
       				if (finished == 100) then
 						TriggerEvent("server-inventory-open", "26", "Shop");
 						Wait(1000)
@@ -458,9 +458,9 @@ Citizen.CreateThread(function()
     	if(Vdist(1775.6893310547,2593.6455078125,45.723571777344, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			if(Vdist(1775.6893310547,2593.6455078125,45.723571777344, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) and (Vdist(1775.6893310547,2593.6455078125,45.723571777344, pos.x, pos.y, pos.z) < 2.0) then
-					local finished = exports["hhrp-taskbar"]:taskBar(60000,"Making a god slushy...")
+					local finished = exports["rk-taskbar"]:taskBar(60000,"Making a god slushy...")
       				if (finished == 100) then
 						TriggerEvent("server-inventory-open", "27", "Shop");
 						Wait(1000)
@@ -473,7 +473,7 @@ Citizen.CreateThread(function()
 		if(Vdist(3094.623,-4715.215,27.27864, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			if(Vdist(3094.623,-4715.215,27.27864, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) and (Vdist(3094.623,-4715.215,27.27864, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "104", "Craft");
 						Wait(1000)
@@ -484,7 +484,7 @@ Citizen.CreateThread(function()
 		if(Vdist(1713.245,-1555.175,113.9422, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			if(Vdist(1713.245,-1555.175,113.9422, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) and (Vdist(1713.245,-1555.175,113.9422, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "105", "Craft");
 						Wait(1000)
@@ -494,11 +494,11 @@ Citizen.CreateThread(function()
 			
 		if(Vdist(-242.279,-1338.35, 30.9028, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
-			local job = HHCore.GetPlayerData().job.name
+			local job = RKCore.GetPlayerData().job.name
 			if job == "mechanic" then
 			DrawMarker(27,-242.279,-1338.35, 30.9028 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(-242.279,-1338.35, 30.9028, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Mechanic Crafting")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Mechanic Crafting")
 				if IsControlJustPressed(1, 38) and (Vdist(-242.279,-1338.35, 30.9028, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "55", "Craft");  
 						Wait(1000)
@@ -509,11 +509,11 @@ Citizen.CreateThread(function()
 
 		if(Vdist(-218.80, -1331.529, 23.14, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
-			local job = HHCore.GetPlayerData().job.name
+			local job = RKCore.GetPlayerData().job.name
 			if job == "mechanic" then
 			DrawMarker(27, -218.80, -1331.529, 23.14 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(-218.80, -1331.529, 23.14, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Mechanic Stash")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Mechanic Stash")
 				if IsControlJustPressed(1, 38) and (Vdist(-218.80, -1331.529, 23.14, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "1", "Mechanic Stash") 
 						Wait(1000)
@@ -524,11 +524,11 @@ Citizen.CreateThread(function()
 
 		if(Vdist(467.63592529297,-993.21063232422,24.920820236206, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
-			local job = HHCore.GetPlayerData().job.name
+			local job = RKCore.GetPlayerData().job.name
 			if job == "police" then
 			DrawMarker(27, 467.63592529297,-993.21063232422,24.920820236206 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(467.63592529297,-993.21063232422,24.920820236206, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Junk Locker")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Junk Locker")
 				if IsControlJustPressed(1, 38) and (Vdist(467.63592529297,-993.21063232422,24.920820236206, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "1", "Junk Locker")
 						Wait(1000)
@@ -541,9 +541,9 @@ Citizen.CreateThread(function()
 		if(Vdist(1777.58, 2565.15, 45.68, pos.x, pos.y, pos.z) < 10.0)then
 			found = true
 			if(Vdist(1777.58, 2565.15, 45.68, pos.x, pos.y, pos.z) < 2.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ what dis?")
 				if IsControlJustPressed(1, 38) then
-					local finished = exports["hhrp-taskbar"]:taskBar(6000,"Searching...")
+					local finished = exports["rk-taskbar"]:taskBar(6000,"Searching...")
       				if (finished == 100) and (Vdist(1777.58, 2565.15, 45.68, pos.x, pos.y, pos.z) < 2.0) then
 						TriggerEvent("server-inventory-open", "23", "Craft");
 						Wait(1000)
@@ -557,7 +557,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, -1586.84,-431.87, 37.94 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(-1586.84,-431.87, 37.94, pos.x, pos.y, pos.z) < 3.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open Drug Crafting.")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open Drug Crafting.")
 				if IsControlJustPressed(1, 38) then	
 					TriggerEvent("server-inventory-open", "107", "Craft");	
 					Wait(1000)
@@ -570,7 +570,7 @@ Citizen.CreateThread(function()
 			found = true
 			DrawMarker(27, -632.64, 235.25, 81.89 - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 			if(Vdist(-632.64, 235.25, 81.89, pos.x, pos.y, pos.z) < 1.0)then
-				HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to Make Delicious Stuff")
+				RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to Make Delicious Stuff")
 				if IsControlJustPressed(1, 38) then
 					TriggerEvent("server-inventory-open", "12", "Craft");
 					Wait(1000)
@@ -584,7 +584,7 @@ Citizen.CreateThread(function()
 				found = true
 				DrawMarker(27, v.x, v.y, v.z - 1, 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.5001, 0, 25, 165, 165, 0,0, 0,0)
 				if(Vdist(v.x, v.y, v.z, pos.x, pos.y, pos.z) < 3.0)then
-					HHCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the tool shop.")
+					RKCore.ShowHelpNotification("Press ~INPUT_CONTEXT~ to open the tool shop.")
 					if IsControlJustPressed(1, 38) then
 						TriggerEvent("server-inventory-open", "4", "Shop");
 						Wait(1000)

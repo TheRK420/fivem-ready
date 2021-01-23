@@ -1,10 +1,10 @@
-HHCore = nil
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+RKCore = nil
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 -- Code
 
-HHCore.RegisterUsableItem('radio', function(source, item)
-   local xPlayer = HHCore.GetPlayerFromId(source)
+RKCore.RegisterUsableItem('radio', function(source, item)
+   local xPlayer = RKCore.GetPlayerFromId(source)
    TriggerClientEvent('radio:itemradio', source)
 end)
 
@@ -12,9 +12,9 @@ end)
 -- Citizen.CreateThread(function()
 --     while true do
 --     Citizen.Wait(120000)
---       local xPlayers = HHCore.GetPlayers()
+--       local xPlayers = RKCore.GetPlayers()
 --       for i=1, #xPlayers, 1 do
---           local xPlayer = HHCore.GetPlayerFromId(xPlayers[i])
+--           local xPlayer = RKCore.GetPlayerFromId(xPlayers[i])
 --             if xPlayer ~= nil then
 --                 if xPlayer.getInventoryItem('radio').count == 0 then
 --                   local source = xPlayers[i]

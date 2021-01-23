@@ -37,7 +37,7 @@ Radio.Commands = {
 			local playerPed = PlayerPedId()
 			local isFalling = IsPedFalling(playerPed)
 			local isDead = IsEntityDead(playerPed)
-		if exports["hhrp-inventory"]:hasEnoughOfItem("radio", 1) then
+		if exports["rk-inventory"]:hasEnoughOfItem("radio", 1) then
 			if not isFalling and Radio.Enabled and Radio.Has and not isDead then
 				Radio:Toggle(not Radio.Open)
 			elseif (Radio.Open or Radio.On) and ((not Radio.Enabled) or (not Radio.Has) or isDead) then

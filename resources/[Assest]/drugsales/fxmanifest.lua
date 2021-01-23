@@ -2,7 +2,7 @@ fx_version 'adamant'
 
 game 'gta5'
 
-description 'HHRP DrugSales'
+description 'rk DrugSales'
 
 version '1.0.0'
 

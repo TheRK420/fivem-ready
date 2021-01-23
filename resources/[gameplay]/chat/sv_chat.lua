@@ -7,9 +7,9 @@ RegisterServerEvent('_chat:messageEntered')
 RegisterServerEvent('chat:clear')
 RegisterServerEvent('__cfx_internal:commandFallback')
 
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
  
 AddEventHandler('_chat:messageEntered', function(author, color, message)
     if not message or not author then
@@ -55,7 +55,7 @@ RegisterCommand('say', function(source, args, rawCommand)
 end)
 
 -- RegisterCommand('cardko', function(source, args, rawCommand)
---     local xPlayer = HHCore.GetPlayerFromId(source)
+--     local xPlayer = RKCore.GetPlayerFromId(source)
 
 --     GetRPData(xPlayer, function(Firstname, Lastname, DOB, sex)
 --        -- print(Firstname, Lastname, DOB, sex)

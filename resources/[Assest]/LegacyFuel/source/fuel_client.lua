@@ -1,7 +1,7 @@
-if Config.UseHHCore then
+if Config.UseRKCore then
 	Citizen.CreateThread(function()
-		while not HHCore do
-			TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+		while not RKCore do
+			TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 			Citizen.Wait(500)
 		end
@@ -83,8 +83,8 @@ Citizen.CreateThread(function()
 		if pumpDistance < 2.5 then
 			isNearPump = pumpObject
 
-			if Config.UseHHCore then
-				currentCash = HHCore.GetPlayerData().money
+			if Config.UseRKCore then
+				currentCash = RKCore.GetPlayerData().money
 			end
 		else
 			isNearPump = false
@@ -157,7 +157,7 @@ AddEventHandler('fuel:refuelFromPump', function(pumpObject, ped, vehicle)
 			local stringCoords = GetEntityCoords(pumpObject)
 			local extraString = ""
 
-			if Config.UseHHCore then
+			if Config.UseRKCore then
 				extraString = "\n" .. Config.Strings.TotalCost .. ": ~g~$" .. Round(currentCost, 1)
 			end
 
@@ -239,10 +239,10 @@ Citizen.CreateThread(function()
 
 								TriggerServerEvent('fuel:pay', Config.JerryCanCost)
 
-								currentCash = HHCore.GetPlayerData().money
+								currentCash = RKCore.GetPlayerData().money
 							end
 						else
-							if Config.UseHHCore then
+							if Config.UseRKCore then
 								local refillCost = Round(Config.RefillCost * (1 - GetAmmoInPedWeapon(ped, 883325847) / 4500))
 
 								if refillCost > 0 then

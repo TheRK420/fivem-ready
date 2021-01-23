@@ -1,19 +1,19 @@
-HHCore = nil
+RKCore = nil
 local clipboardEntity
 
 Citizen.CreateThread(function()
-    while HHCore == nil do
+    while RKCore == nil do
         Citizen.Wait(0)
-        TriggerEvent('hhrp:getSharedObject', function(obj)
-            HHCore = obj
+        TriggerEvent('rk:getSharedObject', function(obj)
+            RKCore = obj
         end)
     end
 
-    while HHCore.GetPlayerData().job == nil do
+    while RKCore.GetPlayerData().job == nil do
         Citizen.Wait(10)
     end
 
-    HHCore.PlayerData = HHCore.GetPlayerData()
+    RKCore.PlayerData = RKCore.GetPlayerData()
 end)
 
 local forceDraw = false
@@ -44,7 +44,7 @@ Citizen.CreateThread(function()
             animationState = shouldDraw
             if animationState then
                 local playerPed = GetPlayerPed(-1)
-                HHCore.Streaming.RequestAnimDict('missheistdockssetup1clipboard@base', function()
+                RKCore.Streaming.RequestAnimDict('missheistdockssetup1clipboard@base', function()
                     TaskPlayAnim(playerPed, 'missheistdockssetup1clipboard@base', 'base', 8.0, -8, -1, 49, 0, 0, 0, 0)
                 end)
 
@@ -97,7 +97,7 @@ end
 
 function GetNeareastPlayers()
     local playerPed = PlayerPedId()
-    local players, _ = HHCore.Game.GetPlayersInArea(GetEntityCoords(playerPed), Config.DrawDistance)
+    local players, _ = RKCore.Game.GetPlayersInArea(GetEntityCoords(playerPed), Config.DrawDistance)
 
     local players_clean = {}
     local found_players = false

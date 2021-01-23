@@ -25,16 +25,16 @@ TryToSell = function(pedId, coords)
         Citizen.Wait(Config.DiscussTime / 2)
         serverId = GetPlayerServerId(PlayerId())
         --message = 'Dispatch Message: Drug Sale Attempt in progress'
-        --TriggerServerEvent('hhrp_addons_gcphone:startCall', 'police', message, coords)
+        --TriggerServerEvent('rk_addons_gcphone:startCall', 'police', message, coords)
         --TriggerEvent("civilian:alertPolice",150,"drugsale",0,false)
-        TriggerEvent('hhrp-dispatch:drugjob')
+        TriggerEvent('rk-dispatch:drugjob')
         local playerGender = 0
         local streetName = GetStreetAndZone()
         local pcoords = GetEntityCoords(PlayerPedId())
-        TriggerServerEvent('hhrp_outlawalert:DrugSaleInProgress', {
-            x = HHCore.Math.Round(pcoords.x, 1),
-            y = HHCore.Math.Round(pcoords.y, 1),
-            z = HHCore.Math.Round(pcoords.z, 1)
+        TriggerServerEvent('rk_outlawalert:DrugSaleInProgress', {
+            x = RKCore.Math.Round(pcoords.x, 1),
+            y = RKCore.Math.Round(pcoords.y, 1),
+            z = RKCore.Math.Round(pcoords.z, 1)
         }, streetName, playerGender)
 
         TriggerServerEvent("dispatch:svNotify", {
@@ -82,18 +82,18 @@ TryToSellcoke = function(pedId, coords)
         Citizen.Wait(Config.DiscussTime / 2)
         serverId = GetPlayerServerId(PlayerId())
         --message = 'Dispatch Message: Drug Sale Attempt in progress'
-        --TriggerServerEvent('hhrp_addons_gcphone:startCall', 'police', message, coords)
+        --TriggerServerEvent('rk_addons_gcphone:startCall', 'police', message, coords)
         --TriggerEvent("civilian:alertPolice",150,"drugsale",0,false)
-        TriggerEvent('hhrp-dispatch:drugjob')
+        TriggerEvent('rk-dispatch:drugjob')
 
         exports['mythic_notify']:DoHudText('error', "Are you stupid? I'm calling the Cops!")
         local playerGender = 0
         local streetName = GetStreetAndZone()
         local pcoords = GetEntityCoords(PlayerPedId())
-        TriggerServerEvent('hhrp_outlawalert:DrugSaleInProgress', {
-            x = HHCore.Math.Round(pcoords.x, 1),
-            y = HHCore.Math.Round(pcoords.y, 1),
-            z = HHCore.Math.Round(pcoords.z, 1)
+        TriggerServerEvent('rk_outlawalert:DrugSaleInProgress', {
+            x = RKCore.Math.Round(pcoords.x, 1),
+            y = RKCore.Math.Round(pcoords.y, 1),
+            z = RKCore.Math.Round(pcoords.z, 1)
         }, streetName, playerGender)
 
         TriggerServerEvent("dispatch:svNotify", {
@@ -140,16 +140,16 @@ TryToSellmarijuana = function(pedId, coords)
         Citizen.Wait(Config.DiscussTime / 2)
         serverId = GetPlayerServerId(PlayerId())
         --message = 'Dispatch Message: Drug Sale Attempt in progress'
-        --TriggerServerEvent('hhrp_addons_gcphone:startCall', 'police', message, coords)
+        --TriggerServerEvent('rk_addons_gcphone:startCall', 'police', message, coords)
         --TriggerEvent("civilian:alertPolice",150,"drugsale",0,false)
-        TriggerEvent('hhrp-dispatch:drugjob')
+        TriggerEvent('rk-dispatch:drugjob')
         local playerGender = 0
         local streetName = GetStreetAndZone()
         local pcoords = GetEntityCoords(PlayerPedId())
-        TriggerServerEvent('hhrp_outlawalert:DrugSaleInProgress', {
-            x = HHCore.Math.Round(pcoords.x, 1),
-            y = HHCore.Math.Round(pcoords.y, 1),
-            z = HHCore.Math.Round(pcoords.z, 1)
+        TriggerServerEvent('rk_outlawalert:DrugSaleInProgress', {
+            x = RKCore.Math.Round(pcoords.x, 1),
+            y = RKCore.Math.Round(pcoords.y, 1),
+            z = RKCore.Math.Round(pcoords.z, 1)
         }, streetName, playerGender)
 
         TriggerServerEvent("dispatch:svNotify", {
@@ -197,16 +197,16 @@ TryToSelloxy = function(pedId, coords)
         Citizen.Wait(Config.DiscussTime / 2)
         serverId = GetPlayerServerId(PlayerId())
         --message = 'Dispatch Message: Drug Sale Attempt in progress'
-        --TriggerServerEvent('hhrp_addons_gcphone:startCall', 'police', message, coords)
+        --TriggerServerEvent('rk_addons_gcphone:startCall', 'police', message, coords)
         --TriggerEvent("civilian:alertPolice",150,"drugsale",0,false)
-        TriggerEvent('hhrp-dispatch:drugjob')
+        TriggerEvent('rk-dispatch:drugjob')
         local playerGender = 0
         local streetName = GetStreetAndZone()
         local pcoords = GetEntityCoords(PlayerPedId())
-        TriggerServerEvent('hhrp_outlawalert:DrugSaleInProgress', {
-            x = HHCore.Math.Round(pcoords.x, 1),
-            y = HHCore.Math.Round(pcoords.y, 1),
-            z = HHCore.Math.Round(pcoords.z, 1)
+        TriggerServerEvent('rk_outlawalert:DrugSaleInProgress', {
+            x = RKCore.Math.Round(pcoords.x, 1),
+            y = RKCore.Math.Round(pcoords.y, 1),
+            z = RKCore.Math.Round(pcoords.z, 1)
         }, streetName, playerGender)
         exports['mythic_notify']:DoHudText('error', "Are you stupid? I'm calling the Cops!")
     end
@@ -214,9 +214,9 @@ TryToSelloxy = function(pedId, coords)
 end
 
 Sell = function()
-    if exports['hhrp-inventory']:hasEnoughOfItem('methbag', 1) then
+    if exports['rk-inventory']:hasEnoughOfItem('methbag', 1) then
         TriggerEvent("inventory:removeItem", "methbag", 1)
-        HHCore.TriggerServerCallback("disc-drugsales:sellDrug", function(soldDrug)
+        RKCore.TriggerServerCallback("disc-drugsales:sellDrug", function(soldDrug)
             if soldDrug then
                 exports['mythic_notify']:DoHudText('success', "Thanks! Here's $" .. soldDrug)
             end
@@ -226,9 +226,9 @@ Sell = function()
     end
 end
 Sellcoke = function()
-    if exports['hhrp-inventory']:hasEnoughOfItem('1gcocaine', 1) then
+    if exports['rk-inventory']:hasEnoughOfItem('1gcocaine', 1) then
         TriggerEvent("inventory:removeItem", "1gcocaine", 1)
-        HHCore.TriggerServerCallback("disc-drugsales:sellDrugcoke", function(soldDrug)
+        RKCore.TriggerServerCallback("disc-drugsales:sellDrugcoke", function(soldDrug)
             if soldDrug then
                 exports['mythic_notify']:DoHudText('success', "Thanks! Here's $" .. soldDrug)
             end
@@ -238,9 +238,9 @@ Sellcoke = function()
     end
 end
 Sellmarijuana = function()
-    if exports['hhrp-inventory']:hasEnoughOfItem('weedq', 1) then
+    if exports['rk-inventory']:hasEnoughOfItem('weedq', 1) then
         TriggerEvent("inventory:removeItem", "weedq", 1)
-        HHCore.TriggerServerCallback("disc-drugsales:sellDrugmarijuana", function(soldDrug)
+        RKCore.TriggerServerCallback("disc-drugsales:sellDrugmarijuana", function(soldDrug)
             if soldDrug then
                 exports['mythic_notify']:DoHudText('success', "Thanks! Here's $" .. soldDrug)
             end
@@ -250,9 +250,9 @@ Sellmarijuana = function()
     end
 end
 Selloxy = function()
-    if exports['hhrp-inventory']:hasEnoughOfItem('oxy', 1) then
+    if exports['rk-inventory']:hasEnoughOfItem('oxy', 1) then
         TriggerEvent("inventory:removeItem", "oxy", 1)
-        HHCore.TriggerServerCallback("disc-drugsales:sellDrugoxy", function(soldDrug)
+        RKCore.TriggerServerCallback("disc-drugsales:sellDrugoxy", function(soldDrug)
             if soldDrug then
                 exports['mythic_notify']:DoHudText('success', "Thanks! Here's $" .. soldDrug)
             end
@@ -263,7 +263,7 @@ Selloxy = function()
 end
 
 function PlayAnim(ped, lib, anim, r)
-    HHCore.Streaming.RequestAnimDict(lib, function()
+    RKCore.Streaming.RequestAnimDict(lib, function()
         TaskPlayAnim(ped, lib, anim, 8.0, -8, -1, r and 49 or 0, 0, 0, 0, 0)
     end)
 end

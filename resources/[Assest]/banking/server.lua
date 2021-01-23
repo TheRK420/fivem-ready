@@ -1,12 +1,12 @@
 local balances = {}
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 
 AddEventHandler('es:playerLoaded', function(source, user)
   balances[source] = user.getBank()
-    local xPlayer = HHCore.GetPlayerFromId(source)
+    local xPlayer = RKCore.GetPlayerFromId(source)
     local money
     money = user.getMoney()
 	  TriggerClientEvent('banking:updateCash', source, money)
@@ -22,7 +22,7 @@ end)
 -- 	  money = user.getMoney()
 -- 	  TriggerClientEvent('banking:updateCash', source, money)
 --     TriggerClientEvent('banking:updateBalance', source, user.getBank())
---     local xPlayer = HHCore.GetPlayerFromId(source)
+--     local xPlayer = RKCore.GetPlayerFromId(source)
 --     TriggerClientEvent('isPed:UpdateCash', source, user.getMoney())
 --   end)
 -- end)
@@ -31,7 +31,7 @@ end)
 RegisterServerEvent('bank:getDetails')
 AddEventHandler('bank:getDetails', function()
   local _src = source
-  local player = HHCore.GetPlayerFromId(source)
+  local player = RKCore.GetPlayerFromId(source)
   xPlayer = player.identifier
   MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier', {
     ['@identifier'] = player.identifier
@@ -49,7 +49,7 @@ end)
 
 ---HELPER FUNCTIONS
 function bankBalance(player)
-  return HHCore.GetPlayerFromId(player).getBank()
+  return RKCore.GetPlayerFromId(player).getBank()
 end
 
 function deposit(player, amount)
@@ -57,7 +57,7 @@ function deposit(player, amount)
   local new_balance = bankbalance + math.abs(amount)
   balances[player] = new_balance
 
-  local user = HHCore.GetPlayerFromId(player)
+  local user = RKCore.GetPlayerFromId(player)
   TriggerClientEvent("banking:updateBalance", source, new_balance)
   user.addBank(math.abs(amount))
   user.removeMoney(math.abs(amount))
@@ -68,7 +68,7 @@ function withdraw(player, amount)
   local new_balance = bankbalance - math.abs(amount)
   balances[player] = new_balance
 
-  local user = HHCore.GetPlayerFromId(player)
+  local user = RKCore.GetPlayerFromId(player)
   TriggerClientEvent("banking:updateBalance", source, new_balance)
   user.removeBank(math.abs(amount))
   user.addMoney(math.abs(amount))
@@ -94,7 +94,7 @@ end)
 
 RegisterServerEvent('bank:deposit')
 AddEventHandler('bank:deposit', function(amount)
-  local xPlayer = HHCore.GetPlayerFromId(source)
+  local xPlayer = RKCore.GetPlayerFromId(source)
    local money
    money = xPlayer.getMoney()
 
@@ -129,7 +129,7 @@ end)
 
 RegisterServerEvent('bank:withdraw')
 AddEventHandler('bank:withdraw', function(amount)
-  local xPlayer = HHCore.GetPlayerFromId(source)
+  local xPlayer = RKCore.GetPlayerFromId(source)
    local money
    money = xPlayer.getMoney()
 
@@ -161,8 +161,8 @@ end)
 RegisterServerEvent('bank:transfer')
 AddEventHandler('bank:transfer', function(to, amountt)
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
-	local zPlayer = HHCore.GetPlayerFromId(to)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
+	local zPlayer = RKCore.GetPlayerFromId(to)
 	local balance = 0
 	balance = xPlayer.getAccount('bank').money
 	zbalance = xPlayer.getAccount('bank').money
@@ -192,7 +192,7 @@ end)
 RegisterServerEvent('bank:balance')
 AddEventHandler('bank:balance', function()
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
 	balance = xPlayer.getAccount('bank').money
 	TriggerClientEvent('currentbalance1', _source, balance)
 end)
@@ -200,7 +200,7 @@ end)
 RegisterServerEvent('police:targetCheckBank')
 AddEventHandler('police:targetCheckBank', function(target)
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(target)
+	local xPlayer = RKCore.GetPlayerFromId(target)
 	balance = xPlayer.getAccount('bank').money
   local strng = " Bank: "..balance
   TriggerClientEvent("customNotification",_source,strng)
@@ -209,7 +209,7 @@ end)
 RegisterServerEvent('bank:active')
 AddEventHandler('bank:active', function()
   local _source = source
-  local xPlayer = HHCore.GetPlayerFromId(_source)
+  local xPlayer = RKCore.GetPlayerFromId(_source)
 	balance = xPlayer.getAccount('bank').money
 	TriggerClientEvent('banking:updateBalance', _source, balance)
 end)
@@ -217,7 +217,7 @@ end)
 RegisterServerEvent('bank:balance2')
 AddEventHandler('bank:balance', function()
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
 	balance = xPlayer.getAccount('bank').money
 	TriggerClientEvent('currentbalance2', _source, balance)
 end)
@@ -225,12 +225,12 @@ end)
 RegisterServerEvent('bank:cashbal')
 AddEventHandler('bank:cashbal', function()
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
   local money
 
   money = xPlayer.getMoney()
   TriggerClientEvent('banking:updateCash', _source, money)
-  local xPlayer = HHCore.GetPlayerFromId(source)
+  local xPlayer = RKCore.GetPlayerFromId(source)
   TriggerClientEvent('isPed:UpdateCash', source, xPlayer.getMoney())
   TriggerClientEvent('updateMyCashHere', source, xPlayer.getMoney())
 end)
@@ -240,7 +240,7 @@ end)
 RegisterServerEvent('bank:bankbal')
 AddEventHandler('bank:bankbal', function()
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(_source)
+	local xPlayer = RKCore.GetPlayerFromId(_source)
   balance = xPlayer.getAccount('bank').money
   TriggerClientEvent('banking:updateBalance', _source, balance)
 
@@ -251,10 +251,10 @@ TriggerEvent('es:addCommand', 'givecash', function(source, args)
   local sender = source
   local reciever = args[1]
   local amount = args[2]
-  local user = HHCore.GetPlayerFromId(sender)
+  local user = RKCore.GetPlayerFromId(sender)
 
 
-  local playerRec = HHCore.GetPlayerFromId(reciever)
+  local playerRec = RKCore.GetPlayerFromId(reciever)
 
   TriggerClientEvent("bank:givecash", source, sender, reciever, amount)
 
@@ -262,8 +262,8 @@ end,{help = "/givecash id amount"})
 
 RegisterServerEvent('bank:givemecash')
 AddEventHandler('bank:givemecash', function(sender, reciever, amount)
-    local user = HHCore.GetPlayerFromId(sender)
-    local playerRec = HHCore.GetPlayerFromId(reciever)
+    local user = RKCore.GetPlayerFromId(sender)
+    local playerRec = RKCore.GetPlayerFromId(reciever)
     	if GetPlayerName(reciever) then
 		if tonumber(amount) > 0 then
 			local amount = tonumber(amount)
@@ -290,7 +290,7 @@ end)
 RegisterServerEvent("cash:remove")
 AddEventHandler("cash:remove", function(user, amount)
   local _source = source
-  local xPlayer = HHCore.GetPlayerFromId(user)
+  local xPlayer = RKCore.GetPlayerFromId(user)
   xPlayer.removeMoney(amount)
   TriggerClientEvent("banking:updateCash", user, (xPlayer.getMoney()))
 end)

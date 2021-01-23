@@ -1,16 +1,16 @@
-HHCore = nil
+RKCore = nil
 
 local PlayerData                = {}
 
 Citizen.CreateThread(function()
-  while HHCore == nil do
-    TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+  while RKCore == nil do
+    TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
     Citizen.Wait(0)
 	end
 end)
 
-RegisterNetEvent('hhrp:setJob')
-AddEventHandler('hhrp:setJob', function(job)
+RegisterNetEvent('rk:setJob')
+AddEventHandler('rk:setJob', function(job)
   PlayerData.job = job
 end)
 
@@ -32,7 +32,7 @@ function enableRadio(enable)
 end
 
 RegisterCommand('radio', function(source, args)
-  if exports["hhrp-inventory"]:hasEnoughOfItem("radio", 1) then
+  if exports["rk-inventory"]:hasEnoughOfItem("radio", 1) then
     if Config.enableCmd then
       enableRadio(true)
     end
@@ -41,7 +41,7 @@ end, false)
 
 RegisterNUICallback('joinRadio', function(data, cb)
     local _source = source
-    local PlayerData = HHCore.GetPlayerData(_source)
+    local PlayerData = RKCore.GetPlayerData(_source)
     local playerName = GetPlayerName(PlayerId())
 
       if tonumber(data.channel) <= Config.RestrictedChannels then

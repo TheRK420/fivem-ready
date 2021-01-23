@@ -1,19 +1,19 @@
-HHCore = nil
+RKCore = nil
 local PlayerData                = {}
 
 Citizen.CreateThread(function()
-  while HHCore == nil do
-    TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+  while RKCore == nil do
+    TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
     Citizen.Wait(0)
   end
-  while HHCore.GetPlayerData().job == nil do
+  while RKCore.GetPlayerData().job == nil do
 		Citizen.Wait(10)
   end
-  PlayerData = HHCore.GetPlayerData()
+  PlayerData = RKCore.GetPlayerData()
 end)
 
-RegisterNetEvent('hhrp:setJob')
-AddEventHandler('hhrp:setJob', function(job)
+RegisterNetEvent('rk:setJob')
+AddEventHandler('rk:setJob', function(job)
   PlayerData.job = job
 end)
 
@@ -43,7 +43,7 @@ function openGui()
     TriggerEvent("DoShortHudText","You can not do that while in a call!",2)
     return
   end
-  local job = HHCore.GetPlayerData().job.name
+  local job = RKCore.GetPlayerData().job.name
   local Emergency = false
   if job == "police" then
     Emergency = true
@@ -66,7 +66,7 @@ function openGui()
 end
 
 function hasRadio()
-  if exports["hhrp-inventory"]:hasEnoughOfItem("radio",1,false) then
+  if exports["rk-inventory"]:hasEnoughOfItem("radio",1,false) then
     return true
   else
     return false

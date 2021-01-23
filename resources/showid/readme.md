@@ -3,7 +3,7 @@
 Show server Ids to player
 
 # Installation
-Add to resource folder `[HHCore]` or `[disc]`
+Add to resource folder `[RKCore]` or `[disc]`
 
 Start using `start disc-showid`
 

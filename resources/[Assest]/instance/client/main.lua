@@ -15,11 +15,11 @@ local InstanceInvite          = nil
 local InstancedPlayers        = {}
 local RegisteredInstanceTypes = {}
 local InsideInstance          = false
-HHCore                           = nil
+RKCore                           = nil
 
 Citizen.CreateThread(function()
-	while HHCore == nil do
-		TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+	while RKCore == nil do
+		TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 		Citizen.Wait(0)
 	end
 end)
@@ -170,7 +170,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 
 		if InstanceInvite ~= nil then
-			HHCore.ShowHelpNotification(_U('press_to_enter'))
+			RKCore.ShowHelpNotification(_U('press_to_enter'))
 		else
 			Citizen.Wait(500)
 		end

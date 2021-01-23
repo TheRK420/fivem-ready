@@ -1,7 +1,7 @@
 Config = {}
 
--- Are you using hhrp? Turn this to true if you would like fuel & jerry cans to cost something.
-Config.UseHHCore = true
+-- Are you using rk? Turn this to true if you would like fuel & jerry cans to cost something.
+Config.UseRKCore = true
 
 -- What should the price of jerry cans be?
 Config.JerryCanCost = 1500
@@ -39,7 +39,7 @@ Config.Strings = {
 	TotalCost = "Cost",
 }
 
-if not Config.UseHHCore then
+if not Config.UseRKCore then
 	Config.Strings.PurchaseJerryCan = "Press ~g~E ~w~to grab a jerry can"
 	Config.Strings.RefillJerryCan = "Press ~g~E ~w~ to refill the jerry can"
 end

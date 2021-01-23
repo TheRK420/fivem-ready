@@ -126,7 +126,7 @@ function bankanimation()
               ClearPedTasks(GetPlayerPed(-1))
               TaskPlayAnim( player, "amb@prop_human_atm@male@exit", "exit", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
               atmuse = false
-              local finished = exports["hhrp-taskbar"]:taskBar(3000,"Retrieving Card")
+              local finished = exports["rk-taskbar"]:taskBar(3000,"Retrieving Card")
 				Wait(3000)
               ClearPedTasksImmediately(GetPlayerPed(-1))
           else
@@ -143,7 +143,7 @@ function bankanimation()
                 ClearPedTasks(GetPlayerPed(-1))
                 TaskPlayAnim( player, "mp_common", "givetake1_a", 1.0, 1.0, -1, 49, 0, 0, 0, 0 )
                 atmuse = false
-                local finished = exports["hhrp-taskbar"]:taskBar(3000,"Retrieving Card")
+                local finished = exports["rk-taskbar"]:taskBar(3000,"Retrieving Card")
 				Wait(1000)
                 ClearPedTasksImmediately(GetPlayerPed(-1))
             else

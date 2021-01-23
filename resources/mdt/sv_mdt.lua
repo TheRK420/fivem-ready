@@ -1,12 +1,12 @@
 
 local call_index = 0
-HHCore = nil
+RKCore = nil
 
-TriggerEvent('hhrp:getSharedObject', function(obj) HHCore = obj end)
+TriggerEvent('rk:getSharedObject', function(obj) RKCore = obj end)
 
 RegisterCommand('mdt', function(source, args, user)
 	local usource = source
-    local xPlayer = HHCore.GetPlayerFromId(source)
+    local xPlayer = RKCore.GetPlayerFromId(source)
     if xPlayer.job.name == 'police' then
     	MySQL.Async.fetchAll("SELECT * FROM (SELECT * FROM `mdt_reports` ORDER BY `id` DESC LIMIT 3) sub ORDER BY `id` DESC", {}, function(reports)
     		for r = 1, #reports do
@@ -27,7 +27,7 @@ end)
 RegisterServerEvent("mdt:hotKeyOpen")
 AddEventHandler("mdt:hotKeyOpen", function()
 	local usource = source
-    local xPlayer = HHCore.GetPlayerFromId(source)
+    local xPlayer = RKCore.GetPlayerFromId(source)
     if xPlayer.job.name == 'police' then
     	MySQL.Async.fetchAll("SELECT * FROM (SELECT * FROM `mdt_reports` ORDER BY `id` DESC LIMIT 3) sub ORDER BY `id` DESC", {}, function(reports)
     		for r = 1, #reports do
@@ -49,7 +49,7 @@ end)
 RegisterServerEvent("mdt:getOffensesAndOfficer")
 AddEventHandler("mdt:getOffensesAndOfficer", function()
 	local usource = source
-	local xPlayer = HHCore.GetPlayerFromId(usource)
+	local xPlayer = RKCore.GetPlayerFromId(usource)
 	local charges = {}
 	MySQL.Async.fetchAll('SELECT * FROM fine_types', {
 	}, function(fines)
@@ -296,7 +296,7 @@ end)
 RegisterServerEvent("mdt:submitNewReport")
 AddEventHandler("mdt:submitNewReport", function(data)
 	local usource = source
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 
 	local author = --[[xPlayer.firstname..' '..xPlayer.lastname--]]GetCharacterName(source)
 	charges = json.encode(data.charges)
@@ -380,7 +380,7 @@ end)
 RegisterServerEvent("mdt:performVehicleSearchInFront")
 AddEventHandler("mdt:performVehicleSearchInFront", function(query)
 	local usource = source
-	local xPlayer = HHCore.GetPlayerFromId(usource)
+	local xPlayer = RKCore.GetPlayerFromId(usource)
     if xPlayer.job.name == 'police' then
     	MySQL.Async.fetchAll("SELECT * FROM (SELECT * FROM `mdt_reports` ORDER BY `id` DESC LIMIT 3) sub ORDER BY `id` DESC", {}, function(reports)
     		for r = 1, #reports do
@@ -455,7 +455,7 @@ end)
 RegisterServerEvent("mdt:submitNewWarrant")
 AddEventHandler("mdt:submitNewWarrant", function(data)
 	local usource = source
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	data.charges = json.encode(data.charges)
 	data.author = --[[xPlayer.firstname..' '..xPlayer.lastname--]]GetCharacterName(source)
 	data.date = os.date('%m-%d-%Y %H:%M:%S', os.time())
@@ -506,10 +506,10 @@ end)
 RegisterServerEvent("mdt:newCall")
 AddEventHandler("mdt:newCall", function(details, caller, coords)
 	call_index = call_index + 1
-	local xPlayers = HHCore.GetPlayers()
+	local xPlayers = RKCore.GetPlayers()
 	for i= 1, #xPlayers do
 		local source = xPlayers[i]
-		local xPlayer = HHCore.GetPlayerFromId(source)
+		local xPlayer = RKCore.GetPlayerFromId(source)
 		if xPlayer.job.name == 'police' then
 			TriggerClientEvent("mdt:newCall", source, details, caller, coords, call_index)
 			TriggerClientEvent("InteractSound_CL:PlayOnOne", source, 'demo', 1.0)
@@ -521,12 +521,12 @@ end)
 RegisterServerEvent("mdt:attachToCall")
 AddEventHandler("mdt:attachToCall", function(index)
 	local usource = source
-	local xPlayer = HHCore.GetPlayerFromId(usource)
+	local xPlayer = RKCore.GetPlayerFromId(usource)
 	local charname = --[[xPlayer.firstname..' '..xPlayer.lastname--]]GetCharacterName(usource)
-	local xPlayers = HHCore.GetPlayers()
+	local xPlayers = RKCore.GetPlayers()
 	for i= 1, #xPlayers do
 		local source = xPlayers[i]
-		local xPlayer = HHCore.GetPlayerFromId(source)
+		local xPlayer = RKCore.GetPlayerFromId(source)
 		if xPlayer.job.name == 'police' then
 			TriggerClientEvent("mdt:newCallAttach", source, index, charname)
 		end
@@ -537,12 +537,12 @@ end)
 RegisterServerEvent("mdt:detachFromCall")
 AddEventHandler("mdt:detachFromCall", function(index)
 	local usource = source
-	local xPlayer = HHCore.GetPlayerFromId(usource)
+	local xPlayer = RKCore.GetPlayerFromId(usource)
 	local charname = --[[xPlayer.firstname..' '..xPlayer.lastname--]]GetCharacterName(usource)
-	local xPlayers = HHCore.GetPlayers()
+	local xPlayers = RKCore.GetPlayers()
 	for i= 1, #xPlayers do
 		local source = xPlayers[i]
-		local xPlayer = HHCore.GetPlayerFromId(source)
+		local xPlayer = RKCore.GetPlayerFromId(source)
 		if xPlayer.job.name == 'police' then
 			TriggerClientEvent("mdt:newCallDetach", source, index, charname)
 		end
@@ -553,10 +553,10 @@ end)
 RegisterServerEvent("mdt:editCall")
 AddEventHandler("mdt:editCall", function(index, details)
 	local usource = source
-	local xPlayers = HHCore.GetPlayers()
+	local xPlayers = RKCore.GetPlayers()
 	for i= 1, #xPlayers do
 		local source = xPlayers[i]
-		local xPlayer = HHCore.GetPlayerFromId(source)
+		local xPlayer = RKCore.GetPlayerFromId(source)
 		if xPlayer.job.name == 'police' then
 			TriggerClientEvent("mdt:editCall", source, index, details)
 		end
@@ -567,10 +567,10 @@ end)
 RegisterServerEvent("mdt:deleteCall")
 AddEventHandler("mdt:deleteCall", function(index)
 	local usource = source
-	local xPlayers = HHCore.GetPlayers()
+	local xPlayers = RKCore.GetPlayers()
 	for i= 1, #xPlayers do
 		local source = xPlayers[i]
-		local xPlayer = HHCore.GetPlayerFromId(source)
+		local xPlayer = RKCore.GetPlayerFromId(source)
 		if xPlayer.job.name == 'police' then
 			TriggerClientEvent("mdt:deleteCall", source, index)
 		end
@@ -641,7 +641,7 @@ end
 
 function GetCharacterName(source)
 	local _source = source
-	local xPlayer = HHCore.GetPlayerFromId(source)
+	local xPlayer = RKCore.GetPlayerFromId(source)
 	local result = MySQL.Sync.fetchAll('SELECT firstname, lastname FROM users WHERE identifier = @identifier', {
 		['@identifier'] = xPlayer.identifier
 	})
